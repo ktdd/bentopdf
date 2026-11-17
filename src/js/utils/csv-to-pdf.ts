@@ -2,7 +2,6 @@ import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import Papa from 'papaparse';
 
-import { trText } from '../i18n/i18n.js';
 
 export interface CsvToPdfOptions {
   onProgress?: (percent: number, message: string) => void;
@@ -18,12 +17,12 @@ export async function convertCsvToPdf(
   const { onProgress } = options || {};
 
   return new Promise((resolve, reject) => {
-    onProgress?.(10, trText('Reading CSV file...'));
+    onProgress?.(10, 'Reading CSV file...');
 
     Papa.parse(file, {
       complete: (results) => {
         try {
-          onProgress?.(50, trText('Generating PDF...'));
+          onProgress?.(50, 'Generating PDF...');
 
           const data = results.data as string[][];
 
@@ -33,7 +32,7 @@ export async function convertCsvToPdf(
           );
 
           if (filteredData.length === 0) {
-            reject(new Error(trText('CSV file is empty')));
+            reject(new Error('CSV file is empty'));
             return;
           }
 
@@ -48,7 +47,7 @@ export async function convertCsvToPdf(
           const headers = filteredData[0];
           const rows = filteredData.slice(1);
 
-          onProgress?.(70, trText('Creating table...'));
+          onProgress?.(70, 'Creating table...');
 
           // Generate table
           autoTable(doc, {
@@ -73,12 +72,12 @@ export async function convertCsvToPdf(
             theme: 'striped',
           });
 
-          onProgress?.(90, trText('Finalizing PDF...'));
+          onProgress?.(90, 'Finalizing PDF...');
 
           // Get PDF as blob
           const pdfBlob = doc.output('blob');
 
-          onProgress?.(100, trText('Complete!'));
+          onProgress?.(100, 'Complete!');
           resolve(pdfBlob);
         } catch (error) {
           reject(error);
@@ -87,7 +86,7 @@ export async function convertCsvToPdf(
       error: (error) => {
         reject(
           new Error(
-            trText('Failed to parse CSV: {{error}}', { error: error.message })
+            `Failed to parse CSV: ${error.message}`
           )
         );
       },

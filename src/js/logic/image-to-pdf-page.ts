@@ -19,7 +19,7 @@ import {
   preprocessImageFile,
 } from '@/js/utils/image-input-utils.js';
 
-import { trText, onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../i18n/i18n.js';
 
 let files: File[] = [];
 let pymupdf: PyMuPDFInstance | null = null;
@@ -146,9 +146,7 @@ function updateUI() {
 
       const sizeSpan = document.createElement('span');
       sizeSpan.className = 'flex-shrink-0 text-gray-400 text-xs';
-      sizeSpan.textContent = trText('({{size}})', {
-        size: formatBytes(file.size),
-      });
+      sizeSpan.textContent = `(${formatBytes(file.size)})`;
 
       infoContainer.append(createDragHandle(), nameSpan, sizeSpan);
 

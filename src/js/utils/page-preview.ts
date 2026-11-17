@@ -3,7 +3,7 @@ import type { PDFDocumentProxy } from 'pdfjs-dist';
 import { PreviewState } from '@/types';
 import './setup-pdf-worker.js';
 
-import { trText, trHtml } from '../i18n/i18n.js';
+import { trHtml } from '../i18n/i18n.js';
 
 const state: PreviewState = {
   modal: null,
@@ -66,10 +66,7 @@ async function renderPreviewPage(pageNumber: number): Promise<void> {
 
   container.innerHTML = `<div class="text-white/60 text-sm">${trHtml('Loading...')}</div>`;
 
-  pageInfo.textContent = trText('Page {{pageNumber}} of {{totalPages}}', {
-    pageNumber,
-    totalPages: state.totalPages,
-  });
+  pageInfo.textContent = `Page ${pageNumber} of ${state.totalPages}`;
   prevBtn.style.visibility = pageNumber > 1 ? 'visible' : 'hidden';
   nextBtn.style.visibility =
     pageNumber < state.totalPages ? 'visible' : 'hidden';
@@ -176,7 +173,7 @@ export function initPagePreview(
     const icon = document.createElement('button');
     icon.className =
       'page-preview-btn absolute bottom-1 right-1 bg-gray-900/80 hover:bg-indigo-600 text-white/70 hover:text-white rounded-full w-7 h-7 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10';
-    icon.title = trText('Preview');
+    icon.title = 'Preview';
     icon.innerHTML =
       '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>';
     icon.addEventListener('click', (e) => {

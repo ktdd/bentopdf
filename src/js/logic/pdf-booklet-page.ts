@@ -7,7 +7,7 @@ import { loadPdfDocument } from "../utils/load-pdf-document.js";
 import { loadPdfWithPasswordPrompt } from "../utils/password-prompt.js";
 import "../utils/setup-pdf-worker.js";
 
-import { onPageReady, trText } from "../i18n/i18n.js";
+import { onPageReady } from "../i18n/i18n.js";
 
 interface BookletState {
     file: File | null;
@@ -67,9 +67,7 @@ async function updateUI() {
 
         const metaSpan = document.createElement("div");
         metaSpan.className = "text-xs text-gray-400";
-        metaSpan.textContent = trText("{{size}} • Loading...", {
-            size: formatBytes(pageState.file.size),
-        });
+        metaSpan.textContent = `${formatBytes(pageState.file.size)} • Loading...`;
 
         infoContainer.append(nameSpan, metaSpan);
 
@@ -100,10 +98,7 @@ async function updateUI() {
             hideLoader();
 
             const pageCount = pageState.pdfDoc.getPageCount();
-            metaSpan.textContent = trText("{{size}} • {{pageCount}} pages", {
-                size: formatBytes(pageState.file.size),
-                pageCount,
-            });
+            metaSpan.textContent = `${formatBytes(pageState.file.size)} • ${pageCount} pages`;
 
             if (toolOptions) toolOptions.classList.remove("hidden");
 
@@ -339,10 +334,7 @@ async function generatePreview() {
         ctx.textBaseline = "top";
         const sideLabel = isBookletMode ? (isFront ? "Front" : "Back") : "";
         ctx.fillText(
-            trText("Sheet {{n}} {{sideLabel}}", {
-                n: Math.floor(sheetIndex / (isBookletMode ? 2 : 1)) + 1,
-                sideLabel,
-            }),
+            `Sheet ${Math.floor(sheetIndex / (isBookletMode ? 2 : 1)) + 1} ${sideLabel}`,
             canvasWidth - 6,
             4,
         );
@@ -469,7 +461,7 @@ async function createBooklet() {
 
         showAlert(
             "Success",
-            trText("Booklet created with {{numSheets}} sheets!", { numSheets }),
+            `Booklet created with ${numSheets} sheets!`,
             "success",
             function () {
                 resetState();

@@ -1,6 +1,5 @@
 import type { ContentOperation, ContentToken } from '@/types';
 
-import { trText } from '../i18n/i18n.js';
 
 const charCode = (char: string) => char.charCodeAt(0);
 
@@ -84,7 +83,7 @@ function findLiteralStringEnd(bytes: Uint8Array, start: number): number {
       if (depth === 0) return i + 1;
     }
   }
-  throw new Error(trText('Unterminated string in content stream'));
+  throw new Error('Unterminated string in content stream');
 }
 
 function findHexStringEnd(bytes: Uint8Array, start: number): number {
@@ -92,10 +91,10 @@ function findHexStringEnd(bytes: Uint8Array, start: number): number {
     const byte = bytes[i];
     if (byte === GREATER_THAN) return i + 1;
     if (!isHexDigit(byte) && !WHITESPACE.has(byte)) {
-      throw new Error(trText('Invalid hex string in content stream'));
+      throw new Error('Invalid hex string in content stream');
     }
   }
-  throw new Error(trText('Unterminated hex string in content stream'));
+  throw new Error('Unterminated hex string in content stream');
 }
 
 function findClosingDelimiter(
@@ -108,7 +107,7 @@ function findClosingDelimiter(
     pos = skipWhitespaceAndComments(bytes, pos);
     if (pos >= bytes.length) {
       throw new Error(
-        trText('Unterminated array or dictionary in content stream')
+        'Unterminated array or dictionary in content stream'
       );
     }
     if (closing.every((byte, offset) => bytes[pos + offset] === byte)) {
@@ -147,7 +146,7 @@ function readToken(bytes: Uint8Array, start: number): ContentToken {
     return { kind: 'name', value: name, start, end };
   }
   if (DELIMITERS.has(byte)) {
-    throw new Error(trText('Unexpected delimiter in content stream'));
+    throw new Error('Unexpected delimiter in content stream');
   }
 
   let end = start;
@@ -232,7 +231,7 @@ function skipInlineImage(bytes: Uint8Array, start: number): number {
   while (true) {
     pos = skipWhitespaceAndComments(bytes, pos);
     if (pos >= bytes.length) {
-      throw new Error(trText('Unterminated inline image in content stream'));
+      throw new Error('Unterminated inline image in content stream');
     }
     const token = readToken(bytes, pos);
     pos = token.end;
@@ -243,7 +242,7 @@ function skipInlineImage(bytes: Uint8Array, start: number): number {
     } else if (token.kind === 'name') {
       pendingKey = token;
     } else {
-      throw new Error(trText('Malformed inline image in content stream'));
+      throw new Error('Malformed inline image in content stream');
     }
   }
 
@@ -254,7 +253,7 @@ function skipInlineImage(bytes: Uint8Array, start: number): number {
     let end = dataStart + dataLength;
     while (end < bytes.length && WHITESPACE.has(bytes[end])) end++;
     if (isEndImageOperator(bytes, end)) return end + 2;
-    throw new Error(trText('Malformed inline image in content stream'));
+    throw new Error('Malformed inline image in content stream');
   }
 
   for (let i = dataStart; i + 1 < bytes.length; i++) {
@@ -264,7 +263,7 @@ function skipInlineImage(bytes: Uint8Array, start: number): number {
     if (!isFollowedByText(bytes, i + 2)) break;
     return i + 2;
   }
-  throw new Error(trText('Unterminated inline image in content stream'));
+  throw new Error('Unterminated inline image in content stream');
 }
 
 export function parseContentOperations(bytes: Uint8Array): ContentOperation[] {

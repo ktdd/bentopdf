@@ -9,7 +9,7 @@ import { CropperState, CropPercentages } from '@/types';
 import { loadPdfDocument } from '../utils/load-pdf-document.js';
 import '../utils/setup-pdf-worker.js';
 
-import { trText, onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../i18n/i18n.js';
 
 const cropperState: CropperState = {
   pdfDoc: null,
@@ -122,10 +122,7 @@ function updateFileDisplay() {
 
   const metaSpan = document.createElement('div');
   metaSpan.className = 'text-xs text-gray-400';
-  metaSpan.textContent = trText('{{size}} • {{value}} pages', {
-    size: formatBytes(cropperState.file.size),
-    value: cropperState.pdfDoc?.numPages || 0,
-  });
+  metaSpan.textContent = `${formatBytes(cropperState.file.size)} • ${cropperState.pdfDoc?.numPages || 0} pages`;
 
   infoContainer.append(nameSpan, metaSpan);
 
@@ -154,7 +151,7 @@ function saveCurrentCrop() {
 }
 
 async function displayPageAsImage(num: number) {
-  showLoader(trText('Rendering Page {{num}}...', { num }));
+  showLoader(`Rendering Page ${num}...`);
 
   try {
     const page = await cropperState.pdfDoc.getPage(num);
@@ -227,10 +224,7 @@ async function changePage(offset: number) {
 function updatePageInfo() {
   const pageInfo = document.getElementById('page-info');
   if (pageInfo)
-    pageInfo.textContent = trText('Page {{currentPageNum}} of {{numPages}}', {
-      currentPageNum: cropperState.currentPageNum,
-      numPages: cropperState.pdfDoc.numPages,
-    });
+    pageInfo.textContent = `Page ${cropperState.currentPageNum} of ${cropperState.pdfDoc.numPages}`;
 }
 
 function enableControls() {
@@ -358,10 +352,7 @@ async function performFlatteningCrop(
   for (let i = 0; i < totalPages; i++) {
     const pageNum = i + 1;
     showLoader(
-      trText('Processing page {{pageNum}} of {{totalPages}}...', {
-        pageNum,
-        totalPages,
-      })
+      `Processing page ${pageNum} of ${totalPages}...`
     );
 
     if (cropData[pageNum]) {

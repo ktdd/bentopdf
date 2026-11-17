@@ -1,5 +1,4 @@
 import Sortable from 'sortablejs';
-import { trText } from '../i18n/i18n.js';
 
 type ReorderHandler = (oldIndex: number, newIndex: number) => void;
 
@@ -29,7 +28,7 @@ export function createDragHandle(): HTMLElement {
   const handle = document.createElement('div');
   handle.className =
     'drag-handle cursor-move text-gray-400 hover:text-white p-1 rounded transition-colors flex-shrink-0';
-  const label = trText('Drag to reorder');
+  const label = 'Drag to reorder';
   handle.title = label;
   handle.setAttribute('aria-label', label);
   const icon = document.createElement('i');

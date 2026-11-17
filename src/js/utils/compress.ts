@@ -11,7 +11,6 @@ import type {
 } from 'hyper-compress-wasm';
 import type { HyperCompressRequest, HyperCompressResponse } from '@/types';
 
-import { trText } from '../i18n/i18n.js';
 
 export const COMPRESS_LEVELS: readonly CompressLevel[] = [
   'low',
@@ -129,7 +128,7 @@ function getHyperWorker(): Worker {
       worker,
       new HyperError(
         'engine_error',
-        e.message || trText('The compression engine stopped unexpectedly.')
+        e.message || 'The compression engine stopped unexpectedly.'
       )
     );
   };
@@ -138,7 +137,7 @@ function getHyperWorker(): Worker {
       worker,
       new HyperError(
         'engine_error',
-        trText('The compression engine returned an unreadable result.')
+        'The compression engine returned an unreadable result.'
       )
     );
   };
@@ -165,7 +164,7 @@ export async function compressWithHyper(
   if (!hasPdfHeader(pdf)) {
     throw new HyperError(
       'engine_error',
-      trText('This file is not a valid PDF.')
+      'This file is not a valid PDF.'
     );
   }
   const message = await postToHyper(
@@ -175,7 +174,7 @@ export async function compressWithHyper(
   if (message.type !== 'result') {
     throw new HyperError(
       'engine_error',
-      trText('Unexpected reply from the engine.')
+      'Unexpected reply from the engine.'
     );
   }
   return message.result;
@@ -192,7 +191,7 @@ export async function verifyHyperPassword(
   if (message.type !== 'verified') {
     throw new HyperError(
       'engine_error',
-      trText('Unexpected reply from the engine.')
+      'Unexpected reply from the engine.'
     );
   }
   return message.valid;

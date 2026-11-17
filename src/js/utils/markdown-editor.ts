@@ -27,7 +27,7 @@ import { fullEmoji } from '@mdit/plugin-emoji';
 import { tasklist } from '@mdit/plugin-tasklist';
 import { katex as katexPlugin } from '@mdit/plugin-katex-slim';
 import { useMarkdownPlugins } from './markdown-plugins';
-import { applyTranslations, trHtml, trText } from '../i18n/i18n';
+import { applyTranslations, trHtml } from '../i18n/i18n';
 import type {
   WindowWithLucide,
   WindowWithI18next,
@@ -808,9 +808,7 @@ export class MarkdownEditor {
           console.error('Mermaid rendering error:', error);
           const errorDiv = document.createElement('div');
           errorDiv.className = 'mermaid-error';
-          errorDiv.textContent = trText('Mermaid Error: {{error}}', {
-            error: (error as Error).message,
-          });
+          errorDiv.textContent = `Mermaid Error: ${(error as Error).message}`;
           pre.replaceWith(errorDiv);
         }
       }

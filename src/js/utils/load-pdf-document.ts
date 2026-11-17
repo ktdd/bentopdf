@@ -1,7 +1,6 @@
 import { PDFDocument } from 'pdf-lib';
 import { initializeQpdf } from './helpers.js';
 
-import { trText } from '../i18n/i18n.js';
 
 type LoadOptions = Parameters<typeof PDFDocument.load>[1];
 type PDFDocumentInstance = Awaited<ReturnType<typeof PDFDocument.load>>;
@@ -57,7 +56,7 @@ export async function removeUnreferencedObjects(
     []
   );
   if (!cleaned) {
-    throw new Error(trText('Could not remove leftover data from the PDF.'));
+    throw new Error('Could not remove leftover data from the PDF.');
   }
   return cleaned;
 }

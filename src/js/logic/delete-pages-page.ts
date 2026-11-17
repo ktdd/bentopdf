@@ -12,7 +12,7 @@ import { DeletePagesState } from '@/types';
 import { loadPdfDocument } from '../utils/load-pdf-document.js';
 import '../utils/setup-pdf-worker.js';
 
-import { trText, onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../i18n/i18n.js';
 
 const deleteState: DeletePagesState = {
   file: null,
@@ -122,10 +122,7 @@ function updateFileDisplay() {
 
   const metaSpan = document.createElement('div');
   metaSpan.className = 'text-xs text-gray-400';
-  metaSpan.textContent = trText('{{size}} • {{totalPages}} pages', {
-    size: formatBytes(deleteState.file.size),
-    totalPages: deleteState.totalPages,
-  });
+  metaSpan.textContent = `${formatBytes(deleteState.file.size)} • ${deleteState.totalPages} pages`;
 
   infoContainer.append(nameSpan, metaSpan);
 
@@ -178,7 +175,7 @@ async function renderThumbnails() {
     const pageLabel = document.createElement('span');
     pageLabel.className =
       'absolute top-1 left-1 bg-gray-800 text-white text-xs px-1.5 py-0.5 rounded';
-    pageLabel.textContent = trText('{{i}}', { i });
+    pageLabel.textContent = `${i}`;
 
     const deleteOverlay = document.createElement('div');
     deleteOverlay.className =
@@ -274,9 +271,7 @@ async function deletePages() {
     hideLoader();
     showAlert(
       'Success',
-      trText('Deleted {{size}} page(s) successfully!', {
-        size: deleteState.pagesToDelete.size,
-      }),
+      `Deleted ${deleteState.pagesToDelete.size} page(s) successfully!`,
       'success',
       () => resetState()
     );

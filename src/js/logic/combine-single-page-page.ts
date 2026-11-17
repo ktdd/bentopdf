@@ -13,7 +13,7 @@ import { loadPdfWithPasswordPrompt } from '../utils/password-prompt.js';
 import { loadPdfDocument } from '../utils/load-pdf-document.js';
 import '../utils/setup-pdf-worker.js';
 
-import { trText, onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../i18n/i18n.js';
 
 const pageState: CombineSinglePageState = {
   file: null,
@@ -56,9 +56,7 @@ async function updateUI() {
 
     const metaSpan = document.createElement('div');
     metaSpan.className = 'text-xs text-gray-400';
-    metaSpan.textContent = trText('{{size}} • Loading...', {
-      size: formatBytes(pageState.file.size),
-    });
+    metaSpan.textContent = `${formatBytes(pageState.file.size)} • Loading...`;
 
     infoContainer.append(nameSpan, metaSpan);
 
@@ -86,10 +84,7 @@ async function updateUI() {
       hideLoader();
 
       const pageCount = pageState.pdfDoc.getPageCount();
-      metaSpan.textContent = trText('{{size}} • {{pageCount}} pages', {
-        size: formatBytes(pageState.file.size),
-        pageCount,
-      });
+      metaSpan.textContent = `${formatBytes(pageState.file.size)} • ${pageCount} pages`;
 
       if (toolOptions) toolOptions.classList.remove('hidden');
     } catch (error) {
@@ -182,10 +177,7 @@ async function combineToSinglePage() {
 
     for (let i = 0; i < sourcePages.length; i++) {
       showLoader(
-        trText('Processing page {{n}} of {{length}}...', {
-          n: i + 1,
-          length: sourcePages.length,
-        })
+        `Processing page ${i + 1} of ${sourcePages.length}...`
       );
       const sourcePage = sourcePages[i];
       const { width, height } = sourcePage.getSize();

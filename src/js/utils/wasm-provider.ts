@@ -1,4 +1,4 @@
-import { trHtml, trText } from '../i18n/i18n.js';
+import { trHtml } from '../i18n/i18n.js';
 export type WasmPackage = 'pymupdf' | 'ghostscript' | 'cpdf';
 
 interface WasmProviderConfig {
@@ -156,7 +156,7 @@ class WasmProviderManager {
     const normalizedUrl = withTrailingSlash(url);
     const host = hostnameOf(normalizedUrl);
     if (!host) {
-      throw new Error(trText('Invalid URL'));
+      throw new Error('Invalid URL');
     }
     const envDefault = this.getEnvDefault(packageName);
     if (envDefault && normalizedUrl === withTrailingSlash(envDefault)) {
@@ -200,7 +200,7 @@ class WasmProviderManager {
   ): Promise<{ valid: boolean; error?: string }> {
     const testUrl = url || this.config[packageName];
     if (!testUrl) {
-      return { valid: false, error: trText('No URL configured') };
+      return { valid: false, error: 'No URL configured' };
     }
 
     try {
@@ -208,15 +208,13 @@ class WasmProviderManager {
       if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
         return {
           valid: false,
-          error: trText('URL must start with http:// or https://'),
+          error: 'URL must start with http:// or https://',
         };
       }
     } catch {
       return {
         valid: false,
-        error: trText(
-          'Invalid URL format. Please enter a valid URL (e.g., https://example.com/wasm/)'
-        ),
+        error: 'Invalid URL format. Please enter a valid URL (e.g., https://example.com/wasm/)',
       };
     }
 
@@ -246,10 +244,7 @@ class WasmProviderManager {
       if (!response.ok) {
         return {
           valid: false,
-          error: trText(
-            'Could not find {{testFile}} at the specified URL (HTTP {{status}}). Make sure the file exists.',
-            { testFile, status: response.status }
-          ),
+          error: `Could not find ${testFile} at the specified URL (HTTP ${response.status}). Make sure the file exists.`,
         };
       }
 
@@ -261,9 +256,7 @@ class WasmProviderManager {
         } catch {
           return {
             valid: false,
-            error: trText(
-              'File exists but could not be read. Check CORS configuration.'
-            ),
+            error: 'File exists but could not be read. Check CORS configuration.',
           };
         }
       }
@@ -277,10 +270,7 @@ class WasmProviderManager {
       ) {
         return {
           valid: false,
-          error: trText(
-            'The URL returned unexpected content type: {{contentType}}. Expected a JavaScript file.',
-            { contentType }
-          ),
+          error: `The URL returned unexpected content type: ${contentType}. Expected a JavaScript file.`,
         };
       }
 
@@ -291,7 +281,7 @@ class WasmProviderManager {
       return { valid: true };
     } catch (e: unknown) {
       const errorMessage =
-        e instanceof Error ? e.message : trText('Unknown error');
+        e instanceof Error ? e.message : 'Unknown error';
 
       if (
         errorMessage.includes('Failed to fetch') ||
@@ -299,15 +289,13 @@ class WasmProviderManager {
       ) {
         return {
           valid: false,
-          error: trText(
-            'Network error: Could not connect to the URL. Check that the URL is correct and the server allows CORS requests.'
-          ),
+          error: 'Network error: Could not connect to the URL. Check that the URL is correct and the server allows CORS requests.',
         };
       }
 
       return {
         valid: false,
-        error: trText('Network error: {{error}}', { error: errorMessage }),
+        error: `Network error: ${errorMessage}`,
       };
     }
   }
@@ -337,9 +325,9 @@ class WasmProviderManager {
 
   getPackageDisplayName(packageName: WasmPackage): string {
     const names: Record<WasmPackage, string> = {
-      pymupdf: trText('PyMuPDF (Document Processing)'),
-      ghostscript: trText('Ghostscript (PDF/A Conversion)'),
-      cpdf: trText('CoherentPDF (Bookmarks & Metadata)'),
+      pymupdf: 'PyMuPDF (Document Processing)',
+      ghostscript: 'Ghostscript (PDF/A Conversion)',
+      cpdf: 'CoherentPDF (Bookmarks & Metadata)',
     };
     return names[packageName];
   }
@@ -347,29 +335,29 @@ class WasmProviderManager {
   getPackageFeatures(packageName: WasmPackage): string[] {
     const features: Record<WasmPackage, string[]> = {
       pymupdf: [
-        trText('PDF to Text'),
-        trText('PDF to Markdown'),
-        trText('PDF to SVG'),
-        trText('PDF to Images (High Quality)'),
-        trText('PDF to DOCX'),
-        trText('PDF to Excel/CSV'),
-        trText('Extract Images'),
-        trText('Extract Tables'),
-        trText('EPUB/MOBI/FB2/XPS/CBZ to PDF'),
-        trText('Deskew PDF'),
-        trText('PDF Layers'),
+        'PDF to Text',
+        'PDF to Markdown',
+        'PDF to SVG',
+        'PDF to Images (High Quality)',
+        'PDF to DOCX',
+        'PDF to Excel/CSV',
+        'Extract Images',
+        'Extract Tables',
+        'EPUB/MOBI/FB2/XPS/CBZ to PDF',
+        'Deskew PDF',
+        'PDF Layers',
       ],
-      ghostscript: [trText('PDF/A Conversion'), trText('Font to Outline')],
+      ghostscript: ['PDF/A Conversion', 'Font to Outline'],
       cpdf: [
-        trText('Merge PDF'),
-        trText('Alternate Merge'),
-        trText('Split by Bookmarks'),
-        trText('Table of Contents'),
-        trText('PDF to JSON'),
-        trText('JSON to PDF'),
-        trText('Add/Edit/Extract Attachments'),
-        trText('Edit Bookmarks'),
-        trText('PDF Metadata'),
+        'Merge PDF',
+        'Alternate Merge',
+        'Split by Bookmarks',
+        'Table of Contents',
+        'PDF to JSON',
+        'JSON to PDF',
+        'Add/Edit/Extract Attachments',
+        'Edit Bookmarks',
+        'PDF Metadata',
       ],
     };
     return features[packageName];

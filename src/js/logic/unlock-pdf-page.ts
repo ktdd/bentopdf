@@ -9,7 +9,7 @@ import { icons, createIcons } from 'lucide';
 import JSZip from 'jszip';
 import { DecryptPdfState } from '@/types';
 
-import { trText, onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../i18n/i18n.js';
 
 const pageState: DecryptPdfState = {
   files: [],
@@ -162,10 +162,7 @@ async function decryptPdf() {
         const file = pageState.files[i];
 
         if (loaderText)
-          loaderText.textContent = trText(
-            'Decrypting {{name}} ({{n}}/{{length}})...',
-            { name: file.name, n: i + 1, length: pageState.files.length }
-          );
+          loaderText.textContent = `Decrypting ${file.name} (${i + 1}/${pageState.files.length})...`;
 
         try {
           const fileBuffer = await readFileAsArrayBuffer(file);
@@ -195,12 +192,9 @@ async function decryptPdf() {
       const zipBlob = await zip.generateAsync({ type: 'blob' });
       downloadFile(zipBlob, 'decrypted-pdfs.zip');
 
-      let alertMessage = trText(
-        '{{successCount}} PDF(s) decrypted successfully.',
-        { successCount }
-      );
+      let alertMessage = `${successCount} PDF(s) decrypted successfully.`;
       if (errorCount > 0) {
-        alertMessage += ` ${trText('Files that failed: {{errorCount}}.', { errorCount })}`;
+        alertMessage += ` ${`Files that failed: ${errorCount}.`}`;
       }
       showAlert('Processing Complete', alertMessage, 'success', () => {
         resetState();
@@ -226,11 +220,8 @@ async function decryptPdf() {
     } else {
       showAlert(
         'Decryption Failed',
-        trText('An error occurred: {{error}}', {
-          error:
-            errorMessage ||
-            'The password you entered is wrong or the file is corrupted.',
-        })
+        `An error occurred: ${errorMessage ||
+            'The password you entered is wrong or the file is corrupted.'}`
       );
     }
   } finally {

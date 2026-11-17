@@ -5,7 +5,7 @@ import { SanitizePdfState } from '@/types';
 import { sanitizePdf } from '../utils/sanitize.js';
 import { loadPdfWithPasswordPrompt } from '../utils/password-prompt.js';
 
-import { trText, onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../i18n/i18n.js';
 
 const pageState: SanitizePdfState = {
   file: null,
@@ -154,10 +154,7 @@ async function runSanitize() {
     if (result.skipped.length > 0) {
       showAlert(
         'Sanitized With Warnings',
-        trText(
-          'The PDF was downloaded, but these steps could not be completed: {{join}}. The content they cover may still be in the file.',
-          { join: result.skipped.join(', ') }
-        ),
+        `The PDF was downloaded, but these steps could not be completed: ${result.skipped.join(', ')}. The content they cover may still be in the file.`,
         'warning',
         () => {
           resetState();
@@ -178,7 +175,7 @@ async function runSanitize() {
     const msg = e instanceof Error ? e.message : String(e);
     showAlert(
       'Error',
-      trText('An error occurred during sanitization: {{msg}}', { msg })
+      `An error occurred during sanitization: ${msg}`
     );
   } finally {
     if (loaderModal) loaderModal.classList.add('hidden');

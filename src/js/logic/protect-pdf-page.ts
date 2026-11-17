@@ -8,7 +8,7 @@ import {
 import { icons, createIcons } from 'lucide';
 import { EncryptPdfState, QpdfInstanceExtended } from '@/types';
 
-import { trText, onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../i18n/i18n.js';
 
 const pageState: EncryptPdfState = {
   file: null,
@@ -193,12 +193,9 @@ async function encryptPdf() {
     if (loaderModal) loaderModal.classList.add('hidden');
     showAlert(
       'Encryption Failed',
-      trText('An error occurred: {{error}}', {
-        error:
-          error instanceof Error
+      `An error occurred: ${error instanceof Error
             ? error.message
-            : 'The PDF might be corrupted.',
-      })
+            : 'The PDF might be corrupted.'}`
     );
   } finally {
     try {

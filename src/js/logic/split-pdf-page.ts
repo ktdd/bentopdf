@@ -1,5 +1,5 @@
 import { showLoader, hideLoader, showAlert } from '../ui.js';
-import { t, trText, onPageReady } from '../i18n/i18n';
+import { t, onPageReady } from '../i18n/i18n';
 import { createIcons, icons } from 'lucide';
 import * as pdfjsLib from 'pdfjs-dist';
 import {
@@ -81,10 +81,7 @@ onPageReady(() => {
 
         const metaSpan = document.createElement('div');
         metaSpan.className = 'text-xs text-gray-400';
-        metaSpan.textContent = trText('{{size}} • {{loadingPageCount}}', {
-          size: formatBytes(file.size),
-          loadingPageCount: t('common.loadingPageCount'),
-        }); // Placeholder
+        metaSpan.textContent = `${formatBytes(file.size)} • ${t('common.loadingPageCount')}`; // Placeholder
 
         infoContainer.append(nameSpan, metaSpan);
 
@@ -115,10 +112,7 @@ onPageReady(() => {
           result.pdf.destroy();
           state.files[0] = result.file;
           state.pdfDoc = await loadPdfDocument(result.bytes);
-          metaSpan.textContent = trText('{{size}} • {{pageCount}} pages', {
-            size: formatBytes(file.size),
-            pageCount,
-          });
+          metaSpan.textContent = `${formatBytes(file.size)} • ${pageCount} pages`;
         } catch (error) {
           console.error('Error loading PDF:', error);
           showAlert('Error', 'Failed to load PDF file.');
@@ -228,10 +222,7 @@ onPageReady(() => {
         lazyLoadMargin: '400px',
         onProgress: (current, total) => {
           showLoader(
-            trText('Rendering page previews: {{current}}/{{total}}', {
-              current,
-              total,
-            })
+            `Rendering page previews: ${current}/${total}`
           );
         },
         onBatchComplete: () => {
@@ -626,10 +617,7 @@ onPageReady(() => {
             nTimesWarning.classList.remove('hidden');
             const warningText = document.getElementById('n-times-warning-text');
             if (warningText) {
-              warningText.textContent = trText(
-                'The PDF has {{totalPages}} pages, which is not evenly divisible by {{nValue}}. The last PDF will contain {{remainder}} page(s).',
-                { totalPages, nValue, remainder }
-              );
+              warningText.textContent = `The PDF has ${totalPages} pages, which is not evenly divisible by ${nValue}. The last PDF will contain ${remainder} page(s).`;
             }
           } else if (nTimesWarning) {
             nTimesWarning.classList.add('hidden');

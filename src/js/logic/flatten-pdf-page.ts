@@ -14,7 +14,7 @@ import {
   removeUnreferencedObjects,
 } from '../utils/load-pdf-document.js';
 
-import { trText, onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../i18n/i18n.js';
 
 const pageState: FlattenPdfState = {
   files: [],
@@ -154,10 +154,7 @@ async function flattenPdf() {
       for (let i = 0; i < pageState.files.length; i++) {
         const file = pageState.files[i];
         if (loaderText)
-          loaderText.textContent = trText(
-            'Flattening {{n}}/{{length}}: {{name}}...',
-            { n: i + 1, length: pageState.files.length, name: file.name }
-          );
+          loaderText.textContent = `Flattening ${i + 1}/${pageState.files.length}: ${file.name}...`;
 
         try {
           const arrayBuffer = await file.arrayBuffer();
@@ -195,7 +192,7 @@ async function flattenPdf() {
         downloadFile(zipBlob, 'flattened_pdfs.zip');
         showAlert(
           'Success',
-          trText('Processed {{processedCount}} PDFs.', { processedCount }),
+          `Processed ${processedCount} PDFs.`,
           'success',
           () => {
             resetState();

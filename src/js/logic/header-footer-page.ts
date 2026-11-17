@@ -11,7 +11,7 @@ import { loadPdfWithPasswordPrompt } from '../utils/password-prompt.js';
 import { HeaderFooterState } from '@/types';
 import { loadPdfDocument } from '../utils/load-pdf-document.js';
 
-import { trText, onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../i18n/i18n.js';
 
 const pageState: HeaderFooterState = { file: null, pdfDoc: null };
 
@@ -98,10 +98,7 @@ function updateFileDisplay() {
   nameSpan.textContent = pageState.file.name;
   const metaSpan = document.createElement('div');
   metaSpan.className = 'text-xs text-gray-400';
-  metaSpan.textContent = trText('{{size}} • {{getPageCount}} pages', {
-    size: formatBytes(pageState.file.size),
-    getPageCount: pageState.pdfDoc.getPageCount(),
-  });
+  metaSpan.textContent = `${formatBytes(pageState.file.size)} • ${pageState.pdfDoc.getPageCount()} pages`;
   infoContainer.append(nameSpan, metaSpan);
   const removeBtn = document.createElement('button');
   removeBtn.className = 'ml-4 text-red-400 hover:text-red-300 flex-shrink-0';

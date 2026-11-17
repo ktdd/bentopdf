@@ -12,7 +12,7 @@ import * as pdfjsLib from 'pdfjs-dist';
 import { loadPdfDocument } from '../utils/load-pdf-document.js';
 import '../utils/setup-pdf-worker.js';
 
-import { trText, onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../i18n/i18n.js';
 
 interface RotateState {
   file: File | null;
@@ -87,7 +87,7 @@ function createPageWrapper(
   const pageLabel = document.createElement('div');
   pageLabel.className =
     'absolute top-1 left-1 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded';
-  pageLabel.textContent = trText('{{pageNumber}}', { pageNumber });
+  pageLabel.textContent = `${pageNumber}`;
 
   container.appendChild(canvasWrapper);
   container.appendChild(pageLabel);
@@ -183,9 +183,7 @@ async function updateUI() {
 
     const metaSpan = document.createElement('div');
     metaSpan.className = 'text-xs text-gray-400';
-    metaSpan.textContent = trText('{{size}} • Loading...', {
-      size: formatBytes(pageState.file.size),
-    });
+    metaSpan.textContent = `${formatBytes(pageState.file.size)} • Loading...`;
 
     infoContainer.append(nameSpan, metaSpan);
 
@@ -215,10 +213,7 @@ async function updateUI() {
       const pageCount = pageState.pdfDoc.getPageCount();
       pageState.rotations = new Array(pageCount).fill(0);
 
-      metaSpan.textContent = trText('{{size}} • {{pageCount}} pages', {
-        size: formatBytes(pageState.file.size),
-        pageCount,
-      });
+      metaSpan.textContent = `${formatBytes(pageState.file.size)} • ${pageCount} pages`;
 
       await renderThumbnails();
       hideLoader();

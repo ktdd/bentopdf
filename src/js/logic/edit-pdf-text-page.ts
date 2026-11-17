@@ -1,7 +1,7 @@
 import '@phosphor-icons/web/regular';
 import { createIcons, icons } from 'lucide';
 import { showAlert, showLoader, hideLoader } from '../ui.js';
-import { t, trText, onPageReady } from '../i18n/i18n';
+import { t, onPageReady } from '../i18n/i18n';
 import { batchDecryptIfNeeded } from '../utils/password-prompt.js';
 import {
   fallbackFontLanguages,
@@ -96,12 +96,10 @@ function setupEditMenu() {
     };
     label.textContent = picked.has('all')
       ? 'Edit All'
-      : trText('Edit {{scopes}}', {
-          scopes: getScopes()
+      : `Edit ${getScopes()
             .filter(([k]) => picked.has(k))
             .map(([k]) => names[k])
-            .join(' + '),
-        });
+            .join(' + ')}`;
   };
   let open: HTMLDivElement | null = null;
   const caret = editBtn.querySelector('.editcaret');
@@ -832,7 +830,7 @@ function initializePage() {
       if (document.activeElement !== pageInput)
         pageInput.value = String(current);
       pageInput.max = String(total);
-      pageTotal.textContent = trText('/ {{total}}', { total });
+      pageTotal.textContent = `/ ${total}`;
     };
     new MutationObserver(sync).observe(pageLabel, {
       childList: true,

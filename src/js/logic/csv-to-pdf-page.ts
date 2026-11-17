@@ -3,7 +3,7 @@ import { downloadFile, formatBytes } from '../utils/helpers.js';
 import { state } from '../state.js';
 import { createIcons, icons } from 'lucide';
 
-import { trText, onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../i18n/i18n.js';
 
 onPageReady(() => {
   state.files = [];
@@ -125,9 +125,7 @@ onPageReady(() => {
 
         showAlert(
           'Conversion Complete',
-          trText('Successfully converted {{name}} to PDF.', {
-            name: originalFile.name,
-          }),
+          `Successfully converted ${originalFile.name} to PDF.`,
           'success',
           () => resetState()
         );
@@ -149,11 +147,7 @@ onPageReady(() => {
               const overallPercent =
                 (i / state.files.length) * 100 + percent / state.files.length;
               showLoader(
-                trText('Converting {{n}}/{{length}}: {{name}}...', {
-                  n: i + 1,
-                  length: state.files.length,
-                  name: file.name,
-                }),
+                `Converting ${i + 1}/${state.files.length}: ${file.name}...`,
                 overallPercent
               );
             },
@@ -180,9 +174,7 @@ onPageReady(() => {
 
         showAlert(
           'Conversion Complete',
-          trText('Successfully converted {{length}} CSV file(s) to PDF.', {
-            length: state.files.length,
-          }),
+          `Successfully converted ${state.files.length} CSV file(s) to PDF.`,
           'success',
           () => resetState()
         );
@@ -196,9 +188,7 @@ onPageReady(() => {
       hideLoader();
       showAlert(
         'Error',
-        trText('An error occurred during conversion. Error: {{error}}', {
-          error: e instanceof Error ? e.message : String(e),
-        })
+        `An error occurred during conversion. Error: ${e instanceof Error ? e.message : String(e)}`
       );
     }
   };

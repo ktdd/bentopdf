@@ -12,7 +12,7 @@ import {
   showWasmRequiredDialog,
   WasmProvider,
 } from '../utils/wasm-provider.js';
-import { t, trText, onPageReady } from '../i18n/i18n';
+import { t, onPageReady } from '../i18n/i18n';
 
 import { createIcons, icons } from 'lucide';
 import * as pdfjsLib from 'pdfjs-dist';
@@ -166,14 +166,11 @@ async function renderPageMergeThumbnails() {
         'text-xs text-gray-400 truncate w-full text-center';
       const fullTitle = displayName
         ? `${displayName} (page ${pageNumber})`
-        : trText('Page {{pageNumber}}', { pageNumber });
+        : `Page ${pageNumber}`;
       fileNamePara.title = fullTitle;
       fileNamePara.textContent = displayName
-        ? trText('{{name}}... (p{{pageNumber}})', {
-            name: displayName.substring(0, 10),
-            pageNumber,
-          })
-        : trText('Page {{pageNumber}}', { pageNumber });
+        ? `${displayName.substring(0, 10)}... (p${pageNumber})`
+        : `Page ${pageNumber}`;
 
       wrapper.append(imgContainer, fileNamePara);
       return wrapper;
@@ -526,9 +523,7 @@ export async function refreshMergeUI() {
     const label = document.createElement('label');
     label.htmlFor = `range-${safeFileName}`;
     label.className = 'text-xs text-gray-400';
-    label.textContent = trText('Pages (e.g., 1-3, 5) - Total: {{pageCount}}', {
-      pageCount,
-    });
+    label.textContent = `Pages (e.g., 1-3, 5) - Total: ${pageCount}`;
 
     const input = document.createElement('input');
     input.type = 'text';

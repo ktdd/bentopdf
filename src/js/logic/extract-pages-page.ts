@@ -10,7 +10,7 @@ import { loadPdfWithPasswordPrompt } from '../utils/password-prompt.js';
 import JSZip from 'jszip';
 import { loadPdfDocument } from '../utils/load-pdf-document.js';
 
-import { trText, onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../i18n/i18n.js';
 
 interface ExtractState {
   file: File | null;
@@ -129,10 +129,7 @@ function updateFileDisplay() {
 
   const metaSpan = document.createElement('div');
   metaSpan.className = 'text-xs text-gray-400';
-  metaSpan.textContent = trText('{{size}} • {{totalPages}} pages', {
-    size: formatBytes(extractState.file.size),
-    totalPages: extractState.totalPages,
-  });
+  metaSpan.textContent = `${formatBytes(extractState.file.size)} • ${extractState.totalPages} pages`;
 
   infoContainer.append(nameSpan, metaSpan);
 
@@ -198,9 +195,7 @@ async function extractPages() {
     hideLoader();
     showAlert(
       'Success',
-      trText('Extracted {{length}} page(s) successfully!', {
-        length: pagesToExtract.length,
-      }),
+      `Extracted ${pagesToExtract.length} page(s) successfully!`,
       'success',
       () => {
         resetState();

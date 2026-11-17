@@ -6,8 +6,6 @@
  * conflicts with Vite's HMR (Hot Module Replacement)
  */
 
-import { trText } from "./i18n/i18n";
-
 // Skip service worker registration in development mode
 const isDevelopment =
     window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.port !== "";
@@ -69,7 +67,7 @@ if (isDevelopment) {
                             if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
                                 console.log("[SW] New version available! Reload to update.");
 
-                                if (confirm(trText("A new version of BentoPDF is available. Reload to update?"))) {
+                                if (confirm("A new version of BentoPDF is available. Reload to update?")) {
                                     newWorker.postMessage({ type: "SKIP_WAITING" });
                                     window.location.reload();
                                 }

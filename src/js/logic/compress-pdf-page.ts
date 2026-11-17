@@ -28,7 +28,7 @@ import {
   verifyHyperPassword,
 } from '../utils/compress.js';
 
-import { trText, onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../i18n/i18n.js';
 
 type OptionChangeHandler = (
   key: keyof HyperCompressOptions,
@@ -404,24 +404,11 @@ function describeCompressResult(
   if (saved > 0) {
     const percent = ((saved / result.originalSize) * 100).toFixed(1);
     parts.push(
-      trText(
-        'File size reduced from {{originalSize}} to {{compressedSize}} (Saved {{percent}}%).',
-        {
-          originalSize: formatBytes(result.originalSize),
-          compressedSize: formatBytes(result.compressedSize),
-          percent,
-        }
-      )
+      `File size reduced from ${formatBytes(result.originalSize)} to ${formatBytes(result.compressedSize)} (Saved ${percent}%).`
     );
   } else {
     parts.push(
-      trText(
-        'Could not reduce file size further. Original: {{originalSize}}, New: {{compressedSize}}.',
-        {
-          originalSize: formatBytes(result.originalSize),
-          compressedSize: formatBytes(result.compressedSize),
-        }
-      )
+      `Could not reduce file size further. Original: ${formatBytes(result.originalSize)}, New: ${formatBytes(result.compressedSize)}.`
     );
   }
 
@@ -429,16 +416,11 @@ function describeCompressResult(
   if (targetBytes !== undefined) {
     if (result.metTarget) {
       parts.push(
-        trText('It fits the {{targetBytes}} target.', {
-          targetBytes: formatBytes(targetBytes),
-        })
+        `It fits the ${formatBytes(targetBytes)} target.`
       );
     } else if (preservingPdfa) {
       parts.push(
-        trText(
-          'It is still above the {{targetBytes}} target because Preserve PDF/A limits how far it can be compressed.',
-          { targetBytes: formatBytes(targetBytes) }
-        )
+        `It is still above the ${formatBytes(targetBytes)} target because Preserve PDF/A limits how far it can be compressed.`
       );
     } else {
       parts.push(
@@ -687,10 +669,7 @@ onPageReady(() => {
       sharedView.status.className = 'text-xs mt-1 text-red-400';
       return;
     }
-    sharedView.status.textContent = trText(
-      'Unlocked {{unlocked}} of {{length}} files.',
-      { unlocked, length: files.length }
-    );
+    sharedView.status.textContent = `Unlocked ${unlocked} of ${files.length} files.`;
     sharedView.status.className = `text-xs mt-1 ${unlocked === files.length ? 'text-green-400' : 'text-gray-400'}`;
   };
 
@@ -807,7 +786,7 @@ onPageReady(() => {
 
           if (locked) {
             const view = createPasswordField(
-              trText('Password for {{name}}', { name: file.name }),
+              `Password for ${file.name}`,
               lock.password,
               (value) => {
                 lock.password = value;
@@ -818,9 +797,7 @@ onPageReady(() => {
             view.root.classList.add('mt-3');
             const sizeSpan = document.createElement('span');
             sizeSpan.className = 'flex-shrink-0 whitespace-nowrap';
-            sizeSpan.textContent = trText('{{size}} ·', {
-              size: formatBytes(file.size),
-            });
+            sizeSpan.textContent = `${formatBytes(file.size)} ·`;
             metaSpan.className = 'flex gap-1 min-w-0 text-xs text-gray-400';
             metaSpan.replaceChildren(sizeSpan, view.status);
             fileDiv.append(view.root);
@@ -832,7 +809,7 @@ onPageReady(() => {
             'ml-4 text-red-400 hover:text-red-300 flex-shrink-0';
           removeBtn.setAttribute(
             'aria-label',
-            trText('Remove {{name}}', { name: file.name })
+            `Remove ${file.name}`
           );
           removeBtn.append(createIcon('trash', ''));
           removeBtn.onclick = () => {
@@ -880,9 +857,7 @@ onPageReady(() => {
     showLoader(
       targetBytes === undefined
         ? 'Compressing...'
-        : trText('Compressing to {{size}}...', {
-            size: formatBytes(targetBytes),
-          })
+        : `Compressing to ${formatBytes(targetBytes)}...`
     );
     const result = await compressWithHyper(await file.arrayBuffer(), {
       options: runOptions,
@@ -894,10 +869,7 @@ onPageReady(() => {
     if (result.signed) {
       showAlert(
         'Signed PDF Not Changed',
-        trText(
-          '{{name}} is digitally signed, so it was left as it is. Compressing it would break the signature. To compress it anyway, turn on Override content protection under Custom Settings; its signatures will be removed.',
-          { name: file.name }
-        ),
+        `${file.name} is digitally signed, so it was left as it is. Compressing it would break the signature. To compress it anyway, turn on Override content protection under Custom Settings; its signatures will be removed.`,
         'warning',
         () => resetState()
       );
@@ -916,10 +888,7 @@ onPageReady(() => {
     showAlert(
       title,
       password
-        ? trText(
-            '{{message}} It was password protected, so the compressed copy has no password. Use Protect PDF to add one again.',
-            { message }
-          )
+        ? `${message} It was password protected, so the compressed copy has no password. Use Protect PDF to add one again.`
         : message,
       type,
       () => resetState()
@@ -948,11 +917,7 @@ onPageReady(() => {
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       showLoader(
-        trText('Compressing {{n}}/{{length}}: {{name}}...', {
-          n: i + 1,
-          length: files.length,
-          name: file.name,
-        })
+        `Compressing ${i + 1}/${files.length}: ${file.name}...`
       );
       const lock = fileLocks.get(file);
       const password = isProtected(lock) ? lock.password : '';
@@ -983,9 +948,7 @@ onPageReady(() => {
       hideLoader();
       showAlert(
         'Error',
-        trText('None of the files could be compressed: {{join}}.', {
-          join: failures.join(', '),
-        })
+        `None of the files could be compressed: ${failures.join(', ')}.`
       );
       return;
     }
@@ -998,22 +961,8 @@ onPageReady(() => {
     const totalSavings = totalOriginalSize - totalCompressedSize;
     const parts = [
       totalSavings > 0
-        ? trText(
-            'Compressed {{compressedCount}} PDF(s). Total size reduced from {{totalOriginalSize}} to {{totalCompressedSize}} (Saved {{value}}%).',
-            {
-              compressedCount,
-              totalOriginalSize: formatBytes(totalOriginalSize),
-              totalCompressedSize: formatBytes(totalCompressedSize),
-              value: ((totalSavings / totalOriginalSize) * 100).toFixed(1),
-            }
-          )
-        : trText(
-            'Compressed {{compressedCount}} PDF(s). Total size: {{totalCompressedSize}}.',
-            {
-              compressedCount,
-              totalCompressedSize: formatBytes(totalCompressedSize),
-            }
-          ),
+        ? `Compressed ${compressedCount} PDF(s). Total size reduced from ${formatBytes(totalOriginalSize)} to ${formatBytes(totalCompressedSize)} (Saved ${((totalSavings / totalOriginalSize) * 100).toFixed(1)}%).`
+        : `Compressed ${compressedCount} PDF(s). Total size: ${formatBytes(totalCompressedSize)}.`,
     ];
     if (signedCount > 0) {
       parts.push(
@@ -1041,7 +990,7 @@ onPageReady(() => {
       );
     }
     if (failures.length > 0) {
-      parts.push(trText('Skipped: {{join}}.', { join: failures.join(', ') }));
+      parts.push(`Skipped: ${failures.join(', ')}.`);
     }
 
     const hasProblems = failures.length > 0 || missedTargetCount > 0;
@@ -1067,14 +1016,8 @@ onPageReady(() => {
       showAlert(
         'Password Needed',
         needPassword.length === 1
-          ? trText(
-              '{{name}} is password protected. Enter its password on the file card, then compress again.',
-              { name: needPassword[0].name }
-            )
-          : trText(
-              'These files are password protected: {{names}}. Enter their passwords on the file cards, or remove them, then compress again.',
-              { names: needPassword.map((file) => file.name).join(', ') }
-            ),
+          ? `${needPassword[0].name} is password protected. Enter its password on the file card, then compress again.`
+          : `These files are password protected: ${needPassword.map((file) => file.name).join(', ')}. Enter their passwords on the file cards, or remove them, then compress again.`,
         'warning',
         () => lockViews.get(needPassword[0])?.input.focus()
       );
@@ -1106,10 +1049,7 @@ onPageReady(() => {
         updateUI();
         showAlert(
           'Password Needed',
-          trText(
-            '{{name}} is password protected. Enter its password on the file card, then compress again.',
-            { name: file.name }
-          ),
+          `${file.name} is password protected. Enter its password on the file card, then compress again.`,
           'warning',
           () => lockViews.get(file)?.input.focus()
         );
@@ -1118,9 +1058,7 @@ onPageReady(() => {
       console.error('[CompressPDF] Error:', e);
       showAlert(
         'Error',
-        trText('An error occurred during compression. Error: {{error}}', {
-          error: e instanceof Error ? e.message : String(e),
-        })
+        `An error occurred during compression. Error: ${e instanceof Error ? e.message : String(e)}`
       );
     }
   };
@@ -1140,13 +1078,8 @@ onPageReady(() => {
         showAlert(
           'Not a PDF',
           rejected.length === 1
-            ? trText('{{name}} is not a valid PDF, so it was not added.', {
-                name: rejected[0],
-              })
-            : trText(
-                'These files are not valid PDFs, so they were not added: {{names}}.',
-                { names: rejected.join(', ') }
-              ),
+            ? `${rejected[0]} is not a valid PDF, so it was not added.`
+            : `These files are not valid PDFs, so they were not added: ${rejected.join(', ')}.`,
           'warning'
         );
       }

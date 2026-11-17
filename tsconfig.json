@@ -23,38 +23,58 @@
 //   "include": ["src"]
 // }
 {
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
-    "lib": ["ES2022", "DOM", "DOM.Iterable", "WebWorker"],
-    "types": ["vite/client", "vitest/globals"], // Added vitest/globals
-    /* Easier module handling for Vite */
-    "moduleResolution": "bundler",
-    "allowJs": true,
-    "checkJs": false,
-    "skipLibCheck": true,
-    "noEmit": true,
-    "allowImportingTsExtensions": true,
-    /* Disable strict checks for now */
-    "strict": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noFallthroughCasesInSwitch": false,
-    "noUncheckedSideEffectImports": false,
-    /* Fix for ArrayBuffer type issues */
-    "noImplicitAny": true,
-    /* Quality-of-life options */
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    /* Path aliases (optional but helpful) */
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"],
-      "@/types": ["./src/js/types/index.ts"]
-    }
-  },
-  "include": ["src", "src/**/*.ts", "public/workers", "vite.config.ts"], // Updated to include all TS files
-  "exclude": ["node_modules", "dist"]
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "ESNext",
+        "lib": [
+            "ES2022",
+            "DOM",
+            "DOM.Iterable",
+            "WebWorker"
+        ],
+        "types": [
+            "vite/client",
+            "vitest/globals"
+        ], // Added vitest/globals
+        /* Easier module handling for Vite */
+        "moduleResolution": "bundler",
+        "allowJs": true,
+        "checkJs": false,
+        "skipLibCheck": true,
+        "noEmit": true,
+        "allowImportingTsExtensions": true,
+        /* Disable strict checks for now */
+        "strict": false,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "noFallthroughCasesInSwitch": false,
+        "noUncheckedSideEffectImports": false,
+        /* Fix for ArrayBuffer type issues */
+        "noImplicitAny": true,
+        /* Quality-of-life options */
+        "isolatedModules": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        /* Path aliases (optional but helpful) */
+        //"baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ],
+            "@/types": [
+                "./src/js/types/index.ts"
+            ]
+        }
+    },
+    "include": [
+        "src",
+        "src/**/*.ts",
+        "public/workers",
+        "vite.config.ts"
+    ], // Updated to include all TS files
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
 }

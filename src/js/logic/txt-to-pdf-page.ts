@@ -8,7 +8,7 @@ import {
 import { createIcons, icons } from 'lucide';
 import { loadPyMuPDF } from '../utils/pymupdf-loader.js';
 
-import { trText, onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../i18n/i18n.js';
 
 let files: File[] = [];
 let currentMode: 'upload' | 'text' = 'upload';
@@ -48,9 +48,7 @@ const updateUI = () => {
 
       const sizeSpan = document.createElement('span');
       sizeSpan.className = 'flex-shrink-0 text-gray-400 text-xs';
-      sizeSpan.textContent = trText('({{size}})', {
-        size: formatBytes(file.size),
-      });
+      sizeSpan.textContent = `(${formatBytes(file.size)})`;
 
       infoContainer.append(createDragHandle(), infoSpan, sizeSpan);
 
@@ -161,9 +159,7 @@ async function convert() {
     console.error('[TxtToPDF] Error:', e);
     showAlert(
       'Error',
-      trText('Failed to convert text to PDF. {{error}}', {
-        error: e instanceof Error ? e.message : '',
-      })
+      `Failed to convert text to PDF. ${e instanceof Error ? e.message : ''}`
     );
   } finally {
     hideLoader();

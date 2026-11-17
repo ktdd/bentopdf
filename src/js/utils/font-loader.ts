@@ -1,7 +1,6 @@
 import { getFontAssetFileName, getFontUrlForFamily, languageToFontFamily } from "../config/font-mappings.js";
 import { needsFontEmbedding } from "./freetext-script.js";
 
-import { trText } from "../i18n/i18n.js";
 
 const fontCache: Map<string, ArrayBuffer> = new Map();
 
@@ -97,9 +96,7 @@ export async function getFontForLanguage(lang: string): Promise<ArrayBuffer> {
 
         if (!fontResponse.ok) {
             throw new Error(
-                trText("Failed to fetch font file: {{statusText}}", {
-                    statusText: fontResponse.statusText,
-                }),
+                `Failed to fetch font file: ${fontResponse.statusText}`,
             );
         }
 
@@ -145,7 +142,7 @@ export async function loadFallbackFonts(into: Map<string, Uint8Array>, langs: It
                 load = getFontForLanguage(lang)
                     .then((buffer) => {
                         if (!fontCache.has(family)) {
-                            throw new Error(trText("Only a substitute font was available"));
+                            throw new Error("Only a substitute font was available");
                         }
                         into.set(family, new Uint8Array(buffer));
                         return true;

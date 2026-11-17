@@ -10,7 +10,7 @@ import {
 } from '../utils/pdf-operations.js';
 import { loadPdfDocument } from '../utils/load-pdf-document.js';
 
-import { trText, onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../i18n/i18n.js';
 
 interface PageState {
   file: File | null;
@@ -120,10 +120,7 @@ function updateFileDisplay() {
 
   const metaSpan = document.createElement('div');
   metaSpan.className = 'text-xs text-gray-400';
-  metaSpan.textContent = trText('{{size}} • {{getPageCount}} pages', {
-    size: formatBytes(pageState.file.size),
-    getPageCount: pageState.pdfDoc.getPageCount(),
-  });
+  metaSpan.textContent = `${formatBytes(pageState.file.size)} • ${pageState.pdfDoc.getPageCount()} pages`;
 
   infoContainer.append(nameSpan, metaSpan);
 

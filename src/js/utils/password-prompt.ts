@@ -4,7 +4,7 @@ import { createIcons, icons } from 'lucide';
 import { PasswordResponses } from 'pdfjs-dist';
 import type { LoadedPdf } from '@/types';
 
-import { trText, trHtml } from '../i18n/i18n.js';
+import { trHtml } from '../i18n/i18n.js';
 
 let cachedPassword: string | null = null;
 let activeModalPromise: Promise<unknown> | null = null;
@@ -239,7 +239,7 @@ export async function promptAndDecryptFile(file: File): Promise<File | null> {
 
   if (!input || !submitBtn || !cancelBtn) return null;
 
-  if (titleEl) titleEl.textContent = trText('Password Required');
+  if (titleEl) titleEl.textContent = 'Password Required';
   if (subtitleEl) subtitleEl.textContent = file.name;
   if (errorEl) {
     errorEl.textContent = '';
@@ -252,10 +252,10 @@ export async function promptAndDecryptFile(file: File): Promise<File | null> {
   input.value = '';
   input.type = 'password';
   submitBtn.disabled = false;
-  submitBtn.textContent = trText('Unlock');
-  submitBtn.dataset.originalText = trText('Unlock');
+  submitBtn.textContent = 'Unlock';
+  submitBtn.dataset.originalText = 'Unlock';
   cancelBtn.disabled = false;
-  cancelBtn.textContent = trText('Skip');
+  cancelBtn.textContent = 'Skip';
 
   modal.classList.remove('hidden');
   modal.classList.add('flex');
@@ -287,7 +287,7 @@ export async function promptAndDecryptFile(file: File): Promise<File | null> {
       const password = input.value;
       if (!password) {
         if (errorEl) {
-          errorEl.textContent = trText('Please enter a password');
+          errorEl.textContent = 'Please enter a password';
           errorEl.classList.remove('hidden');
         }
         return;
@@ -298,7 +298,7 @@ export async function promptAndDecryptFile(file: File): Promise<File | null> {
       submitBtn.disabled = true;
       cancelBtn.disabled = true;
       if (progressEl) {
-        progressEl.textContent = trText('Validating...');
+        progressEl.textContent = 'Validating...';
         progressEl.classList.remove('hidden');
       }
 
@@ -312,13 +312,13 @@ export async function promptAndDecryptFile(file: File): Promise<File | null> {
         input.value = '';
         input.focus();
         if (errorEl) {
-          errorEl.textContent = trText('Incorrect password. Please try again.');
+          errorEl.textContent = 'Incorrect password. Please try again.';
           errorEl.classList.remove('hidden');
         }
         return;
       }
 
-      if (progressEl) progressEl.textContent = trText('Decrypting...');
+      if (progressEl) progressEl.textContent = 'Decrypting...';
 
       try {
         const decrypted = await decryptFileWithPassword(file, password);
@@ -331,9 +331,7 @@ export async function promptAndDecryptFile(file: File): Promise<File | null> {
         cancelBtn.disabled = false;
         if (progressEl) progressEl.classList.add('hidden');
         if (errorEl) {
-          errorEl.textContent = trText(
-            'Failed to decrypt. Try the Decrypt tool instead.'
-          );
+          errorEl.textContent = 'Failed to decrypt. Try the Decrypt tool instead.';
           errorEl.classList.remove('hidden');
         }
       }
@@ -453,9 +451,7 @@ export async function promptAndDecryptBatch(
   }
 
   if (titleEl)
-    titleEl.textContent = trText('{{length}} Files Need a Password', {
-      length: fileNames.length,
-    });
+    titleEl.textContent = `${fileNames.length} Files Need a Password`;
 
   samePwCheckbox.checked = true;
   sharedInput.value = '';
@@ -490,8 +486,8 @@ export async function promptAndDecryptBatch(
     progressEl.classList.add('hidden');
   }
   submitBtn.disabled = false;
-  submitBtn.textContent = trText('Unlock All');
-  submitBtn.dataset.originalText = trText('Unlock All');
+  submitBtn.textContent = 'Unlock All';
+  submitBtn.dataset.originalText = 'Unlock All';
   cancelBtn.disabled = false;
 
   modal.classList.remove('hidden');
@@ -516,8 +512,8 @@ export async function promptAndDecryptBatch(
     function updateButtons(autoClose = false) {
       const hasSucceeded = succeededSet.size > 0;
       cancelBtn.textContent = hasSucceeded
-        ? trText('Skip Remaining')
-        : trText('Skip All');
+        ? 'Skip Remaining'
+        : 'Skip All';
 
       const remaining = getRemainingCount();
       if (autoClose && remaining === 0) {
@@ -526,9 +522,7 @@ export async function promptAndDecryptBatch(
       }
 
       if (hasSucceeded) {
-        submitBtn.textContent = trText('Unlock Remaining ({{remaining}})', {
-          remaining,
-        });
+        submitBtn.textContent = `Unlock Remaining (${remaining})`;
         submitBtn.dataset.originalText = submitBtn.textContent;
       }
     }
@@ -605,7 +599,7 @@ export async function promptAndDecryptBatch(
         const pwInput =
           row.querySelector<HTMLInputElement>('input[data-pw-idx]');
         if (pwInput) pwInput.disabled = false;
-        btn.title = trText('Skip this file');
+        btn.title = 'Skip this file';
       } else {
         skippedSet.add(idx);
         row.classList.add('opacity-40');
@@ -613,7 +607,7 @@ export async function promptAndDecryptBatch(
         const pwInput =
           row.querySelector<HTMLInputElement>('input[data-pw-idx]');
         if (pwInput) pwInput.disabled = true;
-        btn.title = trText('Include this file');
+        btn.title = 'Include this file';
       }
       updateButtons(true);
     }
@@ -659,10 +653,8 @@ export async function promptAndDecryptBatch(
         if (!password) {
           if (errorEl) {
             const msg = useSame
-              ? trText('Please enter a password')
-              : trText('Please enter a password for {{i}} or skip it', {
-                  i: fileNames[i],
-                });
+              ? 'Please enter a password'
+              : `Please enter a password for ${fileNames[i]} or skip it`;
             errorEl.textContent = msg;
             errorEl.classList.remove('hidden');
           }
@@ -689,10 +681,7 @@ export async function promptAndDecryptBatch(
         const realIdx = encryptedIndices[localIdx];
 
         if (progressEl) {
-          progressEl.textContent = trText(
-            'Validating {{n}} of {{length}}: {{name}}',
-            { n: i + 1, length: toProcess.length, name: files[realIdx].name }
-          );
+          progressEl.textContent = `Validating ${i + 1} of ${toProcess.length}: ${files[realIdx].name}`;
           progressEl.classList.remove('hidden');
         }
 
@@ -708,10 +697,7 @@ export async function promptAndDecryptBatch(
         }
 
         if (progressEl) {
-          progressEl.textContent = trText(
-            'Decrypting {{n}} of {{length}}: {{name}}',
-            { n: i + 1, length: toProcess.length, name: files[realIdx].name }
-          );
+          progressEl.textContent = `Decrypting ${i + 1} of ${toProcess.length}: ${files[realIdx].name}`;
         }
 
         try {
@@ -734,9 +720,7 @@ export async function promptAndDecryptBatch(
 
       if (failedNames.length > 0) {
         if (errorEl) {
-          errorEl.textContent = trText('Wrong password for: {{join}}', {
-            join: failedNames.join(', '),
-          });
+          errorEl.textContent = `Wrong password for: ${failedNames.join(', ')}`;
           errorEl.classList.remove('hidden');
         }
         if (!samePwCheckbox.checked) {
@@ -749,7 +733,7 @@ export async function promptAndDecryptBatch(
           sharedInput.focus();
         }
         updateButtons();
-        submitBtn.textContent = trText('Retry Failed');
+        submitBtn.textContent = 'Retry Failed';
         return;
       }
 

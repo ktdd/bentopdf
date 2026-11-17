@@ -2,7 +2,7 @@ import type { FileInputOptions } from "@/types";
 import { createIcons, icons } from "lucide";
 import * as pdfjsLib from "pdfjs-dist";
 import Sortable from "sortablejs";
-import { t, trText } from "./i18n/i18n";
+import { t } from "./i18n/i18n";
 import { resetState } from "./state.js";
 import { formatBytes, getPDFDocument } from "./utils/helpers.js";
 import { initPagePreview } from "./utils/page-preview.js";
@@ -44,7 +44,7 @@ export const dom = {
 };
 
 export const showLoader = (text = t("common.loading"), progress?: number) => {
-    if (dom.loaderText) dom.loaderText.textContent = trText(text);
+    if (dom.loaderText) dom.loaderText.textContent = text;
 
     // Add or update progress bar if progress is provided
     const { loaderModal } = dom;
@@ -73,9 +73,7 @@ export const showLoader = (text = t("common.loading"), progress?: number) => {
             }
             const progressText = progressContainer.querySelector(".loader-progress-text");
             if (progressText) {
-                progressText.textContent = trText("{{progress}}%", {
-                    progress: Math.round(progress),
-                });
+                progressText.textContent = `${Math.round(progress)}%`;
             }
             progressContainer.classList.remove("hidden");
         } else {
@@ -94,8 +92,8 @@ export const hideLoader = () => {
 };
 
 export const showAlert = (title: string, message: string, type: string = "error", callback?: () => void) => {
-    if (dom.alertTitle) dom.alertTitle.textContent = trText(title);
-    if (dom.alertMessage) dom.alertMessage.textContent = trText(message);
+    if (dom.alertTitle) dom.alertTitle.textContent = title;
+    if (dom.alertMessage) dom.alertMessage.textContent = message;
     if (dom.alertModal) dom.alertModal.classList.remove("hidden");
 
     if (dom.alertOkBtn) {
@@ -332,7 +330,7 @@ export const renderPageThumbnails = async (toolId: string, pdfDoc: { save: () =>
             const rotateBtn = document.createElement("button");
             rotateBtn.className =
                 "rotate-btn btn bg-gray-700 hover:bg-gray-600 p-1.5 rounded-md text-gray-200 transition-colors flex-shrink-0";
-            rotateBtn.title = trText("Rotate +90°");
+            rotateBtn.title = "Rotate +90°";
             rotateBtn.innerHTML = '<i data-lucide="rotate-cw" class="w-4 h-4"></i>';
             rotateBtn.addEventListener("click", (e) => {
                 e.stopPropagation();
@@ -390,10 +388,7 @@ export const renderPageThumbnails = async (toolId: string, pdfDoc: { save: () =>
             lazyLoadMargin: "300px",
             onProgress: (current, total) => {
                 showLoader(
-                    trText("Rendering page previews: {{current}}/{{total}}", {
-                        current,
-                        total,
-                    }),
+                    `Rendering page previews: ${current}/${total}`,
                 );
             },
             onBatchComplete: () => {
@@ -459,7 +454,7 @@ const createFileInputHTML = (options: FileInputOptions = {}) => {
             <div class="flex flex-col items-center justify-center pt-5 pb-6">
                 <i class="ph ph-upload-simple text-4xl mb-3 text-gray-400"></i>
                 <p class="mb-2 text-sm text-gray-400"><span class="font-semibold">${t("upload.clickToSelect")}</span> ${t("upload.orDragAndDrop")}</p>
-                <p class="text-xs text-gray-500">${multiple ? t("upload.pdfOrImages") : trText("A single PDF file")}</p>
+                <p class="text-xs text-gray-500">${multiple ? t("upload.pdfOrImages") : "A single PDF file"}</p>
                 <p class="text-xs text-gray-500">${t("upload.filesNeverLeave")}</p>
             </div>
             <input id="file-input" type="file" class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer" ${multiple} accept="${acceptedFiles}">
