@@ -37,7 +37,6 @@ bentopdf/
 │   ├── pages/            # Tool HTML pages
 │   └── css/              # Styles
 ├── public/
-│   ├── locales/          # Translations
 │   └── pymupdf-wasm/     # WASM modules
 ├── docs/                 # Documentation (VitePress)
 └── scripts/              # Build scripts
@@ -50,11 +49,11 @@ bentopdf/
 Create `src/js/logic/your-tool-page.ts`:
 
 ```typescript
-import { showLoader, hideLoader, showAlert } from '../ui.js';
-import { state } from '../state.js';
+import { showLoader, hideLoader, showAlert } from "../ui.js";
+import { state } from "../state.js";
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Your tool logic here
+document.addEventListener("DOMContentLoaded", () => {
+    // Your tool logic here
 });
 ```
 
@@ -81,19 +80,6 @@ Add the page to `vite.config.ts`:
 
 ```typescript
 'your-tool': resolve(__dirname, 'src/pages/your-tool.html'),
-```
-
-### Step 5: Add Translations
-
-Add entries to all locale files in `public/locales/`:
-
-```json
-{
-  "yourTool": {
-    "name": "Your Tool",
-    "subtitle": "Description"
-  }
-}
 ```
 
 ## Code Style

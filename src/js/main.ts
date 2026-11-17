@@ -4,7 +4,7 @@ import { createIcons, icons } from "lucide";
 import * as pdfjsLib from "pdfjs-dist";
 import "../css/styles.css";
 import { categories } from "./config/tools.js";
-import { applyTranslations, initI18n, injectLanguageSwitcher, rewriteLinks, t, trText } from "./i18n/index.js";
+import { applyTranslations, initI18n, rewriteLinks, t, trText } from "./i18n/index.js";
 import { ShortcutsManager } from "./logic/shortcuts.js";
 import { dom, hideAlert, switchView } from "./ui.js";
 import { isCurrentPageDisabled, isToolDisabled, loadRuntimeConfig } from "./utils/disabled-tools.js";
@@ -29,7 +29,6 @@ declare const __BRAND_NAME__: string;
 const init = async () => {
     await initI18n();
     await loadRuntimeConfig();
-    injectLanguageSwitcher();
     applyTranslations();
 
     if (isCurrentPageDisabled()) {
@@ -51,36 +50,34 @@ const init = async () => {
         return;
     }
 
-    if (__SIMPLE_MODE__) {
-        const hideBrandingSections = () => {
-            const brandName = __BRAND_NAME__ || "BentoPDF";
-            document.title = trText("{{brandName}} - {{title}}", {
-                brandName,
-                title: t("simpleMode.title"),
-            });
+    const hideBrandingSections = () => {
+        const brandName = __BRAND_NAME__ || "BentoPDF";
+        document.title = trText("{{brandName}} - {{title}}", {
+            brandName,
+            title: t("simpleMode.title"),
+        });
 
-            const toolsHeader = document.getElementById("tools-header");
-            if (toolsHeader) {
-                const title = toolsHeader.querySelector("h2");
-                const subtitle = toolsHeader.querySelector("p");
-                if (title) {
-                    title.textContent = t("simpleMode.title");
-                    title.className = "text-4xl md:text-5xl font-bold text-white mb-3";
-                }
-                if (subtitle) {
-                    subtitle.textContent = t("simpleMode.subtitle");
-                    subtitle.className = "text-lg text-gray-400";
-                }
+        const toolsHeader = document.getElementById("tools-header");
+        if (toolsHeader) {
+            const title = toolsHeader.querySelector("h2");
+            const subtitle = toolsHeader.querySelector("p");
+            if (title) {
+                title.textContent = t("simpleMode.title");
+                title.className = "text-4xl md:text-5xl font-bold text-white mb-3";
             }
-
-            const app = document.getElementById("app");
-            if (app) {
-                app.style.paddingTop = "1rem";
+            if (subtitle) {
+                subtitle.textContent = t("simpleMode.subtitle");
+                subtitle.className = "text-lg text-gray-400";
             }
-        };
+        }
 
-        hideBrandingSections();
-    }
+        const app = document.getElementById("app");
+        if (app) {
+            app.style.paddingTop = "1rem";
+        }
+    };
+
+    hideBrandingSections();
 
     // Hide shortcuts buttons on mobile devices (Android/iOS)
     // exclude iPad -> users can connect keyboard and use shortcuts
