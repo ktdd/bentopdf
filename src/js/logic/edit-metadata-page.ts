@@ -72,14 +72,14 @@ function addCustomFieldRow(key: string = '', value: string = '') {
 
   const keyInput = document.createElement('input');
   keyInput.type = 'text';
-  keyInput.placeholder = trText('Key (e.g., Department)');
+  keyInput.placeholder = 'Key (e.g., Department)';
   keyInput.value = key;
   keyInput.className =
     'custom-meta-key w-full bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2.5';
 
   const valueInput = document.createElement('input');
   valueInput.type = 'text';
-  valueInput.placeholder = trText('Value (e.g., Marketing)');
+  valueInput.placeholder = 'Value (e.g., Marketing)';
   valueInput.value = value;
   valueInput.className =
     'custom-meta-value w-full bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2.5';

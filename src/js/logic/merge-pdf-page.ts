@@ -294,7 +294,7 @@ export async function merge() {
 
     if (mergeState.activeMode === 'file') {
       const fileList = document.getElementById('file-list');
-      if (!fileList) throw new Error(trText('File list not found'));
+      if (!fileList) throw new Error('File list not found');
 
       const sortedFileKeys = Array.from(fileList.children)
         .map((li) => (li as HTMLElement).dataset.fileName)
@@ -324,7 +324,7 @@ export async function merge() {
     } else {
       // Page Mode
       const pageContainer = document.getElementById('page-merge-preview');
-      if (!pageContainer) throw new Error(trText('Page container not found'));
+      if (!pageContainer) throw new Error('Page container not found');
       const pageElements = Array.from(pageContainer.children);
 
       const rawPages: { fileName: string; pageIndex: number }[] = [];
@@ -535,7 +535,7 @@ export async function refreshMergeUI() {
     input.id = `range-${safeFileName}`;
     input.className =
       'w-full bg-gray-800 border border-gray-600 text-white rounded-md p-2 text-sm mt-1 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors';
-    input.placeholder = trText('Leave blank for all pages');
+    input.placeholder = 'Leave blank for all pages';
 
     inputWrapper.append(label, input);
 
@@ -543,7 +543,7 @@ export async function refreshMergeUI() {
     deleteBtn.className =
       'text-red-400 hover:text-red-300 p-2 flex-shrink-0 self-end';
     deleteBtn.innerHTML = '<i data-lucide="trash-2" class="w-4 h-4"></i>';
-    deleteBtn.title = trText('Remove file');
+    deleteBtn.title = 'Remove file';
     deleteBtn.onclick = (e) => {
       e.stopPropagation();
       state.files = state.files.filter((_, i) => i !== index);

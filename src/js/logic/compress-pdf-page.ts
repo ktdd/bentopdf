@@ -38,17 +38,17 @@ type OptionChangeHandler = (
 const getLockMessages = () =>
   ({
     locked: {
-      text: trText('Password protected'),
+      text: 'Password protected',
       color: 'text-gray-400',
       field: 'border-gray-600 focus:ring-indigo-500',
     },
     wrong: {
-      text: trText('Wrong password'),
+      text: 'Wrong password',
       color: 'text-red-400',
       field: 'border-red-500 focus:ring-red-500',
     },
     unlocked: {
-      text: trText('Unlocked'),
+      text: 'Unlocked',
       color: 'text-green-400',
       field: 'border-green-500 focus:ring-green-500',
     },
@@ -58,7 +58,7 @@ const PASSWORD_INPUT_CLASS =
   'w-full bg-gray-800 border text-gray-200 placeholder:text-gray-500 rounded-lg pl-9 pr-10 py-2 text-sm focus:outline-none focus:ring-2 focus:border-transparent';
 
 const getDpiChoices = () => [
-  { value: 0, label: trText('None') },
+  { value: 0, label: 'None' },
   { value: 72, label: '72 DPI' },
   { value: 96, label: '96 DPI' },
   { value: 144, label: '144 DPI' },
@@ -69,219 +69,197 @@ const getDpiChoices = () => [
 
 const getOptionSections = (): HyperOptionSection[] => [
   {
-    title: trText('Images'),
+    title: 'Images',
     open: true,
     fields: [
       {
         key: 'imageQuality',
         type: 'number',
-        label: trText('Image quality'),
+        label: 'Image quality',
         min: 20,
         max: 100,
-        help: trText(
-          'JPEG quality for re-encoded images, 20 to 100. Lower means smaller files and more visible artifacts.'
-        ),
+        help: 'JPEG quality for re-encoded images, 20 to 100. Lower means smaller files and more visible artifacts.',
       },
       {
         key: 'maxDpi',
         type: 'dpi',
-        label: trText('Maximum resolution'),
-        help: trText(
-          'Images above this are resampled down. None leaves resolution alone.'
-        ),
+        label: 'Maximum resolution',
+        help: 'Images above this are resampled down. None leaves resolution alone.',
       },
       {
         key: 'forceDownsample',
         type: 'bool',
-        label: trText('Always resample to that resolution'),
-        help: trText(
-          'Resamples even when an image is only slightly above the limit.'
-        ),
+        label: 'Always resample to that resolution',
+        help: 'Resamples even when an image is only slightly above the limit.',
       },
       {
         key: 'grayscale',
         type: 'bool',
-        label: trText('Convert to grayscale'),
-        help: trText('Reduces file size by removing color information.'),
+        label: 'Convert to grayscale',
+        help: 'Reduces file size by removing color information.',
       },
       {
         key: 'reduceColor',
         type: 'bool',
-        label: trText('Reduce color complexity'),
-        help: trText('Only where it does not change how the image looks.'),
+        label: 'Reduce color complexity',
+        help: 'Only where it does not change how the image looks.',
       },
       {
         key: 'clipImages',
         type: 'bool',
-        label: trText('Clip invisible parts of images'),
+        label: 'Clip invisible parts of images',
       },
       {
         key: 'removeAlternates',
         type: 'bool',
-        label: trText('Remove alternate images'),
+        label: 'Remove alternate images',
       },
       {
         key: 'flattenIcc',
         type: 'bool',
-        label: trText('Simplify large color profiles'),
+        label: 'Simplify large color profiles',
       },
       {
         key: 'preferJpx',
         type: 'bool',
-        label: trText('Prefer JPEG 2000 for photos'),
-        help: trText(
-          'Tries JPEG 2000 against JPEG for each image and keeps the smaller one.'
-        ),
+        label: 'Prefer JPEG 2000 for photos',
+        help: 'Tries JPEG 2000 against JPEG for each image and keeps the smaller one.',
       },
       {
         key: 'lossless',
         type: 'bool',
-        label: trText('Lossless (no image re-encoding)'),
-        help: trText(
-          'Turns off quality, resolution and every other lossy image step.'
-        ),
+        label: 'Lossless (no image re-encoding)',
+        help: 'Turns off quality, resolution and every other lossy image step.',
       },
     ],
   },
   {
-    title: trText('Fonts'),
+    title: 'Fonts',
     fields: [
       {
         key: 'subsetFonts',
         type: 'bool',
-        label: trText('Subset embedded fonts'),
-        help: trText('Keeps only the characters the document uses.'),
+        label: 'Subset embedded fonts',
+        help: 'Keeps only the characters the document uses.',
       },
       {
         key: 'mergeFonts',
         type: 'bool',
-        label: trText('Merge duplicate fonts'),
+        label: 'Merge duplicate fonts',
       },
       {
         key: 'removeStandardFonts',
         type: 'bool',
-        label: trText('Unembed standard fonts'),
-        help: trText(
-          'PDF readers supply the 14 standard PDF fonts themselves.'
-        ),
+        label: 'Unembed standard fonts',
+        help: 'PDF readers supply the 14 standard PDF fonts themselves.',
       },
       {
         key: 'unembedAliasedFonts',
         type: 'bool',
-        label: trText('Unembed standard-font look-alikes'),
-        help: trText(
-          'Arial, Times New Roman and Courier New map to the built-in equivalents. Only applied when safe.'
-        ),
+        label: 'Unembed standard-font look-alikes',
+        help: 'Arial, Times New Roman and Courier New map to the built-in equivalents. Only applied when safe.',
       },
     ],
   },
   {
-    title: trText('Content'),
+    title: 'Content',
     fields: [
       {
         key: 'removeAnnots',
         type: 'bool',
-        label: trText('Flatten annotations'),
-        help: trText(
-          'Comments and markup become part of the page. Form fields and links keep working.'
-        ),
+        label: 'Flatten annotations',
+        help: 'Comments and markup become part of the page. Form fields and links keep working.',
       },
       {
         key: 'flattenForms',
         type: 'bool',
-        label: trText('Flatten form fields'),
-        help: trText('Form fields stop being fillable.'),
+        label: 'Flatten form fields',
+        help: 'Form fields stop being fillable.',
       },
       {
         key: 'flattenLinks',
         type: 'bool',
-        label: trText('Flatten links'),
-        help: trText('Links stop being clickable.'),
+        label: 'Flatten links',
+        help: 'Links stop being clickable.',
       },
     ],
   },
   {
-    title: trText('Cleanup'),
+    title: 'Cleanup',
     fields: [
       {
         key: 'removeThumbnails',
         type: 'bool',
-        label: trText('Remove page thumbnails'),
+        label: 'Remove page thumbnails',
       },
       {
         key: 'removeAppData',
         type: 'bool',
-        label: trText('Remove application data'),
-        help: trText('Private data that editing apps store inside the PDF.'),
+        label: 'Remove application data',
+        help: 'Private data that editing apps store inside the PDF.',
       },
       {
         key: 'removeThreads',
         type: 'bool',
-        label: trText('Remove article threads'),
+        label: 'Remove article threads',
       },
       {
         key: 'removeSpiderInfo',
         type: 'bool',
-        label: trText('Remove web capture information'),
+        label: 'Remove web capture information',
       },
       {
         key: 'removeStructTree',
         type: 'bool',
-        label: trText('Remove document structure tree'),
-        help: trText('Drops tagging, which screen readers rely on.'),
+        label: 'Remove document structure tree',
+        help: 'Drops tagging, which screen readers rely on.',
       },
       {
         key: 'removeOutputIntents',
         type: 'bool',
-        label: trText('Remove output intents'),
+        label: 'Remove output intents',
       },
     ],
   },
   {
-    title: trText('Rasterize'),
+    title: 'Rasterize',
     fields: [
       {
         key: 'rasterizePages',
         type: 'bool',
-        label: trText('Rasterize pages to images'),
-        help: trText(
-          'For image-only PDFs such as scans. Skipped when the document has selectable text, unless Override content protection is on.'
-        ),
+        label: 'Rasterize pages to images',
+        help: 'For image-only PDFs such as scans. Skipped when the document has selectable text, unless Override content protection is on.',
       },
       {
         key: 'rasterizeDpi',
         type: 'number',
-        label: trText('Rasterize resolution (DPI)'),
+        label: 'Rasterize resolution (DPI)',
         min: 36,
         max: 600,
       },
       {
         key: 'rasterizeQuality',
         type: 'number',
-        label: trText('Rasterize quality'),
+        label: 'Rasterize quality',
         min: 1,
         max: 100,
       },
     ],
   },
   {
-    title: trText('Output'),
+    title: 'Output',
     fields: [
       {
         key: 'preserveConformance',
         type: 'bool',
-        label: trText('Preserve PDF/A'),
-        help: trText(
-          'Keeps a PDF/A file conformant. Brotli and rasterizing are skipped while this is on.'
-        ),
+        label: 'Preserve PDF/A',
+        help: 'Keeps a PDF/A file conformant. Brotli and rasterizing are skipped while this is on.',
       },
       {
         key: 'brotli',
         type: 'bool',
-        label: trText('Brotli compression (PDF 2.0)'),
-        help: trText(
-          'Smaller files, but only readers with Brotli support can open them, such as Firefox, MuPDF 1.26+ and Ghostscript 10.06+.'
-        ),
+        label: 'Brotli compression (PDF 2.0)',
+        help: 'Smaller files, but only readers with Brotli support can open them, such as Firefox, MuPDF 1.26+ and Ghostscript 10.06+.',
       },
     ],
   },
@@ -471,38 +449,34 @@ function describeCompressResult(
 
   if (result.signaturesRemoved) {
     parts.push(
-      trText(
-        'Its digital signatures were removed so it could be compressed. Sign it again if needed.'
-      )
+      'Its digital signatures were removed so it could be compressed. Sign it again if needed.'
     );
   }
 
   if (result.pdfaOutcome === 'claim-withdrawn') {
     parts.push(
-      trText(
-        'It no longer claims PDF/A conformance. Turn on Preserve PDF/A under Custom Settings to keep it.'
-      )
+      'It no longer claims PDF/A conformance. Turn on Preserve PDF/A under Custom Settings to keep it.'
     );
   } else if (preservingPdfa && (options.brotli || options.rasterizePages)) {
-    parts.push(trText('Brotli and rasterizing were skipped to keep it PDF/A.'));
+    parts.push('Brotli and rasterizing were skipped to keep it PDF/A.');
   }
 
   if (saved <= 0) {
     return {
-      title: trText('Compression Finished'),
+      title: 'Compression Finished',
       message: parts.join(' '),
       type: 'warning',
     };
   }
   if (result.metTarget === false) {
     return {
-      title: trText('Target Not Reached'),
+      title: 'Target Not Reached',
       message: parts.join(' '),
       type: 'warning',
     };
   }
   return {
-    title: trText('Compression Complete'),
+    title: 'Compression Complete',
     message: parts.join(' '),
     type: 'success',
   };
@@ -534,7 +508,7 @@ function createPasswordField(
 
   const input = document.createElement('input');
   input.type = 'password';
-  input.placeholder = trText('Enter password');
+  input.placeholder = 'Enter password';
   input.autocomplete = 'off';
   input.value = value;
   input.setAttribute('aria-label', label);
@@ -547,14 +521,14 @@ function createPasswordField(
   toggle.type = 'button';
   toggle.className =
     'absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 hover:text-gray-200';
-  toggle.setAttribute('aria-label', trText('Show password'));
+  toggle.setAttribute('aria-label', 'Show password');
   toggle.append(showIcon, hideIcon);
   toggle.addEventListener('click', () => {
     const reveal = input.type === 'password';
     input.type = reveal ? 'text' : 'password';
     toggle.setAttribute(
       'aria-label',
-      reveal ? trText('Hide password') : trText('Show password')
+      reveal ? 'Hide password' : 'Show password'
     );
     showIcon.classList.toggle('hidden', reveal);
     hideIcon.classList.toggle('hidden', !reveal);
@@ -709,9 +683,7 @@ onPageReady(() => {
       (file) => fileLocks.get(file)?.status === 'unlocked'
     ).length;
     if (sharedMissed && unlocked < files.length) {
-      sharedView.status.textContent = trText(
-        'That password did not open any of the remaining files.'
-      );
+      sharedView.status.textContent = 'That password did not open any of the remaining files.';
       sharedView.status.className = 'text-xs mt-1 text-red-400';
       return;
     }
@@ -797,9 +769,9 @@ onPageReady(() => {
           sharedDiv.className = 'bg-gray-700 p-3 rounded-lg text-sm';
           const sharedLabel = document.createElement('div');
           sharedLabel.className = 'font-medium text-gray-200 text-sm';
-          sharedLabel.textContent = trText('Password for all locked files');
+          sharedLabel.textContent = 'Password for all locked files';
           sharedView = createPasswordField(
-            trText('Password for all locked files'),
+            'Password for all locked files',
             sharedPassword,
             applySharedPassword
           );

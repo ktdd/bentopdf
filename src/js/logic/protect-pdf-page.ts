@@ -124,18 +124,18 @@ async function encryptPdf() {
   try {
     if (loaderModal) loaderModal.classList.remove('hidden');
     if (loaderText)
-      loaderText.textContent = trText('Initializing encryption...');
+      loaderText.textContent = 'Initializing encryption...';
 
     qpdf = await initializeQpdf();
 
-    if (loaderText) loaderText.textContent = trText('Reading PDF...');
+    if (loaderText) loaderText.textContent = 'Reading PDF...';
     const fileBuffer = await readFileAsArrayBuffer(pageState.file);
     const uint8Array = new Uint8Array(fileBuffer as ArrayBuffer);
 
     qpdf.FS.writeFile(inputPath, uint8Array);
 
     if (loaderText)
-      loaderText.textContent = trText('Encrypting PDF with 256-bit AES...');
+      loaderText.textContent = 'Encrypting PDF with 256-bit AES...';
 
     const args = [inputPath, '--encrypt', userPassword, ownerPassword, '256'];
 
@@ -166,11 +166,11 @@ async function encryptPdf() {
       );
     }
 
-    if (loaderText) loaderText.textContent = trText('Preparing download...');
+    if (loaderText) loaderText.textContent = 'Preparing download...';
     const outputFile = qpdf.FS.readFile(outputPath, { encoding: 'binary' });
 
     if (!outputFile || outputFile.length === 0) {
-      throw new Error(trText('Encryption resulted in an empty file.'));
+      throw new Error('Encryption resulted in an empty file.');
     }
 
     const blob = new Blob([new Uint8Array(outputFile)], {
@@ -180,11 +180,9 @@ async function encryptPdf() {
 
     if (loaderModal) loaderModal.classList.add('hidden');
 
-    let successMessage = trText('PDF encrypted successfully with 256-bit AES!');
+    let successMessage = 'PDF encrypted successfully with 256-bit AES!';
     if (!hasDistinctOwnerPassword) {
-      successMessage += ` ${trText(
-        'Note: Without a separate owner password, the PDF has no usage restrictions.'
-      )}`;
+      successMessage += ` ${'Note: Without a separate owner password, the PDF has no usage restrictions.'}`;
     }
 
     showAlert('Success', successMessage, 'success', () => {
@@ -199,7 +197,7 @@ async function encryptPdf() {
         error:
           error instanceof Error
             ? error.message
-            : trText('The PDF might be corrupted.'),
+            : 'The PDF might be corrupted.',
       })
     );
   } finally {

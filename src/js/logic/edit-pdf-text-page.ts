@@ -65,9 +65,9 @@ function menuItem(
 }
 
 const getScopes = (): [string, string, string][] => [
-  ['text', trText('Edit Text'), 'ph-text-t'],
-  ['image', trText('Edit Images'), 'ph-image'],
-  ['shape', trText('Edit Shapes'), 'ph-shapes'],
+  ['text', 'Edit Text', 'ph-text-t'],
+  ['image', 'Edit Images', 'ph-image'],
+  ['shape', 'Edit Shapes', 'ph-shapes'],
 ];
 
 function setupEditMenu() {
@@ -90,12 +90,12 @@ function setupEditMenu() {
     scopeSel.value = value;
     scopeSel.dispatchEvent(new Event('change'));
     const names: Record<string, string> = {
-      text: trText('Text'),
-      image: trText('Images'),
-      shape: trText('Shapes'),
+      text: 'Text',
+      image: 'Images',
+      shape: 'Shapes',
     };
     label.textContent = picked.has('all')
-      ? trText('Edit All')
+      ? 'Edit All'
       : trText('Edit {{scopes}}', {
           scopes: getScopes()
             .filter(([k]) => picked.has(k))
@@ -128,7 +128,7 @@ function setupEditMenu() {
       menu.replaceChildren();
       menu.appendChild(
         menuItem(
-          trText('Edit All'),
+          'Edit All',
           picked.has('all'),
           () => {
             picked = new Set(['all']);
@@ -239,7 +239,7 @@ function setupZoomMenu() {
     inp.type = 'number';
     inp.min = '20';
     inp.max = '600';
-    inp.placeholder = trText('Custom Zoom');
+    inp.placeholder = 'Custom Zoom';
     const pctSpan = document.createElement('span');
     pctSpan.textContent = '%';
     form.append(inp, pctSpan);
@@ -306,7 +306,7 @@ function relocateAddText() {
   icon.className = 'ph ph-text-t';
   addTextBtn.appendChild(icon);
   addTextBtn.classList.add('btn', 'icon');
-  addTextBtn.title = trText('Add a text box');
+  addTextBtn.title = 'Add a text box';
   findBtn.parentElement.insertBefore(addTextBtn, findBtn);
   const sync = () =>
     addTextBtn.classList.toggle('on', !editBtn.classList.contains('on'));
@@ -342,10 +342,10 @@ function setupDocPanel() {
     const head = document.createElement('div');
     head.className = 'docmodal-head';
     const title = document.createElement('span');
-    title.textContent = trText('Document Properties');
+    title.textContent = 'Document Properties';
     const x = document.createElement('button');
     x.className = 'btn icon';
-    x.title = trText('Close');
+    x.title = 'Close';
     const xi = document.createElement('i');
     xi.className = 'ph ph-x';
     x.appendChild(xi);
@@ -356,44 +356,44 @@ function setupDocPanel() {
     const inch = (pt: number) => (pt / 72).toFixed(2);
     const groups: [string, [string, string][]][] = [
       [
-        trText('Description'),
+        'Description',
         [
-          [trText('File'), desc.meta.name],
-          [trText('Title'), f.Title || '—'],
-          [trText('Author'), f.Author || '—'],
-          [trText('Subject'), f.Subject || '—'],
-          [trText('Keywords'), f.Keywords || '—'],
+          ['File', desc.meta.name],
+          ['Title', f.Title || '—'],
+          ['Author', f.Author || '—'],
+          ['Subject', f.Subject || '—'],
+          ['Keywords', f.Keywords || '—'],
           [
-            trText('Created'),
+            'Created',
             f.CreationDate ? formatPdfDate(f.CreationDate) : '—',
           ],
-          [trText('Modified'), f.ModDate ? formatPdfDate(f.ModDate) : '—'],
-          [trText('Application'), f.Creator || '—'],
+          ['Modified', f.ModDate ? formatPdfDate(f.ModDate) : '—'],
+          ['Application', f.Creator || '—'],
         ],
       ],
       [
-        trText('Advanced'),
+        'Advanced',
         [
-          [trText('PDF Producer'), f.Producer || '—'],
-          [trText('File Size'), `${(desc.meta.size / 1024).toFixed(0)} KB`],
+          ['PDF Producer', f.Producer || '—'],
+          ['File Size', `${(desc.meta.size / 1024).toFixed(0)} KB`],
           [
-            trText('Page Size'),
+            'Page Size',
             desc.pageSize
               ? `${inch(desc.pageSize.w)} × ${inch(desc.pageSize.h)} in`
               : '—',
           ],
           [
-            trText('Number of Pages'),
+            'Number of Pages',
             desc.info?.pages ? String(desc.info.pages) : '—',
           ],
           ...(desc.info?.signatures
-            ? ([[trText('Signatures'), String(desc.info.signatures)]] as [
+            ? ([['Signatures', String(desc.info.signatures)]] as [
                 string,
                 string,
               ][])
             : []),
           ...(desc.pdfa
-            ? ([[trText('Conformance'), 'PDF/A']] as [string, string][])
+            ? ([['Conformance', 'PDF/A']] as [string, string][])
             : []),
         ],
       ],

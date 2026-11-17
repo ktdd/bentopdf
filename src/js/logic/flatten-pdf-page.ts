@@ -114,7 +114,7 @@ async function flattenPdf() {
   try {
     if (pageState.files.length === 1) {
       if (loaderModal) loaderModal.classList.remove('hidden');
-      if (loaderText) loaderText.textContent = trText('Flattening PDF...');
+      if (loaderText) loaderText.textContent = 'Flattening PDF...';
 
       const file = pageState.files[0];
       const arrayBuffer = await file.arrayBuffer();
@@ -145,7 +145,7 @@ async function flattenPdf() {
     } else {
       if (loaderModal) loaderModal.classList.remove('hidden');
       if (loaderText)
-        loaderText.textContent = trText('Flattening multiple PDFs...');
+        loaderText.textContent = 'Flattening multiple PDFs...';
 
       const zip = new JSZip();
       const usedNames = new Set<string>();
@@ -210,7 +210,7 @@ async function flattenPdf() {
     console.error(e);
     if (loaderModal) loaderModal.classList.add('hidden');
     const errorMessage =
-      e instanceof Error ? e.message : trText('An unexpected error occurred.');
+      e instanceof Error ? e.message : 'An unexpected error occurred.';
     showAlert('Error', errorMessage);
   }
 }

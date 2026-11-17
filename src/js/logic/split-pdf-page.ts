@@ -159,14 +159,14 @@ onPageReady(() => {
           const result = await loadPdfWithPasswordPrompt(file);
           if (!result) {
             showLoader('Rendering page previews...');
-            throw new Error(trText('No PDF document loaded'));
+            throw new Error('No PDF document loaded');
           }
           result.pdf.destroy();
           state.files[0] = result.file;
           state.pdfDoc = await loadPdfDocument(result.bytes);
           showLoader('Rendering page previews...');
         } else {
-          throw new Error(trText('No PDF document loaded'));
+          throw new Error('No PDF document loaded');
         }
       }
 
@@ -318,7 +318,7 @@ onPageReady(() => {
     const inputPath = '/split-input.pdf';
 
     try {
-      if (!state.pdfDoc) throw new Error(trText('No PDF document loaded.'));
+      if (!state.pdfDoc) throw new Error('No PDF document loaded.');
       const srcDoc = state.pdfDoc;
 
       const totalPages = srcDoc.getPageCount();
@@ -351,7 +351,7 @@ onPageReady(() => {
             document.getElementById('page-range') as HTMLInputElement
           ).value;
           if (!pageRangeInput)
-            throw new Error(trText('Choose a valid page range.'));
+            throw new Error('Choose a valid page range.');
 
           const { groups: rangeGroups, indices: rangeIndices } =
             parseRangeGroups(pageRangeInput, totalPages);
@@ -366,7 +366,7 @@ onPageReady(() => {
             'input[name="even-odd-choice"]:checked'
           ) as HTMLInputElement;
           if (!choiceElement)
-            throw new Error(trText('Please select even or odd pages.'));
+            throw new Error('Please select even or odd pages.');
           const choice = choiceElement.value === 'even' ? 'even' : 'odd';
           indicesToExtract = evenOddIndices(choice, totalPages);
           break;
@@ -417,7 +417,7 @@ onPageReady(() => {
 
           if (splitPages.length === 0) {
             throw new Error(
-              trText('No bookmarks found at the selected level.')
+              'No bookmarks found at the selected level.'
             );
           }
 
@@ -443,7 +443,7 @@ onPageReady(() => {
             (document.getElementById('split-n-value') as HTMLInputElement)
               ?.value || '5'
           );
-          if (nValue < 1) throw new Error(trText('N must be at least 1.'));
+          if (nValue < 1) throw new Error('N must be at least 1.');
 
           const zip2 = new JSZip();
           const chunks = nTimesGroups(nValue, totalPages);
@@ -469,7 +469,7 @@ onPageReady(() => {
         splitMode !== 'bookmarks' &&
         splitMode !== 'n-times'
       ) {
-        throw new Error(trText('No pages were selected for splitting.'));
+        throw new Error('No pages were selected for splitting.');
       }
 
       if (outputGroups && outputGroups.length > 0) {
@@ -598,12 +598,12 @@ onPageReady(() => {
         rangePanel?.classList.remove('hidden');
         outputModeWrapper?.classList.remove('hidden');
         if (outputSeparateLabel)
-          outputSeparateLabel.textContent = trText('One PDF per range');
+          outputSeparateLabel.textContent = 'One PDF per range';
       } else if (mode === 'visual') {
         visualPanel?.classList.remove('hidden');
         outputModeWrapper?.classList.remove('hidden');
         if (outputSeparateLabel)
-          outputSeparateLabel.textContent = trText('One PDF per page');
+          outputSeparateLabel.textContent = 'One PDF per page';
         renderVisualSelector();
       } else if (mode === 'even-odd') {
         evenOddPanel?.classList.remove('hidden');

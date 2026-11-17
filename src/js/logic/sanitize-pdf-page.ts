@@ -91,7 +91,7 @@ async function runSanitize() {
   const loaderModal = document.getElementById('loader-modal');
   const loaderText = document.getElementById('loader-text');
   if (loaderModal) loaderModal.classList.remove('hidden');
-  if (loaderText) loaderText.textContent = trText('Sanitizing PDF...');
+  if (loaderText) loaderText.textContent = 'Sanitizing PDF...';
 
   try {
     const options = {
@@ -142,7 +142,7 @@ async function runSanitize() {
       return;
     }
     if (loaderModal) loaderModal.classList.remove('hidden');
-    if (loaderText) loaderText.textContent = trText('Sanitizing PDF...');
+    if (loaderText) loaderText.textContent = 'Sanitizing PDF...';
     loaded.pdf.destroy();
     pageState.file = loaded.file;
     const result = await sanitizePdf(new Uint8Array(loaded.bytes), options);

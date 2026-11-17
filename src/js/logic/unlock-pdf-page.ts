@@ -121,23 +121,23 @@ async function decryptPdf() {
   try {
     if (loaderModal) loaderModal.classList.remove('hidden');
     if (loaderText)
-      loaderText.textContent = trText('Initializing decryption...');
+      loaderText.textContent = 'Initializing decryption...';
 
     if (pageState.files.length === 1) {
       // Single file: decrypt and download directly
       const file = pageState.files[0];
       if (loaderText)
-        loaderText.textContent = trText('Reading encrypted PDF...');
+        loaderText.textContent = 'Reading encrypted PDF...';
       const fileBuffer = await readFileAsArrayBuffer(file);
       const uint8Array = new Uint8Array(fileBuffer as ArrayBuffer);
 
-      if (loaderText) loaderText.textContent = trText('Decrypting PDF...');
+      if (loaderText) loaderText.textContent = 'Decrypting PDF...';
       const { bytes: decryptedBytes } = await decryptPdfBytes(
         uint8Array,
         password
       );
 
-      if (loaderText) loaderText.textContent = trText('Preparing download...');
+      if (loaderText) loaderText.textContent = 'Preparing download...';
       const blob = new Blob([decryptedBytes.slice().buffer], {
         type: 'application/pdf',
       });
@@ -185,15 +185,13 @@ async function decryptPdf() {
 
       if (successCount === 0) {
         const error = new Error(
-          trText(
-            'No PDF files could be decrypted. The password may be incorrect.'
-          )
+          'No PDF files could be decrypted. The password may be incorrect.'
         );
         error.name = 'PasswordError';
         throw error;
       }
 
-      if (loaderText) loaderText.textContent = trText('Generating ZIP file...');
+      if (loaderText) loaderText.textContent = 'Generating ZIP file...';
       const zipBlob = await zip.generateAsync({ type: 'blob' });
       downloadFile(zipBlob, 'decrypted-pdfs.zip');
 
@@ -231,9 +229,7 @@ async function decryptPdf() {
         trText('An error occurred: {{error}}', {
           error:
             errorMessage ||
-            trText(
-              'The password you entered is wrong or the file is corrupted.'
-            ),
+            'The password you entered is wrong or the file is corrupted.',
         })
       );
     }

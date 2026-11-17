@@ -168,7 +168,7 @@ async function addHeaderFooter() {
     };
     const indicesToProcess = parsePageRanges(pageRangeInput, totalPages);
     if (indicesToProcess.length === 0)
-      throw new Error(trText('Invalid page range specified.'));
+      throw new Error('Invalid page range specified.');
     const drawOptions = {
       font: helveticaFont,
       size: fontSize,

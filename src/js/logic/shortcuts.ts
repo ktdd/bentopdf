@@ -1,7 +1,6 @@
 import { categories } from '../config/tools.js';
 import type { ToolEntry } from '@/types';
 
-import { trText } from '../i18n/i18n.js';
 import { getStoredItem, setStoredItem } from '../utils/safe-storage.js';
 
 export class ShortcutsManager {
@@ -124,7 +123,7 @@ export class ShortcutsManager {
       const parsed = JSON.parse(jsonString);
       for (const key in parsed) {
         if (typeof parsed[key] !== 'string') {
-          throw new Error(trText('Invalid shortcut format'));
+          throw new Error('Invalid shortcut format');
         }
       }
       this.shortcuts = new Map(Object.entries(parsed));
