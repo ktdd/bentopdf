@@ -2,7 +2,7 @@
 
 Simple Mode is what powers the **Self-Hosted build** of BentoPDF (`bentopdf-simple`). It is **functionally identical** to the Commercial build that powers bentopdf.com — every PDF tool is present and behaves the same. It just hides the marketing chrome (hero, FAQ, testimonials, footer) that only makes sense on the public bentopdf.com site or on a commercial public-facing deployment.
 
-> **Simple Mode is not a feature-reduced "lite" version.** Every PDF tool — merge, split, edit, sign, OCR, Office conversion, every other tool — works identically in both builds. The only difference is the marketing UI around the tools.
+> **Simple Mode is not a feature-reduced "lite" version.** Every PDF tool — merge, split, edit, sign, every other tool — works identically in both builds. The only difference is the marketing UI around the tools.
 
 The Commercial build (`ghcr.io/alam00000/bentopdf:latest`) is used by bentopdf.com itself and by commercial license holders running public-facing PDF deployments where the full marketing site makes sense.
 
@@ -51,15 +51,15 @@ Or with Docker Compose / Podman Compose:
 
 ```yaml
 services:
-  bentopdf:
-    # Using GitHub Container Registry (Recommended)
-    image: ghcr.io/alam00000/bentopdf-simple:latest
-    # Or using Docker Hub
-    # image: bentopdfteam/bentopdf-simple:latest
-    container_name: bentopdf
-    restart: unless-stopped
-    ports:
-      - '3000:8080'
+    bentopdf:
+        # Using GitHub Container Registry (Recommended)
+        image: ghcr.io/alam00000/bentopdf-simple:latest
+        # Or using Docker Hub
+        # image: bentopdfteam/bentopdf-simple:latest
+        container_name: bentopdf
+        restart: unless-stopped
+        ports:
+            - "3000:8080"
 ```
 
 ### Method 2: Using Docker Compose with Build
@@ -201,16 +201,16 @@ The full marketing site, including hero/FAQ/testimonials/footer. Pull this only 
 
 ```yaml
 services:
-  bentopdf:
-    image: ghcr.io/alam00000/bentopdf-simple:latest # Recommended
-    # image: bentopdfteam/bentopdf-simple:latest     # Alternative: Docker Hub
-    container_name: bentopdf
-    restart: unless-stopped
-    ports:
-      - '80:8080'
-    environment:
-      - PUID=1000
-      - PGID=1000
+    bentopdf:
+        image: ghcr.io/alam00000/bentopdf-simple:latest # Recommended
+        # image: bentopdfteam/bentopdf-simple:latest     # Alternative: Docker Hub
+        container_name: bentopdf
+        restart: unless-stopped
+        ports:
+            - "80:8080"
+        environment:
+            - PUID=1000
+            - PGID=1000
 ```
 
 ### Podman Quadlet (Linux Systemd)

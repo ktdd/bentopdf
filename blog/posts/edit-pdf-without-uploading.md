@@ -1,20 +1,22 @@
 ---
 {
-  "title": "How to Edit a PDF Without Uploading It Anywhere | BentoPDF Blog",
-  "h1": "How to edit a PDF without uploading it anywhere",
-  "ogTitle": "How to Edit a PDF Without Uploading It Anywhere",
-  "breadcrumb": "Edit a PDF without uploading",
-  "description": "Edit PDF text, fill forms, redact, and sign in your browser while the file stays on your device. Step by step, with the right tool for each job.",
-  "card": "Rewrite text, fill forms, redact properly, and sign, locally on your device.",
-  "date": "2026-09-03",
-  "cta": {
-    "heading": "Edit your PDF now",
-    "text": "Free, no signup. Your file stays on your device.",
-    "href": "/edit-pdf",
-    "label": "Open the PDF editor"
-  }
+    "title": "How to Edit a PDF Without Uploading It Anywhere | BentoPDF Blog",
+    "h1": "How to edit a PDF without uploading it anywhere",
+    "ogTitle": "How to Edit a PDF Without Uploading It Anywhere",
+    "breadcrumb": "Edit a PDF without uploading",
+    "description": "Edit PDF text, fill forms, redact, and sign in your browser while the file stays on your device. Step by step, with the right tool for each job.",
+    "card": "Rewrite text, fill forms, redact properly, and sign, locally on your device.",
+    "date": "2026-09-03",
+    "cta":
+        {
+            "heading": "Edit your PDF now",
+            "text": "Free, no signup. Your file stays on your device.",
+            "href": "/edit-pdf",
+            "label": "Open the PDF editor",
+        },
 }
 ---
+
 You can edit a PDF in your browser without uploading the file to a server.
 
 Open [BentoPDF's PDF editor](/edit-pdf), pick your file, make your changes, and download the result. The PDF stays on your device. There's no account and no watermark.
@@ -68,8 +70,6 @@ If the PDF has actual form fields, open it in [PDF Form Filler](/form-filler) an
 If it's a scanned or flattened form, there aren't any fields to click. In that case, you can put text boxes over the blank spaces in the [PDF editor](/edit-pdf) and type into them. If you'd rather have real fields, [Create PDF Form](/form-creator) can add them to the document first.
 
 This is especially useful for government and HR forms, which often contain personal information I'd rather not upload somewhere just to fill in a few boxes.
-
-If the PDF is a scan and you actually need to edit the scanned text itself, you'll need OCR first. [BentoPDF's OCR tool](/ocr-pdf) can recognize the text in the document while keeping the processing on your device.
 
 ## How to redact a PDF properly
 

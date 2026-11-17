@@ -2,16 +2,6 @@
 
 Kubernetes may be overkill for a static site, but it can be a great fit if you already standardize on Helm + GitOps.
 
-> [!IMPORTANT]
-> **Required Headers for Office File Conversion**
->
-> LibreOffice-based tools (Word, Excel, PowerPoint conversion) require these HTTP headers for `SharedArrayBuffer` support:
->
-> - `Cross-Origin-Opener-Policy: same-origin`
-> - `Cross-Origin-Embedder-Policy: require-corp`
->
-> The official BentoPDF nginx images include these headers. In Kubernetes, **Ingress/Gateway controllers are also reverse proxies**, so ensure these headers are preserved (or add them at the edge).
-
 ## Prereqs
 
 - Kubernetes cluster
@@ -60,13 +50,13 @@ Enable Ingress (example for nginx-ingress):
 
 ```yaml
 ingress:
-  enabled: true
-  className: nginx
-  hosts:
-    - host: pdf.example.com
-      paths:
-        - path: /
-          pathType: Prefix
+    enabled: true
+    className: nginx
+    hosts:
+        - host: pdf.example.com
+          paths:
+              - path: /
+                pathType: Prefix
 ```
 
 ### Gateway API (optional)
@@ -77,19 +67,19 @@ Example (Cloudflare Gateway API operator):
 
 ```yaml
 gateway:
-  enabled: true
-  name: bento-tunnel
-  namespace: bentopdf
-  gatewayClassName: cloudflare
+    enabled: true
+    name: bento-tunnel
+    namespace: bentopdf
+    gatewayClassName: cloudflare
 
 httpRoute:
-  enabled: true
-  parentRefs:
-    - name: bento-tunnel
-      namespace: bentopdf
-      sectionName: http
-  hostnames:
-    - pdfs.example.com
+    enabled: true
+    parentRefs:
+        - name: bento-tunnel
+          namespace: bentopdf
+          sectionName: http
+    hostnames:
+        - pdfs.example.com
 ```
 
 ## Ensuring the SharedArrayBuffer headers still work (Ingress/Gateway)
@@ -122,12 +112,12 @@ Add the headers at the edge (controller-specific). Example for **nginx-ingress**
 
 ```yaml
 ingress:
-  enabled: true
-  className: nginx
-  annotations:
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      add_header Cross-Origin-Opener-Policy "same-origin" always;
-      add_header Cross-Origin-Embedder-Policy "require-corp" always;
+    enabled: true
+    className: nginx
+    annotations:
+        nginx.ingress.kubernetes.io/configuration-snippet: |
+            add_header Cross-Origin-Opener-Policy "same-origin" always;
+            add_header Cross-Origin-Embedder-Policy "require-corp" always;
 ```
 
 ## `.mjs` MIME-type errors (Sign PDF / Form Filler iframe blank)
@@ -138,11 +128,11 @@ The BentoPDF image's nginx already serves `.mjs` as `application/javascript`. Th
 
 ```yaml
 ingress:
-  annotations:
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      location ~* \.mjs$ {
-        types {} default_type application/javascript;
-      }
+    annotations:
+        nginx.ingress.kubernetes.io/configuration-snippet: |
+            location ~* \.mjs$ {
+              types {} default_type application/javascript;
+            }
 ```
 
 Or use a `ResponseHeaderModifier` filter in Gateway API to set `Content-Type: application/javascript` for `.mjs` paths. Verify with DevTools → Network tab: the failed `.mjs` request should now show `content-type: application/javascript`.
@@ -153,23 +143,23 @@ Gateway API supports a `ResponseHeaderModifier` filter. You can attach it in `ht
 
 ```yaml
 httpRoute:
-  enabled: true
-  hostnames: [pdf.example.com]
-  parentRefs:
-    - name: bento-tunnel
-      namespace: misc
-      sectionName: http
-  rules:
-    - matches:
-        - path: { type: PathPrefix, value: / }
-      filters:
-        - type: ResponseHeaderModifier
-          responseHeaderModifier:
-            set:
-              - name: Cross-Origin-Opener-Policy
-                value: same-origin
-              - name: Cross-Origin-Embedder-Policy
-                value: require-corp
+    enabled: true
+    hostnames: [pdf.example.com]
+    parentRefs:
+        - name: bento-tunnel
+          namespace: misc
+          sectionName: http
+    rules:
+        - matches:
+              - path: { type: PathPrefix, value: / }
+          filters:
+              - type: ResponseHeaderModifier
+                responseHeaderModifier:
+                    set:
+                        - name: Cross-Origin-Opener-Policy
+                          value: same-origin
+                        - name: Cross-Origin-Embedder-Policy
+                          value: require-corp
 ```
 
 Support for specific filters depends on your Gateway controller; if a filter is ignored, add headers at the edge/controller layer instead.
@@ -182,30 +172,30 @@ Use a ConfigMap to disable tools at runtime without rebuilding the image:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: bentopdf-config
-  namespace: bentopdf
+    name: bentopdf-config
+    namespace: bentopdf
 data:
-  config.json: |
-    {
-      "disabledTools": ["edit-pdf", "sign-pdf", "encrypt-pdf"]
-    }
+    config.json: |
+        {
+          "disabledTools": ["edit-pdf", "sign-pdf", "encrypt-pdf"]
+        }
 ```
 
 Mount it into the served directory:
 
 ```yaml
 spec:
-  containers:
-    - name: bentopdf
-      volumeMounts:
+    containers:
+        - name: bentopdf
+          volumeMounts:
+              - name: config
+                mountPath: /usr/share/nginx/html/config.json
+                subPath: config.json
+                readOnly: true
+    volumes:
         - name: config
-          mountPath: /usr/share/nginx/html/config.json
-          subPath: config.json
-          readOnly: true
-  volumes:
-    - name: config
-      configMap:
-        name: bentopdf-config
+          configMap:
+              name: bentopdf-config
 ```
 
 Tool IDs are the page URL without `.html` — open any tool and look at the URL (e.g., `edit-pdf`, `merge-pdf`, `compress-pdf`). Disabled tools are hidden from the homepage, search, shortcuts, workflow builder, and direct URL access. See the [Docker guide](/self-hosting/docker#disabling-specific-tools) for the full list of options.

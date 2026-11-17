@@ -38,8 +38,8 @@ BASE_URL=/pdf-tools/ npm run build
 ```
 
 2. Create the folder in Hostinger:
-   - Go to **File Manager** → **public_html**
-   - Create a new folder: `pdf-tools`
+    - Go to **File Manager** → **public_html**
+    - Create a new folder: `pdf-tools`
 3. Upload all contents of `dist` to `public_html/pdf-tools/`
 
 ## Step 3: Create .htaccess File
@@ -235,17 +235,6 @@ Ensure the MIME types are correctly set in `.htaccess`:
 ```apache
 AddType application/wasm .wasm
 ```
-
-### LibreOffice Tools Not Working
-
-The security headers are critical for SharedArrayBuffer:
-
-```apache
-Header always set Cross-Origin-Opener-Policy "same-origin"
-Header always set Cross-Origin-Embedder-Policy "require-corp"
-```
-
-If headers aren't being applied, contact Hostinger support to enable `mod_headers`.
 
 ### 404 Errors on Page Refresh
 

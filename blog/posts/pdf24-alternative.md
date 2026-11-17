@@ -1,20 +1,22 @@
 ---
 {
-  "title": "PDF24 Alternative With No Uploads: BentoPDF vs PDF24",
-  "h1": "BentoPDF vs PDF24: a PDF24 alternative that doesn't upload your files",
-  "ogTitle": "PDF24 Alternative With No Uploads: BentoPDF vs PDF24",
-  "breadcrumb": "PDF24 alternative",
-  "description": "BentoPDF vs PDF24 compared. Both are free with no limits, but PDF24 uploads your files to its servers. BentoPDF runs in your browser on Mac, Windows and Linux.",
-  "card": "BentoPDF vs PDF24 side by side: uploads, offline use on any computer, open source, and the tools you get for free.",
-  "date": "2026-10-28",
-  "cta": {
-    "heading": "Try it on your own PDF",
-    "text": "Free, no signup. Your file stays on your device.",
-    "href": "/",
-    "label": "Open BentoPDF"
-  }
+    "title": "PDF24 Alternative With No Uploads: BentoPDF vs PDF24",
+    "h1": "BentoPDF vs PDF24: a PDF24 alternative that doesn't upload your files",
+    "ogTitle": "PDF24 Alternative With No Uploads: BentoPDF vs PDF24",
+    "breadcrumb": "PDF24 alternative",
+    "description": "BentoPDF vs PDF24 compared. Both are free with no limits, but PDF24 uploads your files to its servers. BentoPDF runs in your browser on Mac, Windows and Linux.",
+    "card": "BentoPDF vs PDF24 side by side: uploads, offline use on any computer, open source, and the tools you get for free.",
+    "date": "2026-10-28",
+    "cta":
+        {
+            "heading": "Try it on your own PDF",
+            "text": "Free, no signup. Your file stays on your device.",
+            "href": "/",
+            "label": "Open BentoPDF",
+        },
 }
 ---
+
 If you're looking for a PDF24 alternative, the biggest difference with BentoPDF is where your file goes.
 
 PDF24's online tools upload your PDF and process it on PDF24's servers. BentoPDF processes it in your browser, on your own device. Both are free, and neither needs an account.
@@ -34,18 +36,18 @@ PDF24 is a good, free tool. People usually look elsewhere for one of these reaso
 
 Here's how BentoPDF compares with PDF24's online tools:
 
-| Feature | PDF24 online tools | BentoPDF |
-| --- | --- | --- |
-| Where your file is processed | Uploaded to PDF24's servers | In your browser, never uploaded |
-| What happens to your files | Deleted from the server after one hour | Never uploaded in the first place |
-| Price | Free | Free |
-| Account needed | No | No |
-| How it's paid for | Advertising on its pages | Commercial licenses |
-| Works offline | Only with PDF24 Creator, on Windows | Yes, in your browser, once a tool has loaded |
-| No-upload use on Mac, Linux or Chromebook | No | Yes |
-| Open source | No | Yes, AGPL |
-| Run it on your own server | No | Yes, with Docker or as static files |
-| Workflow automation | No | Yes, the free [Workflow Builder](/pdf-workflow) |
+| Feature                                   | PDF24 online tools                     | BentoPDF                                        |
+| ----------------------------------------- | -------------------------------------- | ----------------------------------------------- |
+| Where your file is processed              | Uploaded to PDF24's servers            | In your browser, never uploaded                 |
+| What happens to your files                | Deleted from the server after one hour | Never uploaded in the first place               |
+| Price                                     | Free                                   | Free                                            |
+| Account needed                            | No                                     | No                                              |
+| How it's paid for                         | Advertising on its pages               | Commercial licenses                             |
+| Works offline                             | Only with PDF24 Creator, on Windows    | Yes, in your browser, once a tool has loaded    |
+| No-upload use on Mac, Linux or Chromebook | No                                     | Yes                                             |
+| Open source                               | No                                     | Yes, AGPL                                       |
+| Run it on your own server                 | No                                     | Yes, with Docker or as static files             |
+| Workflow automation                       | No                                     | Yes, the free [Workflow Builder](/pdf-workflow) |
 
 PDF24's details come from its [FAQ](https://tools.pdf24.org/en/faq) and its [Merge PDF page](https://tools.pdf24.org/en/merge-pdf), which says "Files are automatically deleted from the PDF24 server after one hour."
 
@@ -65,44 +67,43 @@ Or load a tool, turn off Wi-Fi, and use it anyway. That works on a Mac, a Linux 
 
 Switching is easy. These are the BentoPDF versions of PDF24's most used tools:
 
-| PDF24 tool | BentoPDF tool |
-| --- | --- |
-| Merge PDF | [Merge PDF](/merge-pdf) |
-| Split PDF | [Split PDF](/split-pdf) |
-| Compress PDF | [Compress PDF](/compress-pdf) |
-| Edit PDF and Annotate PDF | [Edit PDF](/edit-pdf) |
-| Sign PDF | [Sign PDF](/sign-pdf) |
-| PDF to Word | [PDF to Word](/pdf-to-word) |
-| Word to PDF | [Word to PDF](/word-to-pdf) |
-| PDF to Excel | [PDF to Excel](/pdf-to-excel) |
-| Excel to PDF | [Excel to PDF](/excel-to-pdf) |
-| PowerPoint to PDF | [PowerPoint to PDF](/powerpoint-to-pdf) |
-| Images to PDF | [Image to PDF](/image-to-pdf) |
-| PDF to JPG | [PDF to JPG](/pdf-to-jpg) |
-| PDF to PNG | [PDF to PNG](/pdf-to-png) |
-| PDF OCR | [OCR PDF](/ocr-pdf) |
-| Rearrange PDF pages | [Organize PDF](/organize-pdf) |
-| Remove PDF pages | [Delete Pages](/delete-pages) |
-| Extract PDF pages | [Extract Pages](/extract-pages) |
-| Rotate PDF pages | [Rotate PDF](/rotate-pdf) |
-| Crop PDF | [Crop PDF](/crop-pdf) |
-| Add page numbers | [Page Numbers](/page-numbers) |
-| Add watermark | [Add Watermark](/add-watermark) |
-| PDF Overlay | [Overlay PDF](/overlay-pdf) |
-| Pages per sheet | [N-Up PDF](/n-up-pdf) |
-| Create booklet | [PDF Booklet](/pdf-booklet) |
-| Protect PDF | [Protect PDF](/protect-pdf) |
-| Unlock PDF | [Unlock PDF](/unlock-pdf) |
-| Redact PDF | [Edit PDF](/edit-pdf) |
-| Fill out PDF | [PDF Form Filler](/form-filler) |
-| Make PDF fillable | [Create PDF Form](/form-creator) |
-| Flatten PDF | [Flatten PDF](/flatten-pdf) |
-| Repair PDF | [Repair PDF](/repair-pdf) |
-| PDF to PDF/A | [PDF to PDF/A](/pdf-to-pdfa) |
-| Compare PDFs | [Compare PDFs](/compare-pdfs) |
-| Verify PDF signatures | [Validate Signature](/validate-signature-pdf) |
-| Remove PDF metadata | [Remove Metadata](/remove-metadata) |
-| Web optimize PDF | [Linearize PDF](/linearize-pdf) |
+| PDF24 tool                | BentoPDF tool                                 |
+| ------------------------- | --------------------------------------------- |
+| Merge PDF                 | [Merge PDF](/merge-pdf)                       |
+| Split PDF                 | [Split PDF](/split-pdf)                       |
+| Compress PDF              | [Compress PDF](/compress-pdf)                 |
+| Edit PDF and Annotate PDF | [Edit PDF](/edit-pdf)                         |
+| Sign PDF                  | [Sign PDF](/sign-pdf)                         |
+| PDF to Word               | [PDF to Word](/pdf-to-word)                   |
+| Word to PDF               | [Word to PDF](/word-to-pdf)                   |
+| PDF to Excel              | [PDF to Excel](/pdf-to-excel)                 |
+| Excel to PDF              | [Excel to PDF](/excel-to-pdf)                 |
+| PowerPoint to PDF         | [PowerPoint to PDF](/powerpoint-to-pdf)       |
+| Images to PDF             | [Image to PDF](/image-to-pdf)                 |
+| PDF to JPG                | [PDF to JPG](/pdf-to-jpg)                     |
+| PDF to PNG                | [PDF to PNG](/pdf-to-png)                     |
+| Rearrange PDF pages       | [Organize PDF](/organize-pdf)                 |
+| Remove PDF pages          | [Delete Pages](/delete-pages)                 |
+| Extract PDF pages         | [Extract Pages](/extract-pages)               |
+| Rotate PDF pages          | [Rotate PDF](/rotate-pdf)                     |
+| Crop PDF                  | [Crop PDF](/crop-pdf)                         |
+| Add page numbers          | [Page Numbers](/page-numbers)                 |
+| Add watermark             | [Add Watermark](/add-watermark)               |
+| PDF Overlay               | [Overlay PDF](/overlay-pdf)                   |
+| Pages per sheet           | [N-Up PDF](/n-up-pdf)                         |
+| Create booklet            | [PDF Booklet](/pdf-booklet)                   |
+| Protect PDF               | [Protect PDF](/protect-pdf)                   |
+| Unlock PDF                | [Unlock PDF](/unlock-pdf)                     |
+| Redact PDF                | [Edit PDF](/edit-pdf)                         |
+| Fill out PDF              | [PDF Form Filler](/form-filler)               |
+| Make PDF fillable         | [Create PDF Form](/form-creator)              |
+| Flatten PDF               | [Flatten PDF](/flatten-pdf)                   |
+| Repair PDF                | [Repair PDF](/repair-pdf)                     |
+| PDF to PDF/A              | [PDF to PDF/A](/pdf-to-pdfa)                  |
+| Compare PDFs              | [Compare PDFs](/compare-pdfs)                 |
+| Verify PDF signatures     | [Validate Signature](/validate-signature-pdf) |
+| Remove PDF metadata       | [Remove Metadata](/remove-metadata)           |
+| Web optimize PDF          | [Linearize PDF](/linearize-pdf)               |
 
 ## Free tools you won't find on PDF24
 

@@ -63,36 +63,10 @@ server {
         application/wasm wasm;
     }
 
-    # Required headers for SharedArrayBuffer (LibreOffice WASM)
-    # These must be on every response - especially HTML pages
-    add_header Cross-Origin-Embedder-Policy "require-corp" always;
-    add_header Cross-Origin-Opener-Policy "same-origin" always;
-    add_header Cross-Origin-Resource-Policy "cross-origin" always;
-
     # Security headers
     add_header X-Frame-Options "SAMEORIGIN" always;
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-XSS-Protection "1; mode=block" always;
-
-    # Pre-compressed LibreOffice WASM binary
-    location ~* /libreoffice-wasm/soffice\.wasm\.gz$ {
-        gzip off;
-        types {} default_type application/wasm;
-        add_header Content-Encoding gzip;
-        add_header Cache-Control "public, immutable";
-        add_header Cross-Origin-Embedder-Policy "require-corp" always;
-        add_header Cross-Origin-Opener-Policy "same-origin" always;
-    }
-
-    # Pre-compressed LibreOffice WASM data
-    location ~* /libreoffice-wasm/soffice\.data\.gz$ {
-        gzip off;
-        types {} default_type application/octet-stream;
-        add_header Content-Encoding gzip;
-        add_header Cache-Control "public, immutable";
-        add_header Cross-Origin-Embedder-Policy "require-corp" always;
-        add_header Cross-Origin-Opener-Policy "same-origin" always;
-    }
 
     # Cache static assets
     location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|wasm)$ {
@@ -210,18 +184,6 @@ sudo nginx -t && sudo systemctl reload nginx
 ```
 
 To confirm: in browser DevTools → Network tab, find the failing `.mjs` request and check the `Content-Type` response header. It should now be `application/javascript`, not `application/octet-stream`.
-
-### Word/ODT/Excel to PDF Not Working
-
-LibreOffice WASM requires `SharedArrayBuffer`, which needs `Cross-Origin-Embedder-Policy` and `Cross-Origin-Opener-Policy` headers. It also needs a secure context, so `http://localhost` works for local testing but `http://192.168.x.x` or other LAN IPs usually require HTTPS. Note that nginx `add_header` directives in a `location` block **override** server-level `add_header` directives — they don't merge. Every `location` block with its own `add_header` must include the COEP/COOP headers.
-
-Verify with:
-
-```bash
-curl -I https://your-domain.com/ | grep -i cross-origin
-```
-
-If using a reverse proxy in front of nginx, ensure it preserves these headers.
 
 ### 502 Bad Gateway
 

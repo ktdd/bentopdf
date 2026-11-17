@@ -1,20 +1,22 @@
 ---
 {
-  "title": "iLovePDF Alternative With No Uploads: BentoPDF vs iLovePDF",
-  "h1": "BentoPDF vs iLovePDF: a free iLovePDF alternative that doesn't upload your files",
-  "ogTitle": "iLovePDF Alternative With No Uploads: BentoPDF vs iLovePDF",
-  "breadcrumb": "iLovePDF alternative",
-  "description": "BentoPDF vs iLovePDF compared. BentoPDF is free, has no file limits and runs in your browser, so your PDFs are never uploaded. See where each one wins.",
-  "card": "BentoPDF vs iLovePDF side by side: uploads, free plan limits, offline use, and the tools you get for free.",
-  "date": "2026-10-28",
-  "cta": {
-    "heading": "Try it on your own PDF",
-    "text": "Free, no signup. Your file stays on your device.",
-    "href": "/",
-    "label": "Open BentoPDF"
-  }
+    "title": "iLovePDF Alternative With No Uploads: BentoPDF vs iLovePDF",
+    "h1": "BentoPDF vs iLovePDF: a free iLovePDF alternative that doesn't upload your files",
+    "ogTitle": "iLovePDF Alternative With No Uploads: BentoPDF vs iLovePDF",
+    "breadcrumb": "iLovePDF alternative",
+    "description": "BentoPDF vs iLovePDF compared. BentoPDF is free, has no file limits and runs in your browser, so your PDFs are never uploaded. See where each one wins.",
+    "card": "BentoPDF vs iLovePDF side by side: uploads, free plan limits, offline use, and the tools you get for free.",
+    "date": "2026-10-28",
+    "cta":
+        {
+            "heading": "Try it on your own PDF",
+            "text": "Free, no signup. Your file stays on your device.",
+            "href": "/",
+            "label": "Open BentoPDF",
+        },
 }
 ---
+
 If you're looking for an iLovePDF alternative, the biggest difference with BentoPDF is where your file goes.
 
 iLovePDF uploads your PDF and processes it on its servers. BentoPDF processes it in your browser, on your own device. It's free, there's no account, and there's no cap on file size or the number of files.
@@ -34,21 +36,21 @@ iLovePDF is a good tool. People usually switch for one of these reasons:
 
 Here's how BentoPDF compares with iLovePDF's free plan:
 
-| Feature | iLovePDF (free plan) | BentoPDF |
-| --- | --- | --- |
-| Where your file is processed | Uploaded to iLovePDF's servers | In your browser, never uploaded |
-| Price | Free with limits, Premium is paid | Free, every tool |
-| Word to PDF | 1 file, up to 15 MB | No cap on files or size |
-| Merge PDF | Up to 25 files, 100 MB | No cap on files or size |
-| Compress PDF | 2 files at a time | No cap on files |
-| Edit PDF | 1 file | No cap on files |
-| PDF to PDF/A | Premium only | Free |
-| Workflows | Premium only | Free |
-| Works offline | No (web version) | Yes, once a tool has loaded |
-| Open source | No | Yes, AGPL |
-| Run it on your own server | No | Yes, with Docker or as static files |
-| Desktop and mobile apps | Premium only | No, browser only |
-| What happens to your files | Deleted within two hours, signed documents kept up to five years | Never uploaded in the first place |
+| Feature                      | iLovePDF (free plan)                                             | BentoPDF                            |
+| ---------------------------- | ---------------------------------------------------------------- | ----------------------------------- |
+| Where your file is processed | Uploaded to iLovePDF's servers                                   | In your browser, never uploaded     |
+| Price                        | Free with limits, Premium is paid                                | Free, every tool                    |
+| Word to PDF                  | 1 file, up to 15 MB                                              | No cap on files or size             |
+| Merge PDF                    | Up to 25 files, 100 MB                                           | No cap on files or size             |
+| Compress PDF                 | 2 files at a time                                                | No cap on files                     |
+| Edit PDF                     | 1 file                                                           | No cap on files                     |
+| PDF to PDF/A                 | Premium only                                                     | Free                                |
+| Workflows                    | Premium only                                                     | Free                                |
+| Works offline                | No (web version)                                                 | Yes, once a tool has loaded         |
+| Open source                  | No                                                               | Yes, AGPL                           |
+| Run it on your own server    | No                                                               | Yes, with Docker or as static files |
+| Desktop and mobile apps      | Premium only                                                     | No, browser only                    |
+| What happens to your files   | Deleted within two hours, signed documents kept up to five years | Never uploaded in the first place   |
 
 iLovePDF's limits come from its [pricing page](https://www.ilovepdf.com/pricing), and the file deletion details from its [security page](https://www.ilovepdf.com/help/security).
 
@@ -72,31 +74,30 @@ Or load a tool, turn off Wi-Fi, and use it anyway.
 
 Switching is easy. These are the BentoPDF versions of iLovePDF's most used tools:
 
-| iLovePDF tool | BentoPDF tool |
-| --- | --- |
-| Merge PDF | [Merge PDF](/merge-pdf) |
-| Split PDF | [Split PDF](/split-pdf) |
-| Compress PDF | [Compress PDF](/compress-pdf) |
-| PDF to Word | [PDF to Word](/pdf-to-word) |
-| Word to PDF | [Word to PDF](/word-to-pdf) |
-| PDF to Excel | [PDF to Excel](/pdf-to-excel) |
-| Excel to PDF | [Excel to PDF](/excel-to-pdf) |
-| PowerPoint to PDF | [PowerPoint to PDF](/powerpoint-to-pdf) |
-| PDF to JPG | [PDF to JPG](/pdf-to-jpg) |
-| JPG to PDF | [JPG to PDF](/jpg-to-pdf) |
-| Edit PDF and Redact PDF | [Edit PDF](/edit-pdf) |
-| Sign PDF | [Sign PDF](/sign-pdf) |
-| OCR PDF | [OCR PDF](/ocr-pdf) |
-| Organize PDF | [Organize PDF](/organize-pdf) |
-| Rotate PDF | [Rotate PDF](/rotate-pdf) |
-| Crop PDF | [Crop PDF](/crop-pdf) |
-| Add page numbers | [Page Numbers](/page-numbers) |
-| Add watermark | [Add Watermark](/add-watermark) |
-| Protect PDF | [Protect PDF](/protect-pdf) |
-| Unlock PDF | [Unlock PDF](/unlock-pdf) |
-| Repair PDF | [Repair PDF](/repair-pdf) |
-| Compare PDF | [Compare PDFs](/compare-pdfs) |
-| PDF to PDF/A | [PDF to PDF/A](/pdf-to-pdfa) |
+| iLovePDF tool           | BentoPDF tool                           |
+| ----------------------- | --------------------------------------- |
+| Merge PDF               | [Merge PDF](/merge-pdf)                 |
+| Split PDF               | [Split PDF](/split-pdf)                 |
+| Compress PDF            | [Compress PDF](/compress-pdf)           |
+| PDF to Word             | [PDF to Word](/pdf-to-word)             |
+| Word to PDF             | [Word to PDF](/word-to-pdf)             |
+| PDF to Excel            | [PDF to Excel](/pdf-to-excel)           |
+| Excel to PDF            | [Excel to PDF](/excel-to-pdf)           |
+| PowerPoint to PDF       | [PowerPoint to PDF](/powerpoint-to-pdf) |
+| PDF to JPG              | [PDF to JPG](/pdf-to-jpg)               |
+| JPG to PDF              | [JPG to PDF](/jpg-to-pdf)               |
+| Edit PDF and Redact PDF | [Edit PDF](/edit-pdf)                   |
+| Sign PDF                | [Sign PDF](/sign-pdf)                   |
+| Organize PDF            | [Organize PDF](/organize-pdf)           |
+| Rotate PDF              | [Rotate PDF](/rotate-pdf)               |
+| Crop PDF                | [Crop PDF](/crop-pdf)                   |
+| Add page numbers        | [Page Numbers](/page-numbers)           |
+| Add watermark           | [Add Watermark](/add-watermark)         |
+| Protect PDF             | [Protect PDF](/protect-pdf)             |
+| Unlock PDF              | [Unlock PDF](/unlock-pdf)               |
+| Repair PDF              | [Repair PDF](/repair-pdf)               |
+| Compare PDF             | [Compare PDFs](/compare-pdfs)           |
+| PDF to PDF/A            | [PDF to PDF/A](/pdf-to-pdfa)            |
 
 ## Free tools you won't find on iLovePDF
 

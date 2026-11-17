@@ -68,7 +68,7 @@ If/when you merge changes from the source BentoPDF repository, the build and dep
 
 BentoPDF ships a Content-Security-Policy and other security headers for each static host:
 
-- **Netlify and Cloudflare Pages** read `_headers` from the deployed folder. `npm run build` writes `dist/_headers` with `scripts/generate-security-headers.mjs`, so any `VITE_WASM_*`, `VITE_TESSERACT_*`, `VITE_CORS_PROXY_URL` or `VITE_OCR_FONT_BASE_URL` values you set at build time are allowed by the policy. If you add your own `public/_headers`, the build ships yours instead. The release `dist-{version}.zip` already contains it.
+- **Netlify and Cloudflare Pages** read `_headers` from the deployed folder. `npm run build` writes `dist/_headers` with `scripts/generate-security-headers.mjs`, so any `VITE_WASM_*`, `VITE_CORS_PROXY_URL` values you set at build time are allowed by the policy. If you add your own `public/_headers`, the build ships yours instead. The release `dist-{version}.zip` already contains it.
 - **Vercel** uses the `headers` block in `vercel.json`. It holds the default policy, so if you point the `VITE_*` URLs at your own servers, update the Content-Security-Policy there to match the `dist/_headers` your build produces.
 - **`npx serve`** reads `serve.json` from the folder it serves. To use the repository's `serve.json` with the build output, run `npx serve dist -c ../serve.json`.
 - **GitHub Pages** cannot set headers (see the note above).
@@ -100,9 +100,9 @@ sitemap URLs pointing at your domain. Without `ALLOW_INDEXING=true`, a
 build with a custom `SITE_URL` marks every page `noindex`.
 
 - Docker:
-  ```sh
-  docker build --build-arg SITE_URL=https://pdf.example.com --build-arg ALLOW_INDEXING=true -t bentopdf-self .
-  ```
+    ```sh
+    docker build --build-arg SITE_URL=https://pdf.example.com --build-arg ALLOW_INDEXING=true -t bentopdf-self .
+    ```
 - Netlify, Vercel, GitHub Pages, or any other static host: set `SITE_URL`
   and `ALLOW_INDEXING=true` in your project's environment variables and
   re-deploy. The build script reads them during `npm run build`. For the

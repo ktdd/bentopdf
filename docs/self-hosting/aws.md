@@ -68,85 +68,29 @@ Or use the AWS Console:
 4. Default root object: `index.html`
 5. Create distribution
 
-## Step 3b: Response Headers Policy (Required for LibreOffice WASM)
-
-LibreOffice-based conversions (Word, Excel, PowerPoint to PDF) require `SharedArrayBuffer`, which needs specific response headers. Create a CloudFront Response Headers Policy:
-
-1. Go to CloudFront → Policies → Response headers
-2. Create a custom policy with these headers:
-
-| Header                         | Value          |
-| ------------------------------ | -------------- |
-| `Cross-Origin-Embedder-Policy` | `require-corp` |
-| `Cross-Origin-Opener-Policy`   | `same-origin`  |
-| `Cross-Origin-Resource-Policy` | `cross-origin` |
-
-3. Attach the policy to your distribution's default cache behavior
-
-Or via CLI:
-
-```bash
-aws cloudfront create-response-headers-policy \
-  --response-headers-policy-config '{
-    "Name": "BentoPDF-COEP-COOP",
-    "CustomHeadersConfig": {
-      "Quantity": 3,
-      "Items": [
-        {"Header": "Cross-Origin-Embedder-Policy", "Value": "require-corp", "Override": true},
-        {"Header": "Cross-Origin-Opener-Policy", "Value": "same-origin", "Override": true},
-        {"Header": "Cross-Origin-Resource-Policy", "Value": "cross-origin", "Override": true}
-      ]
-    }
-  }'
-```
-
-## Step 3c: S3 Metadata for Pre-Compressed WASM Files
-
-The LibreOffice WASM files are pre-compressed (`.wasm.gz`, `.data.gz`). Set the correct Content-Type and Content-Encoding so browsers decompress them:
-
-```bash
-# Set correct headers for soffice.wasm.gz
-aws s3 cp s3://your-bentopdf-bucket/libreoffice-wasm/soffice.wasm.gz \
-  s3://your-bentopdf-bucket/libreoffice-wasm/soffice.wasm.gz \
-  --content-type "application/wasm" \
-  --content-encoding "gzip" \
-  --metadata-directive REPLACE
-
-# Set correct headers for soffice.data.gz
-aws s3 cp s3://your-bentopdf-bucket/libreoffice-wasm/soffice.data.gz \
-  s3://your-bentopdf-bucket/libreoffice-wasm/soffice.data.gz \
-  --content-type "application/octet-stream" \
-  --content-encoding "gzip" \
-  --metadata-directive REPLACE
-```
-
-::: warning Important
-Without the response headers policy, `SharedArrayBuffer` is unavailable and LibreOffice WASM conversions will hang at ~55%. Without the correct Content-Encoding on the `.gz` files, the browser receives raw gzip bytes and WASM compilation fails.
-:::
-
 ## Step 4: S3 Bucket Policy
 
 Allow CloudFront to access the bucket:
 
 ```json
 {
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "AllowCloudFrontAccess",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "cloudfront.amazonaws.com"
-      },
-      "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::your-bentopdf-bucket/*",
-      "Condition": {
-        "StringEquals": {
-          "AWS:SourceArn": "arn:aws:cloudfront::ACCOUNT_ID:distribution/DISTRIBUTION_ID"
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowCloudFrontAccess",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "cloudfront.amazonaws.com"
+            },
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::your-bentopdf-bucket/*",
+            "Condition": {
+                "StringEquals": {
+                    "AWS:SourceArn": "arn:aws:cloudfront::ACCOUNT_ID:distribution/DISTRIBUTION_ID"
+                }
+            }
         }
-      }
-    }
-  ]
+    ]
 }
 ```
 
@@ -156,9 +100,9 @@ Configure 404 to return `index.html` for SPA routing:
 
 1. CloudFront → Error pages
 2. Create custom error response:
-   - HTTP error code: 404
-   - Response page path: `/index.html`
-   - HTTP response code: 200
+    - HTTP error code: 404
+    - Response page path: `/index.html`
+    - HTTP response code: 200
 
 ## Cost Estimation
 

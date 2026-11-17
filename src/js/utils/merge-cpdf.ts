@@ -1,61 +1,56 @@
-import { WasmProvider } from './wasm-provider';
-import { wfError } from '../workflow/errors';
+import { t } from "../i18n/i18n";
+import { WasmProvider } from "./wasm-provider";
 
-export interface MergeFile {
-  name: string;
-  data: ArrayBuffer;
+function wfError(key: string, params?: Record<string, string | number>): string {
+    return t(`tools:pdfWorkflow.errors.${key}`, params);
 }
 
-export async function mergePdfsCpdf(
-  files: MergeFile[],
-  options?: { retainPageLabels?: boolean }
-): Promise<Uint8Array> {
-  if (files.length === 0) {
-    throw new Error(wfError('noPdfsConnected', { node: 'Merge' }));
-  }
+export interface MergeFile {
+    name: string;
+    data: ArrayBuffer;
+}
 
-  const cpdfBaseUrl = WasmProvider.getUrl('cpdf');
-  if (!cpdfBaseUrl) {
-    throw new Error(wfError('cpdfNotConfigured'));
-  }
+export async function mergePdfsCpdf(files: MergeFile[], options?: { retainPageLabels?: boolean }): Promise<Uint8Array> {
+    if (files.length === 0) {
+        throw new Error(wfError("noPdfsConnected", { node: "Merge" }));
+    }
 
-  const jobs = files.map((f) => ({
-    fileName: f.name,
-    rangeType: 'all' as const,
-  }));
+    const cpdfBaseUrl = WasmProvider.getUrl("cpdf");
+    if (!cpdfBaseUrl) {
+        throw new Error(wfError("cpdfNotConfigured"));
+    }
 
-  return new Promise<Uint8Array>((resolve, reject) => {
-    const worker = new Worker(
-      import.meta.env.BASE_URL + 'workers/merge.worker.js'
-    );
+    const jobs = files.map((f) => ({
+        fileName: f.name,
+        rangeType: "all" as const,
+    }));
 
-    worker.onmessage = (e: MessageEvent) => {
-      worker.terminate();
-      if (e.data.status === 'success') {
-        resolve(new Uint8Array(e.data.pdfBytes));
-      } else {
-        reject(
-          new Error(
-            e.data.message || wfError('workerError', { message: 'unknown' })
-          )
+    return new Promise<Uint8Array>((resolve, reject) => {
+        const worker = new Worker(import.meta.env.BASE_URL + "workers/merge.worker.js");
+
+        worker.onmessage = (e: MessageEvent) => {
+            worker.terminate();
+            if (e.data.status === "success") {
+                resolve(new Uint8Array(e.data.pdfBytes));
+            } else {
+                reject(new Error(e.data.message || wfError("workerError", { message: "unknown" })));
+            }
+        };
+
+        worker.onerror = (err) => {
+            worker.terminate();
+            reject(new Error(wfError("workerError", { message: err.message })));
+        };
+
+        worker.postMessage(
+            {
+                command: "merge",
+                files,
+                jobs,
+                cpdfUrl: cpdfBaseUrl + "coherentpdf.browser.min.js",
+                retainPageLabels: options?.retainPageLabels === true,
+            },
+            files.map((f) => f.data),
         );
-      }
-    };
-
-    worker.onerror = (err) => {
-      worker.terminate();
-      reject(new Error(wfError('workerError', { message: err.message })));
-    };
-
-    worker.postMessage(
-      {
-        command: 'merge',
-        files,
-        jobs,
-        cpdfUrl: cpdfBaseUrl + 'coherentpdf.browser.min.js',
-        retainPageLabels: options?.retainPageLabels === true,
-      },
-      files.map((f) => f.data)
-    );
-  });
+    });
 }

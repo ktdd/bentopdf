@@ -63,8 +63,8 @@ If builds timeout, try:
 ```json
 // vercel.json
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist"
+    "buildCommand": "npm run build",
+    "outputDirectory": "dist"
 }
 ```
 
@@ -74,49 +74,6 @@ Add a `vercel.json` for SPA routing:
 
 ```json
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+    "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
 ```
-
-### Word/ODT/Excel to PDF Not Working
-
-LibreOffice WASM conversions require `SharedArrayBuffer`, which needs these response headers on all pages:
-
-- `Cross-Origin-Embedder-Policy: require-corp`
-- `Cross-Origin-Opener-Policy: same-origin`
-
-The pre-compressed `.wasm.gz` and `.data.gz` files also need `Content-Encoding: gzip` so the browser decompresses them.
-
-Add these to your `vercel.json`:
-
-```json
-{
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "Cross-Origin-Embedder-Policy", "value": "require-corp" },
-        { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" },
-        { "key": "Cross-Origin-Resource-Policy", "value": "cross-origin" }
-      ]
-    },
-    {
-      "source": "/libreoffice-wasm/soffice.wasm.gz",
-      "headers": [
-        { "key": "Content-Type", "value": "application/wasm" },
-        { "key": "Content-Encoding", "value": "gzip" }
-      ]
-    },
-    {
-      "source": "/libreoffice-wasm/soffice.data.gz",
-      "headers": [
-        { "key": "Content-Type", "value": "application/octet-stream" },
-        { "key": "Content-Encoding", "value": "gzip" }
-      ]
-    }
-  ]
-}
-```
-
-To verify, open DevTools Console and run `console.log(window.crossOriginIsolated)` — it should return `true`.

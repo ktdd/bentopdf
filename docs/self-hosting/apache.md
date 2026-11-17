@@ -76,24 +76,9 @@ Create `/etc/apache2/sites-available/bentopdf.conf`:
         ExpiresByType image/svg+xml "access plus 1 year"
     </IfModule>
 
-    # Required headers for SharedArrayBuffer (LibreOffice WASM)
-    Header always set Cross-Origin-Embedder-Policy "require-corp"
-    Header always set Cross-Origin-Opener-Policy "same-origin"
-    Header always set Cross-Origin-Resource-Policy "cross-origin"
-
     # Security headers
     Header always set X-Frame-Options "SAMEORIGIN"
     Header always set X-Content-Type-Options "nosniff"
-
-    # Pre-compressed LibreOffice WASM files
-    <FilesMatch "soffice\.wasm\.gz$">
-        ForceType application/wasm
-        Header set Content-Encoding "gzip"
-    </FilesMatch>
-    <FilesMatch "soffice\.data\.gz$">
-        ForceType application/octet-stream
-        Header set Content-Encoding "gzip"
-    </FilesMatch>
 </VirtualHost>
 ```
 
@@ -240,32 +225,6 @@ Check that mod_rewrite is enabled:
 ```bash
 sudo a2enmod rewrite
 ```
-
-### Word/ODT/Excel to PDF Not Working
-
-LibreOffice WASM requires `SharedArrayBuffer`, which needs these headers:
-
-```apache
-Header always set Cross-Origin-Embedder-Policy "require-corp"
-Header always set Cross-Origin-Opener-Policy "same-origin"
-```
-
-It also needs a secure context. `http://localhost` works for local testing, but `http://192.168.x.x` or other LAN IPs usually require HTTPS. If the headers are present but `window.crossOriginIsolated` is still `false`, check whether the page is being opened over plain HTTP on a non-loopback origin.
-
-The pre-compressed `.wasm.gz` and `.data.gz` files also need correct `Content-Encoding`:
-
-```apache
-<FilesMatch "soffice\.wasm\.gz$">
-    ForceType application/wasm
-    Header set Content-Encoding "gzip"
-</FilesMatch>
-<FilesMatch "soffice\.data\.gz$">
-    ForceType application/octet-stream
-    Header set Content-Encoding "gzip"
-</FilesMatch>
-```
-
-Ensure `mod_headers` is enabled: `sudo a2enmod headers`
 
 ### Permission Denied
 

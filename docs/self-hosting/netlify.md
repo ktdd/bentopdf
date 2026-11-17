@@ -33,55 +33,25 @@ Create `netlify.toml` in your project root:
 
 ```toml
 [build]
-  command = "npm run build"
-  publish = "dist"
+command = "npm run build"
+publish = "dist"
 
 [build.environment]
-  NODE_VERSION = "18"
-
-# Required security headers for SharedArrayBuffer (used by LibreOffice WASM)
-[[headers]]
-  for = "/*"
-  [headers.values]
-    Cross-Origin-Embedder-Policy = "require-corp"
-    Cross-Origin-Opener-Policy = "same-origin"
-    Cross-Origin-Resource-Policy = "cross-origin"
-
-# Pre-compressed LibreOffice WASM binary - must be served with Content-Encoding
-[[headers]]
-  for = "/libreoffice-wasm/soffice.wasm.gz"
-  [headers.values]
-    Content-Type = "application/wasm"
-    Content-Encoding = "gzip"
-    Cache-Control = "public, max-age=31536000, immutable"
-
-# Pre-compressed LibreOffice WASM data - must be served with Content-Encoding
-[[headers]]
-  for = "/libreoffice-wasm/soffice.data.gz"
-  [headers.values]
-    Content-Type = "application/octet-stream"
-    Content-Encoding = "gzip"
-    Cache-Control = "public, max-age=31536000, immutable"
+NODE_VERSION = "18"
 
 # Cache other WASM files
 [[headers]]
-  for = "*.wasm"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-    Content-Type = "application/wasm"
+for = "*.wasm"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+Content-Type = "application/wasm"
 
 # SPA routing
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+from = "/*"
+to = "/index.html"
+status = 200
 ```
-
-::: warning Important
-The `Cross-Origin-Embedder-Policy` and `Cross-Origin-Opener-Policy` headers are required for Word/ODT/Excel/PowerPoint to PDF conversions. Without them, `SharedArrayBuffer` is unavailable and the LibreOffice WASM engine will fail to initialize.
-
-The `Content-Encoding: gzip` headers on the `.wasm.gz` and `.data.gz` files tell the browser to decompress them automatically. Without these, the browser receives raw gzip bytes and WASM compilation fails.
-:::
 
 ## Environment Variables
 
@@ -131,7 +101,7 @@ Check Node version compatibility:
 
 ```toml
 [build.environment]
-  NODE_VERSION = "20"
+NODE_VERSION = "20"
 ```
 
 ### Slow Initial Load

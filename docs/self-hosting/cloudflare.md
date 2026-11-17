@@ -35,24 +35,6 @@ Add these in Settings → Environment variables:
 Create `_headers` in your `public` folder:
 
 ```
-# Required security headers for SharedArrayBuffer (used by LibreOffice WASM)
-/*
-  Cross-Origin-Embedder-Policy: require-corp
-  Cross-Origin-Opener-Policy: same-origin
-  Cross-Origin-Resource-Policy: cross-origin
-
-# Pre-compressed LibreOffice WASM binary
-/libreoffice-wasm/soffice.wasm.gz
-  Content-Type: application/wasm
-  Content-Encoding: gzip
-  Cache-Control: public, max-age=31536000, immutable
-
-# Pre-compressed LibreOffice WASM data
-/libreoffice-wasm/soffice.data.gz
-  Content-Type: application/octet-stream
-  Content-Encoding: gzip
-  Cache-Control: public, max-age=31536000, immutable
-
 # Cache WASM files aggressively
 /*.wasm
   Cache-Control: public, max-age=31536000, immutable
@@ -62,10 +44,6 @@ Create `_headers` in your `public` folder:
 /sw.js
   Cache-Control: no-cache
 ```
-
-::: warning Important
-The `Cross-Origin-Embedder-Policy` and `Cross-Origin-Opener-Policy` headers are required for Word/ODT/Excel/PowerPoint to PDF conversions. Without them, `SharedArrayBuffer` is unavailable and the LibreOffice WASM engine will fail to initialize.
-:::
 
 Create `_redirects` for SPA routing:
 

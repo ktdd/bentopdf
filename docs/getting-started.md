@@ -37,9 +37,6 @@ docker compose up -d
 
 Then open `http://localhost:3000` in your browser.
 
-> [!NOTE]
-> If you are preparing an air-gapped OCR deployment, you must host the OCR text-layer fonts internally in addition to the Tesseract worker, core runtime, and traineddata files. The full setup is documented in [Self-Hosting](/self-hosting/), including `VITE_OCR_FONT_BASE_URL` and the bundled `ocr-fonts/` directory.
-
 ### Option 3: Build from Source
 
 ```bash
@@ -62,7 +59,7 @@ npm run dev
 | **Convert from PDF** | JPG, PNG, Text, Excel, SVG, and more                            |
 | **Edit & Annotate**  | Sign, Highlight, Redact, Fill Forms, Add Stamps                 |
 | **Organize**         | Merge, Split, Rotate, Delete Pages, Reorder                     |
-| **Optimize**         | Compress, Repair, Flatten, OCR                                  |
+| **Optimize**         | Compress, Repair, Flatten                                       |
 | **Security**         | Encrypt, Decrypt, Remove Restrictions                           |
 
 ## Browser Support
