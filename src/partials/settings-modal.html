@@ -8,7 +8,7 @@
     <div class="p-6 border-b border-gray-700 flex justify-between items-center">
       <h3 class="text-xl font-bold text-white flex items-center gap-2">
         <i data-lucide="settings" class="w-6 h-6 text-indigo-400"></i>
-        <span data-i18n="settings.title">Settings</span>
+        <span>Settings</span>
       </h3>
       <button
         id="close-shortcuts-modal"
@@ -25,14 +25,14 @@
         class="flex-1 py-3 text-sm font-medium bg-indigo-600 text-white"
       >
         <i data-lucide="keyboard" class="inline-block w-4 h-4 mr-1"></i>
-        <span data-i18n="settings.shortcuts">Shortcuts</span>
+        <span>Shortcuts</span>
       </button>
       <button
         id="preferences-tab-btn"
         class="flex-1 py-3 text-sm font-medium text-gray-300 hover:text-white"
       >
         <i data-lucide="sliders" class="inline-block w-4 h-4 mr-1"></i>
-        <span data-i18n="settings.preferences">Preferences</span>
+        <span>Preferences</span>
       </button>
     </div>
 
@@ -47,7 +47,7 @@
           <input
             type="text"
             id="shortcut-search"
-            data-i18n-placeholder="settings.searchShortcuts"
+
             placeholder="Search shortcuts..."
             class="w-full bg-gray-900 border border-gray-700 text-white rounded-lg pl-10 pr-4 py-2 focus:ring-indigo-500 focus:border-indigo-500"
           />
@@ -62,13 +62,13 @@
           class="w-5 h-5 text-indigo-400 flex-shrink-0 mt-0.5"
         ></i>
         <p class="text-sm text-indigo-200">
-          <span data-i18n="settings.shortcutsInfo"
+          <span
             >Press and hold keys to set a shortcut. Changes are
             <strong>auto-saved</strong>.</span
           >
           <br /><span
             class="text-yellow-300"
-            data-i18n="settings.shortcutsWarning"
+
             >⚠️ Avoid common browser shortcuts (Cmd/Ctrl+W, Cmd/Ctrl+T,
             Cmd/Ctrl+N etc.) as they may not work reliably.</span
           >
@@ -87,7 +87,7 @@
     >
       <h4
         class="text-lg font-semibold text-white mb-4"
-        data-i18n="settings.displayPreferences"
+
       >
         Display Preferences
       </h4>
@@ -100,13 +100,13 @@
             <label
               for="full-width-toggle"
               class="text-sm font-medium text-gray-200 cursor-pointer"
-              data-i18n="settings.fullWidthMode"
+
             >
               Full Width Mode
             </label>
             <p
               class="text-xs text-gray-400 mt-1"
-              data-i18n="settings.fullWidthDescription"
+
             >
               Use the full screen width for all tools instead of a centered
               container
@@ -131,13 +131,13 @@
             <label
               for="compact-mode-toggle"
               class="text-sm font-medium text-gray-200 cursor-pointer"
-              data-i18n="settings.compactMode"
+
             >
               Compact Mode
             </label>
             <p
               class="text-xs text-gray-400 mt-1"
-              data-i18n="settings.compactModeDescription"
+
             >
               Display tools as a compact list instead of cards
             </p>
@@ -162,13 +162,13 @@
           <div class="flex-1">
             <span
               class="text-sm font-medium text-gray-200 group-hover:text-white"
-              data-i18n="settings.advancedSettings"
+
             >
               Advanced Settings
             </span>
             <p
               class="text-xs text-gray-400 mt-1"
-              data-i18n="settings.advancedSettingsDescription"
+
             >
               Configure external processing modules (PyMuPDF, Ghostscript,
               CoherentPDF)
@@ -191,20 +191,20 @@
           class="text-gray-400 hover:text-white text-sm font-medium flex items-center gap-1 transition-colors"
         >
           <i data-lucide="upload" class="w-4 h-4"></i>
-          <span data-i18n="settings.import">Import</span>
+          <span>Import</span>
         </button>
         <button
           id="export-shortcuts-btn"
           class="text-gray-400 hover:text-white text-sm font-medium flex items-center gap-1 transition-colors"
         >
           <i data-lucide="download" class="w-4 h-4"></i>
-          <span data-i18n="settings.export">Export</span>
+          <span>Export</span>
         </button>
       </div>
       <div id="preferences-tab-footer" class="hidden w-full">
         <p
           class="text-xs text-gray-400 text-center"
-          data-i18n="settings.settingsAutoSaved"
+
         >
           Settings are automatically saved
         </p>
@@ -213,7 +213,7 @@
         id="reset-shortcuts-btn"
         class="text-red-400 hover:text-red-300 text-sm font-medium transition-colors"
       >
-        <span data-i18n="settings.resetToDefaults">Reset to Defaults</span>
+        <span>Reset to Defaults</span>
       </button>
     </div>
   </div>

@@ -10,7 +10,7 @@ import {
 } from '../utils/pdf-operations.js';
 import { loadPdfDocument } from '../utils/load-pdf-document.js';
 
-import { onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../utils/page-ready.js';
 
 interface PageState {
   file: File | null;

@@ -12,7 +12,7 @@ import * as pdfjsLib from 'pdfjs-dist';
 import { loadPdfDocument } from '../utils/load-pdf-document.js';
 import '../utils/setup-pdf-worker.js';
 
-import { onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../utils/page-ready.js';
 
 interface RotateState {
   file: File | null;

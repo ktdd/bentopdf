@@ -2,7 +2,6 @@ import type { FileInputOptions } from "@/types";
 import { createIcons, icons } from "lucide";
 import * as pdfjsLib from "pdfjs-dist";
 import Sortable from "sortablejs";
-import { t } from "./i18n/i18n";
 import { resetState } from "./state.js";
 import { formatBytes, getPDFDocument } from "./utils/helpers.js";
 import { initPagePreview } from "./utils/page-preview.js";
@@ -43,7 +42,7 @@ export const dom = {
     warningConfirmBtn: document.getElementById("warning-confirm-btn"),
 };
 
-export const showLoader = (text = t("common.loading"), progress?: number) => {
+export const showLoader = (text = "Loading...", progress?: number) => {
     if (dom.loaderText) dom.loaderText.textContent = text;
 
     // Add or update progress bar if progress is provided
@@ -194,7 +193,7 @@ export const renderPageThumbnails = async (toolId: string, pdfDoc: { save: () =>
     const currentRenderId = Date.now();
     container.dataset.renderId = currentRenderId.toString();
 
-    showLoader(t("multiTool.renderingTitle"));
+    showLoader("Rendering page previews");
 
     const pdfData = await pdfDoc.save();
     const pdf = await getPDFDocument({ data: pdfData }).promise;
@@ -412,7 +411,7 @@ export const renderPageThumbnails = async (toolId: string, pdfDoc: { save: () =>
         initPagePreview(container, pdf);
     } catch (error) {
         console.error("Error rendering page thumbnails:", error);
-        showAlert(t("multiTool.error"), t("multiTool.errorRendering"));
+        showAlert("Error", "Failed to render page thumbnails");
     } finally {
         hideLoader();
     }
@@ -453,9 +452,9 @@ const createFileInputHTML = (options: FileInputOptions = {}) => {
         <div id="drop-zone" class="relative flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-600 rounded-xl cursor-pointer bg-gray-900 hover:bg-gray-700 transition-colors duration-300">
             <div class="flex flex-col items-center justify-center pt-5 pb-6">
                 <i class="ph ph-upload-simple text-4xl mb-3 text-gray-400"></i>
-                <p class="mb-2 text-sm text-gray-400"><span class="font-semibold">${t("upload.clickToSelect")}</span> ${t("upload.orDragAndDrop")}</p>
-                <p class="text-xs text-gray-500">${multiple ? t("upload.pdfOrImages") : "A single PDF file"}</p>
-                <p class="text-xs text-gray-500">${t("upload.filesNeverLeave")}</p>
+                <p class="mb-2 text-sm text-gray-400"><span class="font-semibold">${"Click to select a file"}</span> ${"or drag and drop"}</p>
+                <p class="text-xs text-gray-500">${multiple ? "PDFs or Images" : "A single PDF file"}</p>
+                <p class="text-xs text-gray-500">${"Your files never leave your device."}</p>
             </div>
             <input id="file-input" type="file" class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer" ${multiple} accept="${acceptedFiles}">
         </div>
@@ -466,10 +465,10 @@ const createFileInputHTML = (options: FileInputOptions = {}) => {
             <!-- NEW: Add control buttons for multi-file uploads -->
             <div id="file-controls" class="hidden mt-4 flex gap-3">
                 <button id="add-more-btn" class="btn bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-lg flex items-center gap-2">
-                    <i data-lucide="plus"></i> ${t("upload.addMore")}
+                    <i data-lucide="plus"></i> ${"Add More Files"}
                 </button>
                 <button id="clear-files-btn" class="btn bg-gray-700 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg flex items-center gap-2">
-                    <i data-lucide="trash-2"></i> ${t("upload.clearAll")}
+                    <i data-lucide="trash-2"></i> ${"Clear All"}
                 </button>
             </div>
         `

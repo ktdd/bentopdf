@@ -6,7 +6,7 @@ import { PDFName, PDFString } from 'pdf-lib';
 import { loadPdfWithPasswordPrompt } from '../utils/password-prompt.js';
 import { loadPdfDocument } from '../utils/load-pdf-document.js';
 
-import { onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../utils/page-ready.js';
 
 const pageState: EditMetadataState = {
   file: null,

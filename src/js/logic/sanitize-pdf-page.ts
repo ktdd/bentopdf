@@ -5,7 +5,7 @@ import { SanitizePdfState } from '@/types';
 import { sanitizePdf } from '../utils/sanitize.js';
 import { loadPdfWithPasswordPrompt } from '../utils/password-prompt.js';
 
-import { onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../utils/page-ready.js';
 
 const pageState: SanitizePdfState = {
   file: null,

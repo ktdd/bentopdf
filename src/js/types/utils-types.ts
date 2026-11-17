@@ -22,12 +22,6 @@ export interface WindowWithLucide {
   };
 }
 
-export interface WindowWithI18next {
-  i18next?: {
-    t(key: string): string;
-  };
-}
-
 export interface GlobalScopeWithGhostscript {
   loadGS?: (config: { baseUrl: string }) => Promise<GhostscriptDynamicInstance>;
   GhostscriptWASM?: new (url: string) => GhostscriptDynamicInstance;

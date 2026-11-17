@@ -27,10 +27,8 @@ import { fullEmoji } from '@mdit/plugin-emoji';
 import { tasklist } from '@mdit/plugin-tasklist';
 import { katex as katexPlugin } from '@mdit/plugin-katex-slim';
 import { useMarkdownPlugins } from './markdown-plugins';
-import { applyTranslations, trHtml } from '../i18n/i18n';
 import type {
   WindowWithLucide,
-  WindowWithI18next,
   MarkdownItOptions,
   MarkdownItToken,
   MarkdownItRendererSelf,
@@ -404,36 +402,36 @@ export class MarkdownEditor {
       <div class="md-editor-modal-overlay" id="mdSettingsModal" style="display: none;">
         <div class="md-editor-modal">
           <div class="md-editor-modal-header">
-            <h2 class="md-editor-modal-title" data-i18n="tools:markdownToPdf.settingsTitle">Markdown Settings</h2>
+            <h2 class="md-editor-modal-title">Markdown Settings</h2>
             <button class="md-editor-modal-close" id="mdCloseSettings">
               <i data-lucide="x" width="20" height="20"></i>
             </button>
           </div>
           <div class="md-editor-settings-group">
-            <h3 data-i18n="tools:markdownToPdf.settingsPreset">Preset</h3>
+            <h3>Preset</h3>
             <select id="mdPreset">
-              <option value="default" selected data-i18n="tools:markdownToPdf.presetDefault">Default (GFM-like)</option>
-              <option value="commonmark" data-i18n="tools:markdownToPdf.presetCommonmark">CommonMark (strict)</option>
-              <option value="zero" data-i18n="tools:markdownToPdf.presetZero">Minimal (no features)</option>
+              <option value="default" selected>Default (GFM-like)</option>
+              <option value="commonmark">CommonMark (strict)</option>
+              <option value="zero">Minimal (no features)</option>
             </select>
           </div>
           <div class="md-editor-settings-group">
-            <h3 data-i18n="tools:markdownToPdf.settingsOptions">Markdown Options</h3>
+            <h3>Markdown Options</h3>
             <label class="md-editor-checkbox">
               <input type="checkbox" id="mdOptHtml" ${this.mdOptions.html ? 'checked' : ''} />
-              <span data-i18n="tools:markdownToPdf.optAllowHtml">Allow HTML tags</span>
+              <span>Allow HTML tags</span>
             </label>
             <label class="md-editor-checkbox">
               <input type="checkbox" id="mdOptBreaks" ${this.mdOptions.breaks ? 'checked' : ''} />
-              <span data-i18n="tools:markdownToPdf.optBreaks">Convert newlines to &lt;br&gt;</span>
+              <span>Convert newlines to &lt;br&gt;</span>
             </label>
             <label class="md-editor-checkbox">
               <input type="checkbox" id="mdOptLinkify" ${this.mdOptions.linkify ? 'checked' : ''} />
-              <span data-i18n="tools:markdownToPdf.optLinkify">Auto-convert URLs to links</span>
+              <span>Auto-convert URLs to links</span>
             </label>
             <label class="md-editor-checkbox">
               <input type="checkbox" id="mdOptTypographer" ${this.mdOptions.typographer ? 'checked' : ''} />
-              <span data-i18n="tools:markdownToPdf.optTypographer">Typographer (smart quotes, etc.)</span>
+              <span>Typographer (smart quotes, etc.)</span>
             </label>
           </div>
         </div>
@@ -445,24 +443,24 @@ export class MarkdownEditor {
               <input type="file" accept=".md,.markdown,.txt" id="mdFileInput" style="display: none;" />
               <button class="md-editor-btn md-editor-btn-secondary" id="mdUpload">
                 <i data-lucide="upload"></i>
-                <span data-i18n="tools:markdownToPdf.btnUpload">Select</span>
+                <span>Select</span>
               </button>
               <div class="theme-toggle">
                 <i data-lucide="moon" width="16" height="16"></i>
                 <div class="theme-toggle-slider active" id="themeToggle"></div>
                 <i data-lucide="sun" width="16" height="16"></i>
               </div>
-              <button class="md-editor-btn md-editor-btn-secondary" id="mdSyncScroll" title="${trHtml('Toggle sync scroll')}">
+              <button class="md-editor-btn md-editor-btn-secondary" id="mdSyncScroll" title="${"Toggle sync scroll"}">
                 <i data-lucide="git-compare"></i>
-                <span data-i18n="tools:markdownToPdf.btnSyncScroll">Sync Scroll</span>
+                <span>Sync Scroll</span>
               </button>
               <button class="md-editor-btn md-editor-btn-secondary" id="mdSettings">
                 <i data-lucide="settings"></i>
-                <span data-i18n="tools:markdownToPdf.btnSettings">Settings</span>
+                <span>Settings</span>
               </button>
               <button class="md-editor-btn md-editor-btn-primary" id="mdExport">
                 <i data-lucide="download"></i>
-                <span data-i18n="tools:markdownToPdf.btnExportPdf">Export PDF</span>
+                <span>Export PDF</span>
               </button>
             </div>
           </div>
@@ -470,13 +468,13 @@ export class MarkdownEditor {
           <div class="md-editor-main">
             <div class="md-editor-pane">
               <div class="md-editor-pane-header">
-                <span data-i18n="tools:markdownToPdf.paneMarkdown">Markdown</span>
+                <span>Markdown</span>
               </div>
               <textarea class="md-editor-textarea" id="mdTextarea" spellcheck="false"></textarea>
             </div>
             <div class="md-editor-pane">
               <div class="md-editor-pane-header">
-                <span data-i18n="tools:markdownToPdf.panePreview">Preview</span>
+                <span>Preview</span>
               </div>
               <div class="md-editor-preview" id="mdPreview"></div>
             </div>
@@ -490,7 +488,6 @@ export class MarkdownEditor {
     this.preview = document.getElementById('mdPreview') as HTMLElement;
 
     this.setupEventListeners();
-    this.applyI18n();
 
     // Initialize Lucide icons
     if (typeof (window as WindowWithLucide).lucide !== 'undefined') {
@@ -849,29 +846,6 @@ export class MarkdownEditor {
   private exportPdf(): void {
     // Use browser's native print functionality
     window.print();
-  }
-
-  private applyI18n(): void {
-    // Apply translations to elements within this component
-    applyTranslations();
-
-    // Special handling for select options (data-i18n on options doesn't work with applyTranslations)
-    const presetSelect = document.getElementById(
-      'mdPreset'
-    ) as HTMLSelectElement;
-    if (presetSelect) {
-      const options = presetSelect.querySelectorAll('option[data-i18n]');
-      options.forEach((option) => {
-        const key = option.getAttribute('data-i18n');
-        if (key) {
-          // Use i18next directly for option text
-          const translated = (window as WindowWithI18next).i18next?.t(key);
-          if (translated && translated !== key) {
-            option.textContent = translated;
-          }
-        }
-      });
-    }
   }
 
   public destroy(): void {

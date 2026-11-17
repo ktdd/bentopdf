@@ -10,7 +10,6 @@ import {
   showWasmRequiredDialog,
   WasmProvider,
 } from '../utils/wasm-provider.js';
-import { initI18n, t } from '../i18n/i18n';
 
 const worker = new Worker(
   import.meta.env.BASE_URL + 'workers/json-to-pdf.worker.js'
@@ -75,7 +74,7 @@ function updateFileList() {
 
 async function convertJSONsToPDF() {
   if (selectedFiles.length === 0) {
-    showStatus(t('tools:jsonToPdf.status.selectAtLeastOne'), 'error');
+    showStatus("Please select at least 1 JSON file", 'error');
     return;
   }
 
@@ -87,13 +86,13 @@ async function convertJSONsToPDF() {
 
   try {
     convertBtn.disabled = true;
-    showStatus(t('tools:jsonToPdf.status.readingFiles'), 'info');
+    showStatus("Reading files (Main Thread)...", 'info');
 
     const fileBuffers = await Promise.all(
       selectedFiles.map((file) => readFileAsArrayBuffer(file))
     );
 
-    showStatus(t('tools:jsonToPdf.status.converting'), 'info');
+    showStatus("Converting JSON files to PDFs...", 'info');
 
     worker.postMessage(
       {
@@ -107,10 +106,7 @@ async function convertJSONsToPDF() {
   } catch (error) {
     console.error('Error reading files:', error);
     showStatus(
-      t('tools:jsonToPdf.status.readError', {
-        message:
-          error instanceof Error ? error.message : t('common.unknownError'),
-      }),
+      `Error reading files: ${error instanceof Error ? error.message : "Unknown error"}`,
       'error'
     );
     convertBtn.disabled = false;
@@ -127,7 +123,7 @@ worker.onmessage = async (e: MessageEvent) => {
     }>;
 
     try {
-      showStatus(t('tools:jsonToPdf.status.creatingZip'), 'info');
+      showStatus("Creating ZIP file...", 'info');
 
       const zip = new JSZip();
       pdfFiles.forEach(({ name, data }) => {
@@ -143,7 +139,7 @@ worker.onmessage = async (e: MessageEvent) => {
       a.download = 'jsons-to-pdf.zip';
       downloadFile(zipBlob, 'jsons-to-pdf.zip');
 
-      showStatus(t('tools:jsonToPdf.status.success'), 'success');
+      showStatus("JSON files converted to PDF successfully! ZIP download started.", 'success');
 
       selectedFiles = [];
       jsonFilesInput.value = '';
@@ -157,18 +153,15 @@ worker.onmessage = async (e: MessageEvent) => {
     } catch (error) {
       console.error('Error creating ZIP:', error);
       showStatus(
-        t('tools:jsonToPdf.status.zipError', {
-          message:
-            error instanceof Error ? error.message : t('common.unknownError'),
-        }),
+        `Error creating ZIP: ${error instanceof Error ? error.message : "Unknown error"}`,
         'error'
       );
     }
   } else if (e.data.status === 'error') {
-    const errorMessage = e.data.message || t('common.unknownError');
+    const errorMessage = e.data.message || "Unknown error";
     console.error('Worker Error:', errorMessage);
     showStatus(
-      t('tools:jsonToPdf.status.workerError', { message: errorMessage }),
+      `Worker Error: ${errorMessage}`,
       'error'
     );
   }
@@ -180,9 +173,8 @@ if (backToToolsBtn) {
   });
 }
 
-// Initialize after i18n is ready so the default status is translated.
+// Initialize the page controls.
 void (async () => {
-  await initI18n();
 
   jsonFilesInput = document.getElementById('jsonFiles') as HTMLInputElement;
   convertBtn = document.getElementById('convertBtn') as HTMLButtonElement;
@@ -195,12 +187,10 @@ void (async () => {
       updateFileList();
 
       if (selectedFiles.length === 0) {
-        showStatus(t('tools:jsonToPdf.status.selectAtLeastOne'), 'info');
+        showStatus("Please select at least 1 JSON file", 'info');
       } else {
         showStatus(
-          t('tools:jsonToPdf.status.selectedReady', {
-            count: selectedFiles.length,
-          }),
+          `${selectedFiles.length} file(s) selected. Ready to convert!`,
           'info'
         );
       }
@@ -209,6 +199,6 @@ void (async () => {
 
   convertBtn.addEventListener('click', convertJSONsToPDF);
 
-  showStatus(t('tools:jsonToPdf.status.getStarted'), 'info');
+  showStatus("Select JSON files to get started", 'info');
   initializeGlobalShortcuts();
 })();

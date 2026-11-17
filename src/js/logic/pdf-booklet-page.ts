@@ -7,7 +7,7 @@ import { loadPdfDocument } from "../utils/load-pdf-document.js";
 import { loadPdfWithPasswordPrompt } from "../utils/password-prompt.js";
 import "../utils/setup-pdf-worker.js";
 
-import { onPageReady } from "../i18n/i18n.js";
+import { onPageReady } from '../utils/page-ready.js';
 
 interface BookletState {
     file: File | null;

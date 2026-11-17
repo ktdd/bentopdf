@@ -1,5 +1,5 @@
 import { showLoader, hideLoader, showAlert } from '../ui.js';
-import { t, onPageReady } from '../i18n/i18n';
+import { onPageReady } from '../utils/page-ready.js';
 import { createIcons, icons } from 'lucide';
 import * as pdfjsLib from 'pdfjs-dist';
 import {
@@ -81,7 +81,7 @@ onPageReady(() => {
 
         const metaSpan = document.createElement('div');
         metaSpan.className = 'text-xs text-gray-400';
-        metaSpan.textContent = `${formatBytes(file.size)} • ${t('common.loadingPageCount')}`; // Placeholder
+        metaSpan.textContent = `${formatBytes(file.size)} • ${"Loading pages..."}`; // Placeholder
 
         infoContainer.append(nameSpan, metaSpan);
 

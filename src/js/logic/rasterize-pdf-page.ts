@@ -1,5 +1,5 @@
 import { showLoader, hideLoader, showAlert } from '../ui.js';
-import { t, onPageReady } from '../i18n/i18n';
+import { onPageReady } from '../utils/page-ready.js';
 import {
   downloadFile,
   readFileAsArrayBuffer,
@@ -53,7 +53,7 @@ onPageReady(() => {
 
         const metaSpan = document.createElement('div');
         metaSpan.className = 'text-xs text-gray-400';
-        metaSpan.textContent = `${formatBytes(file.size)} • ${t('common.loadingPageCount')}`;
+        metaSpan.textContent = `${formatBytes(file.size)} • ${"Loading pages..."}`;
 
         infoContainer.append(nameSpan, metaSpan);
 

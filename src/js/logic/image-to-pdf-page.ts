@@ -19,7 +19,7 @@ import {
   preprocessImageFile,
 } from '@/js/utils/image-input-utils.js';
 
-import { onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../utils/page-ready.js';
 
 let files: File[] = [];
 let pymupdf: PyMuPDFInstance | null = null;

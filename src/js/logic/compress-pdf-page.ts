@@ -28,7 +28,7 @@ import {
   verifyHyperPassword,
 } from '../utils/compress.js';
 
-import { onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../utils/page-ready.js';
 
 type OptionChangeHandler = (
   key: keyof HyperCompressOptions,

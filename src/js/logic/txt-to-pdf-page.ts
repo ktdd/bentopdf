@@ -8,7 +8,7 @@ import {
 import { createIcons, icons } from 'lucide';
 import { loadPyMuPDF } from '../utils/pymupdf-loader.js';
 
-import { onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../utils/page-ready.js';
 
 let files: File[] = [];
 let currentMode: 'upload' | 'text' = 'upload';

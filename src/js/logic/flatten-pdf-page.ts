@@ -14,7 +14,7 @@ import {
   removeUnreferencedObjects,
 } from '../utils/load-pdf-document.js';
 
-import { onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../utils/page-ready.js';
 
 const pageState: FlattenPdfState = {
   files: [],

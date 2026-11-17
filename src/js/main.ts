@@ -4,7 +4,6 @@ import { createIcons, icons } from "lucide";
 import * as pdfjsLib from "pdfjs-dist";
 import "../css/styles.css";
 import { categories } from "./config/tools.js";
-import { applyTranslations, initI18n, rewriteLinks, t } from "./i18n/index.js";
 import { ShortcutsManager } from "./logic/shortcuts.js";
 import { dom, hideAlert, switchView } from "./ui.js";
 import { isCurrentPageDisabled, isToolDisabled, loadRuntimeConfig } from "./utils/disabled-tools.js";
@@ -27,18 +26,14 @@ const FAVORITE_STAR_PATHS = [
 declare const __BRAND_NAME__: string;
 
 const init = async () => {
-    await initI18n();
     await loadRuntimeConfig();
-    applyTranslations();
 
     if (isCurrentPageDisabled()) {
-        document.title = t("disabledTool.title") || "Tool Unavailable";
+        document.title = "Tool Unavailable";
         const main = document.querySelector("main") || document.body;
-        const heading = t("disabledTool.heading") || "This tool has been disabled";
-        const message =
-            t("disabledTool.message") ||
-            "This tool is not available in your deployment. Contact your administrator for more information.";
-        const backHome = t("disabledTool.backHome") || "Back to Home";
+        const heading = "This tool has been disabled";
+        const message = "This tool is not available in your deployment. Contact your administrator for more information.";
+        const backHome = "Back to Home";
         main.innerHTML = `
       <div class="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
         <i class="ph ph-prohibit text-6xl text-gray-500 mb-4"></i>
@@ -52,18 +47,18 @@ const init = async () => {
 
     const hideBrandingSections = () => {
         const brandName = __BRAND_NAME__ || "BentoPDF";
-        document.title = `${brandName} - ${t("simpleMode.title")}`;
+        document.title = `${brandName} - ${"PDF Tools"}`;
 
         const toolsHeader = document.getElementById("tools-header");
         if (toolsHeader) {
             const title = toolsHeader.querySelector("h2");
             const subtitle = toolsHeader.querySelector("p");
             if (title) {
-                title.textContent = t("simpleMode.title");
+                title.textContent = "PDF Tools";
                 title.className = "text-4xl md:text-5xl font-bold text-white mb-3";
             }
             if (subtitle) {
-                subtitle.textContent = t("simpleMode.subtitle");
+                subtitle.textContent = "Select a tool to get started";
                 subtitle.className = "text-lg text-gray-400";
             }
         }
@@ -90,139 +85,6 @@ const init = async () => {
             keyboardShortcutBtn.textContent = navigator.userAgent.toUpperCase().includes("MAC") ? "⌘ + K" : "Ctrl + K";
         }
     }
-
-    const categoryTranslationKeys: Record<string, string> = {
-        Favorites: "tools:categories.favorites",
-        "Popular Tools": "tools:categories.popularTools",
-        "Edit & Annotate": "tools:categories.editAnnotate",
-        "Convert to PDF": "tools:categories.convertToPdf",
-        "Convert from PDF": "tools:categories.convertFromPdf",
-        "Organize & Manage": "tools:categories.organizeManage",
-        "Optimize & Repair": "tools:categories.optimizeRepair",
-        "Secure PDF": "tools:categories.securePdf",
-    };
-
-    const toolTranslationKeys: Record<string, string> = {
-        "PDF Multi Tool": "tools:pdfMultiTool",
-        "Merge PDF": "tools:mergePdf",
-        "Split PDF": "tools:splitPdf",
-        "Compress PDF": "tools:compressPdf",
-        "PDF Editor": "tools:pdfEditor",
-        "Edit PDF Text": "tools:editPdfText",
-        "JPG to PDF": "tools:jpgToPdf",
-        "Sign PDF": "tools:signPdf",
-        "Crop PDF": "tools:cropPdf",
-        "Extract Pages": "tools:extractPages",
-        "Duplicate & Organize": "tools:duplicateOrganize",
-        "Delete Pages": "tools:deletePages",
-        "Edit Bookmarks": "tools:editBookmarks",
-        "Table of Contents": "tools:tableOfContents",
-        "Page Numbers": "tools:pageNumbers",
-        "Add Page Labels": "tools:addPageLabels",
-        "Add Watermark": "tools:addWatermark",
-        "Header & Footer": "tools:headerFooter",
-        "Invert Colors": "tools:invertColors",
-        "Background Color": "tools:backgroundColor",
-        "Change Text Color": "tools:changeTextColor",
-        "Add Stamps": "tools:addStamps",
-        "Bates Numbering": "tools:batesNumbering",
-        "Remove Annotations": "tools:removeAnnotations",
-        "PDF Form Filler": "tools:pdfFormFiller",
-        "Create PDF Form": "tools:createPdfForm",
-        "Remove Blank Pages": "tools:removeBlankPages",
-        "Images to PDF": "tools:imageToPdf",
-        "PNG to PDF": "tools:pngToPdf",
-        "WebP to PDF": "tools:webpToPdf",
-        "SVG to PDF": "tools:svgToPdf",
-        "BMP to PDF": "tools:bmpToPdf",
-        "HEIC to PDF": "tools:heicToPdf",
-        "TIFF to PDF": "tools:tiffToPdf",
-        "Text to PDF": "tools:textToPdf",
-        "JSON to PDF": "tools:jsonToPdf",
-        "PDF to JPG": "tools:pdfToJpg",
-        "PDF to PNG": "tools:pdfToPng",
-        "PDF to WebP": "tools:pdfToWebp",
-        "PDF to BMP": "tools:pdfToBmp",
-        "PDF to TIFF": "tools:pdfToTiff",
-        "PDF to CBZ": "tools:pdfToCbz",
-        "PDF to Greyscale": "tools:pdfToGreyscale",
-        "PDF to JSON": "tools:pdfToJson",
-        "Alternate & Mix Pages": "tools:alternateMerge",
-        "Duplex Collate": "tools:duplexCollate",
-        "PDF Overlay": "tools:pdfOverlay",
-        "Organize & Duplicate": "tools:duplicateOrganize",
-        "Add Attachments": "tools:addAttachments",
-        "Extract Attachments": "tools:extractAttachments",
-        "Edit Attachments": "tools:editAttachments",
-        "Divide Pages": "tools:dividePages",
-        "Add Blank Page": "tools:addBlankPage",
-        "Reverse Pages": "tools:reversePages",
-        "Rotate PDF": "tools:rotatePdf",
-        "Rotate by Custom Degrees": "tools:rotateCustom",
-        "N-Up PDF": "tools:nUpPdf",
-        "Combine to Single Page": "tools:combineToSinglePage",
-        "View Metadata": "tools:viewMetadata",
-        "Edit Metadata": "tools:editMetadata",
-        "PDFs to ZIP": "tools:pdfsToZip",
-        "Compare PDFs": "tools:comparePdfs",
-        "Posterize PDF": "tools:posterizePdf",
-        "Fix Page Size": "tools:fixPageSize",
-        "Linearize PDF": "tools:linearizePdf",
-        "Page Dimensions": "tools:pageDimensions",
-        "Remove Restrictions": "tools:removeRestrictions",
-        "Repair PDF": "tools:repairPdf",
-        "Encrypt PDF": "tools:encryptPdf",
-        "Sanitize PDF": "tools:sanitizePdf",
-        "Protect PDF": "tools:protectPdf",
-        "Unlock PDF": "tools:unlockPdf",
-        "Decrypt PDF": "tools:decryptPdf",
-        "Flatten PDF": "tools:flattenPdf",
-        "Remove Metadata": "tools:removeMetadata",
-        "Change Permissions": "tools:changePermissions",
-        "Email to PDF": "tools:emailToPdf",
-        "Font to Outline": "tools:fontToOutline",
-        "Deskew PDF": "tools:deskewPdf",
-        "Digital Signature": "tools:digitalSignPdf",
-        "Validate Signature": "tools:validateSignaturePdf",
-        "Timestamp PDF": "tools:timestampPdf",
-        "Scanner Effect": "tools:scannerEffect",
-        "Adjust Colors": "tools:adjustColors",
-        "Markdown to PDF": "tools:markdownToPdf",
-        "PDF Booklet": "tools:pdfBooklet",
-        "Word to PDF": "tools:wordToPdf",
-        "Excel to PDF": "tools:excelToPdf",
-        "PowerPoint to PDF": "tools:powerpointToPdf",
-        "XPS to PDF": "tools:xpsToPdf",
-        "MOBI to PDF": "tools:mobiToPdf",
-        "EPUB to PDF": "tools:epubToPdf",
-        "FB2 to PDF": "tools:fb2ToPdf",
-        "CBZ to PDF": "tools:cbzToPdf",
-        "WPD to PDF": "tools:wpdToPdf",
-        "WPS to PDF": "tools:wpsToPdf",
-        "XML to PDF": "tools:xmlToPdf",
-        "Pages to PDF": "tools:pagesToPdf",
-        "ODG to PDF": "tools:odgToPdf",
-        "ODS to PDF": "tools:odsToPdf",
-        "ODP to PDF": "tools:odpToPdf",
-        "PUB to PDF": "tools:pubToPdf",
-        "VSD to PDF": "tools:vsdToPdf",
-        "PSD to PDF": "tools:psdToPdf",
-        "ODT to PDF": "tools:odtToPdf",
-        "CSV to PDF": "tools:csvToPdf",
-        "RTF to PDF": "tools:rtfToPdf",
-        "PDF to SVG": "tools:pdfToSvg",
-        "PDF to CSV": "tools:pdfToCsv",
-        "PDF to Excel": "tools:pdfToExcel",
-        "PDF to Text": "tools:pdfToText",
-        "Extract Tables": "tools:extractTables",
-        "PDF to Word": "tools:pdfToWord",
-        "Extract Images": "tools:extractImages",
-        "PDF to Markdown": "tools:pdfToMarkdown",
-        "Prepare PDF for AI": "tools:preparePdfForAi",
-        "PDF OCG": "tools:pdfOcg",
-        "PDF to PDF/A": "tools:pdfToPdfa",
-        "Rasterize PDF": "tools:rasterizePdf",
-    };
 
     // Homepage-only tool grid rendering (not used on individual tool pages)
     if (dom.toolGrid) {
@@ -301,12 +163,12 @@ const init = async () => {
         const favoritesHintText = document.createElement("span");
         const favoritesHintLabel = document.createElement("strong");
         favoritesHintLabel.className = "tool-fav-hint-label";
-        favoritesHintLabel.textContent = t("tools:favorites.hintLabel");
-        favoritesHintText.append(favoritesHintLabel, document.createTextNode(` ${t("tools:favorites.hint")}`));
+        favoritesHintLabel.textContent = "Tip";
+        favoritesHintText.append(favoritesHintLabel, document.createTextNode(` ${"Press and hold a tool to add it to your favorites."}`));
         const favoritesHintClose = document.createElement("button");
         favoritesHintClose.type = "button";
         favoritesHintClose.className = "tool-fav-hint-close";
-        favoritesHintClose.setAttribute("aria-label", t("tools:favorites.hideHint"));
+        favoritesHintClose.setAttribute("aria-label", "Hide tip");
         const favoritesHintIcon = document.createElement("i");
         favoritesHintIcon.className = "ph ph-x";
         favoritesHintIcon.setAttribute("aria-hidden", "true");
@@ -343,7 +205,7 @@ const init = async () => {
             favoriteMenuStar = star;
             const active = favoriteToolIds.includes(star.dataset.favId || "");
             favoriteMenuButton.classList.toggle("is-favorite", active);
-            favoriteMenuLabel.textContent = active ? t("tools:favorites.remove") : t("tools:favorites.add");
+            favoriteMenuLabel.textContent = active ? "Remove from favorites" : "Add to favorites";
             tile.appendChild(favoriteMenu);
             if (navigator.userActivation?.hasBeenActive) navigator.vibrate?.(10);
         }
@@ -364,7 +226,7 @@ const init = async () => {
             const active = favoriteToolIds.includes(button.dataset.favId || "");
             button.classList.toggle("is-favorite", active);
             button.setAttribute("aria-pressed", String(active));
-            const label = active ? t("tools:favorites.remove") : t("tools:favorites.add");
+            const label = active ? "Remove from favorites" : "Add to favorites";
             button.setAttribute("aria-label", label);
             button.title = label;
         }
@@ -457,15 +319,14 @@ const init = async () => {
 
             const toolName = document.createElement("h3");
             toolName.className = "font-semibold text-white";
-            const toolKey = toolTranslationKeys[tool.name];
-            toolName.textContent = toolKey ? t(`${toolKey}.name`) : tool.name;
+            toolName.textContent = tool.name;
 
             toolCard.append(icon, toolName);
 
             if (tool.subtitle) {
                 const toolSubtitle = document.createElement("p");
                 toolSubtitle.className = "text-xs text-gray-400 mt-1 px-2";
-                toolSubtitle.textContent = toolKey ? t(`${toolKey}.subtitle`) : tool.subtitle;
+                toolSubtitle.textContent = tool.subtitle;
                 toolCard.appendChild(toolSubtitle);
             }
 
@@ -486,8 +347,7 @@ const init = async () => {
             header.type = "button";
 
             const title = document.createElement("span");
-            const categoryKey = categoryTranslationKeys[category.name];
-            title.textContent = categoryKey ? t(categoryKey) : category.name;
+            title.textContent = category.name;
 
             const chevron = document.createElement("i");
             chevron.setAttribute("data-lucide", "chevron-down");
@@ -861,8 +721,8 @@ const init = async () => {
     if (dom.resetShortcutsBtn) {
         dom.resetShortcutsBtn.addEventListener("click", async () => {
             const confirmed = await showWarningModal(
-                t("settings.warnings.resetTitle"),
-                t("settings.warnings.resetMessage"),
+                "Reset Shortcuts",
+                "Are you sure you want to reset all shortcuts to default?<br><br>This action cannot be undone.",
                 true,
             );
 
@@ -893,14 +753,14 @@ const init = async () => {
                         if (ShortcutsManager.importSettings(content)) {
                             renderShortcutsList();
                             await showWarningModal(
-                                t("settings.warnings.importSuccessTitle"),
-                                t("settings.warnings.importSuccessMessage"),
+                                "Import Successful",
+                                "Shortcuts imported successfully!",
                                 false,
                             );
                         } else {
                             await showWarningModal(
-                                t("settings.warnings.importFailTitle"),
-                                t("settings.warnings.importFailMessage"),
+                                "Import Failed",
+                                "Failed to import shortcuts. Invalid file format.",
                                 false,
                             );
                         }
@@ -1020,10 +880,10 @@ const init = async () => {
 
             if (confirmMode) {
                 dom.warningCancelBtn.style.display = "";
-                dom.warningConfirmBtn.textContent = t("warning.proceed");
+                dom.warningConfirmBtn.textContent = "Proceed";
             } else {
                 dom.warningCancelBtn.style.display = "none";
-                dom.warningConfirmBtn.textContent = t("alert.ok");
+                dom.warningConfirmBtn.textContent = "OK";
             }
 
             const handleConfirm = () => {
@@ -1092,8 +952,7 @@ const init = async () => {
 
             const header = document.createElement("h3");
             header.className = "text-gray-400 text-xs font-bold uppercase tracking-wider mb-3 pl-1";
-            const categoryKey = categoryTranslationKeys[category.name];
-            header.textContent = categoryKey ? t(categoryKey) : category.name;
+            header.textContent = category.name;
             section.appendChild(header);
 
             const itemsContainer = document.createElement("div");
@@ -1124,8 +983,7 @@ const init = async () => {
 
                 const name = document.createElement("span");
                 name.className = "text-gray-200 font-medium";
-                const toolKey = toolTranslationKeys[tool.name];
-                name.textContent = toolKey ? t(`${toolKey}.name`) : tool.name;
+                name.textContent = tool.name;
 
                 left.append(icon, name);
 
@@ -1136,7 +994,7 @@ const init = async () => {
                 input.type = "text";
                 input.className =
                     "shortcut-input w-32 bg-gray-800 border border-gray-600 text-white text-center text-sm rounded px-2 py-1 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all";
-                input.placeholder = t("settings.clickToSet");
+                input.placeholder = "Click to set";
                 input.value = formatShortcutDisplay(currentShortcut, isMac);
                 input.readOnly = true;
 
@@ -1211,16 +1069,13 @@ const init = async () => {
                             const existingToolName = existingTool?.name || existingToolId;
                             const displayCombo = formatShortcutDisplay(combo, isMac);
 
-                            const existingToolKey = existingTool ? toolTranslationKeys[existingTool.name] : null;
-                            const translatedToolName = existingToolKey
-                                ? t(`${existingToolKey}.name`)
-                                : existingToolName;
+                            const translatedToolName = existingToolName;
 
                             await showWarningModal(
-                                t("settings.warnings.alreadyInUse"),
-                                `<strong>${escapeHtml(displayCombo)}</strong> ${t("settings.warnings.assignedTo")}<br><br>` +
+                                "Shortcut Already in Use",
+                                `<strong>${escapeHtml(displayCombo)}</strong> ${"is already assigned to:"}<br><br>` +
                                     `<em>"${escapeHtml(translatedToolName)}"</em><br><br>` +
-                                    t("settings.warnings.chooseDifferent"),
+                                    "Please choose a different shortcut.",
                                 false,
                             );
 
@@ -1234,11 +1089,11 @@ const init = async () => {
                         if (reservedWarning) {
                             const displayCombo = formatShortcutDisplay(combo, isMac);
                             const shouldProceed = await showWarningModal(
-                                t("settings.warnings.reserved"),
-                                `<strong>${escapeHtml(displayCombo)}</strong> ${t("settings.warnings.commonlyUsed")}<br><br>` +
+                                "Reserved Shortcut Warning",
+                                `<strong>${escapeHtml(displayCombo)}</strong> ${"is commonly used for:"}<br><br>` +
                                     `"<em>${escapeHtml(reservedWarning)}</em>"<br><br>` +
-                                    `${t("settings.warnings.unreliable")}<br><br>` +
-                                    t("settings.warnings.useAnyway"),
+                                    `${"This shortcut may not work reliably or might conflict with browser/system behavior."}<br><br>` +
+                                    "Do you want to use it anyway?",
                             );
 
                             if (!shouldProceed) {
@@ -1265,7 +1120,7 @@ const init = async () => {
                 };
 
                 input.onfocus = () => {
-                    input.value = t("settings.pressKeys");
+                    input.value = "Press keys...";
                     input.classList.add("border-indigo-500", "text-indigo-400");
                 };
 
@@ -1314,8 +1169,6 @@ const init = async () => {
         });
     }
 
-    // Rewrite links after all dynamic content is fully loaded
-    rewriteLinks();
 };
 
 window.addEventListener("load", init);

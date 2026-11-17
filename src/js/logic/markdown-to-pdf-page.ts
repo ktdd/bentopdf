@@ -1,6 +1,6 @@
 import { MarkdownEditor } from '../utils/markdown-editor.js';
 
-import { onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../utils/page-ready.js';
 
 onPageReady(() => {
   const container = document.getElementById('markdown-editor-container');

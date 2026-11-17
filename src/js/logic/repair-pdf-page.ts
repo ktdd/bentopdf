@@ -2,7 +2,7 @@ import { repairPdf } from './repair-pdf.js';
 import { state } from '../state.js';
 import { renderFileDisplay } from '../ui.js';
 
-import { onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../utils/page-ready.js';
 
 onPageReady(() => {
   const fileInput = document.getElementById('file-input') as HTMLInputElement;

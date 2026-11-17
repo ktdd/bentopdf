@@ -12,8 +12,8 @@ const mocks = vi.hoisted(() => ({
 
 const page = vi.hoisted(() => ({ ready: null as (() => void) | null }));
 
-vi.mock('../js/i18n/i18n.js', async (importOriginal) => ({
-  ...(await importOriginal<typeof import('../js/i18n/i18n.js')>()),
+vi.mock('../js/utils/page-ready.js', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../js/utils/page-ready.js')>()),
   onPageReady: (callback: () => void) => {
     page.ready = callback;
   },

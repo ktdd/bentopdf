@@ -3,40 +3,16 @@ import path from 'path';
 import { execFileSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { OFFICIAL_SITE_URL, canonicalBasePath } from './indexing-policy.mjs';
-import { createTranslationChecker } from './page-translation.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const DIST_DIR = path.resolve(__dirname, '../dist');
-const LOCALES_DIR = path.resolve(__dirname, '../public/locales');
 const SITE_URL = (process.env.SITE_URL || 'https://www.bentopdf.com').replace(
   /\/+$/,
   ''
 );
 const EXCLUDED_PAGES = new Set(['404', 'wasm-settings']);
-
-const languages = fs.readdirSync(LOCALES_DIR).filter((file) => {
-  return fs.statSync(path.join(LOCALES_DIR, file)).isDirectory();
-});
-
-const toCamelCase = (str) => {
-  return str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-};
-
-const toolsByLang = {};
-for (const lang of languages) {
-  const toolsPath = path.join(LOCALES_DIR, lang, 'tools.json');
-  toolsByLang[lang] = fs.existsSync(toolsPath)
-    ? JSON.parse(fs.readFileSync(toolsPath, 'utf-8'))
-    : {};
-}
-
-const isPageTranslated = createTranslationChecker(toolsByLang, toCamelCase);
-
-function alternateLangsFor(pageName) {
-  return languages.filter((l) => isPageTranslated(pageName, l));
-}
 
 const PRIORITY_MAP = {
   index: 1.0,
@@ -76,17 +52,15 @@ function getPriority(pageName) {
   return PRIORITY_MAP[pageName] || 0.7;
 }
 
-function buildUrl(lang, pageName) {
+function buildUrl(pageName) {
   const pagePath = pageName === 'index' ? '' : pageName;
   const root = `${SITE_URL}${canonicalBasePath()}`;
-  const prefix = lang === 'en' ? root : `${root}/${lang}`;
-  return pagePath ? `${prefix}/${pagePath}` : prefix;
+  return pagePath ? `${root}/${pagePath}` : root;
 }
 
 function generateSitemap() {
-  console.log('🗺️  Generating multilingual sitemap...');
+  console.log('🗺️  Generating sitemap...');
   console.log(`   SITE_URL: ${SITE_URL}`);
-  console.log(`   Languages: ${languages.join(', ')}`);
 
   const htmlFiles = fs
     .readdirSync(DIST_DIR)
@@ -140,13 +114,12 @@ function generateSitemap() {
   };
 
   let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 `;
 
   for (const pageName of htmlFiles) {
     const priority = getPriority(pageName);
-    const url = buildUrl('en', pageName);
+    const url = buildUrl(pageName);
     const lastmod = getLastMod(pageName);
 
     sitemap += `  <url>
@@ -155,15 +128,7 @@ function generateSitemap() {
     <priority>${priority}</priority>
 `;
 
-    for (const altLang of alternateLangsFor(pageName)) {
-      const altUrl = buildUrl(altLang, pageName);
-      sitemap += `    <xhtml:link rel="alternate" hreflang="${altLang}" href="${altUrl}"/>
-`;
-    }
-
-    const defaultUrl = buildUrl('en', pageName);
-    sitemap += `    <xhtml:link rel="alternate" hreflang="x-default" href="${defaultUrl}"/>
-  </url>
+    sitemap += `  </url>
 `;
   }
 
@@ -218,9 +183,7 @@ function generateSitemap() {
   const publicSitemapPath = path.resolve(__dirname, '../public/sitemap.xml');
   fs.writeFileSync(publicSitemapPath, sitemap);
 
-  console.log(
-    `✅ Sitemap generated with ${htmlFiles.length} canonical URLs (${languages.length} hreflang alternates each)`
-  );
+  console.log(`✅ Sitemap generated with ${htmlFiles.length} canonical URLs`);
 }
 
 generateSitemap();

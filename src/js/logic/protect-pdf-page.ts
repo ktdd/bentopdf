@@ -8,7 +8,7 @@ import {
 import { icons, createIcons } from 'lucide';
 import { EncryptPdfState, QpdfInstanceExtended } from '@/types';
 
-import { onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../utils/page-ready.js';
 
 const pageState: EncryptPdfState = {
   file: null,

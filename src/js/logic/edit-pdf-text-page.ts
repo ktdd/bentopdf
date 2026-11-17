@@ -1,7 +1,7 @@
 import '@phosphor-icons/web/regular';
 import { createIcons, icons } from 'lucide';
 import { showAlert, showLoader, hideLoader } from '../ui.js';
-import { t, onPageReady } from '../i18n/i18n';
+import { onPageReady } from '../utils/page-ready.js';
 import { batchDecryptIfNeeded } from '../utils/password-prompt.js';
 import {
   fallbackFontLanguages,
@@ -481,8 +481,8 @@ function setupFallbackFonts(
         if (actionHeld || !warned) {
           warned = true;
           showAlert(
-            t('warning.title'),
-            t('tools:editPdfText.fontsUnavailable'),
+            "Warning",
+            "A font needed for some characters could not be downloaded. Check your connection and try again, or those characters may not appear correctly in the saved PDF.",
             'warning'
           );
         }
@@ -498,7 +498,7 @@ function setupFallbackFonts(
     if (next) resume = next;
     if (!loaderShown) {
       loaderShown = true;
-      showLoader(t('tools:editPdfText.loadingFonts'));
+      showLoader("Loading fonts...");
     }
   };
 
@@ -610,8 +610,8 @@ async function launchEditor(file: File) {
       setupFallbackFonts(appModule, PdfEngine.fallbackFonts);
       appModule.setOnSaved((kb) => {
         showAlert(
-          t('common.success'),
-          t('tools:editPdfText.saved', { size: kb }),
+          "Success",
+          `PDF saved successfully! (${kb} KB)`,
           'success',
           () => {
             closeEditor();
@@ -632,7 +632,7 @@ async function launchEditor(file: File) {
     if (window.matchMedia('(max-width: 768px)').matches) fitMobileWidth();
   } catch (error) {
     console.error('Error loading PDF Text Editor:', error);
-    showAlert(t('common.error'), t('tools:editPdfText.failedToLoad'));
+    showAlert("Error", "Failed to load the PDF Text Editor.");
     closeEditor();
   } finally {
     hideLoader();

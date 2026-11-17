@@ -92,15 +92,11 @@ self.addEventListener("fetch", (event) => {
         return;
     }
 
-    if (isLocal && url.pathname.includes("/locales/")) {
-        event.respondWith(networkFirstStrategy(event.request));
-    } else if (shouldCache(url.pathname, isCDN)) {
+    if (shouldCache(url.pathname, isCDN)) {
         event.respondWith(cacheFirstStrategyWithDedup(event.request, isCDN));
     } else if (
         isLocal &&
-        (url.pathname.endsWith(".html") ||
-            url.pathname === "/" ||
-            /^\/(en|ar|be|ca|da|de|es|fa|fr|id|it|ja|ko|nl|pl|pt|ru|sk|sv|tr|uk|vi|zh|zh-TW)(\/|$)/.test(url.pathname))
+        (url.pathname.endsWith(".html") || url.pathname === "/")
     ) {
         event.respondWith(networkFirstStrategy(event.request));
     }

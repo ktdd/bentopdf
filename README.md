@@ -296,30 +296,6 @@ BentoPDF offers a comprehensive suite of tools to handle all your PDF needs.
 
 ---
 
-## 🌍 Translations
-
-BentoPDF is available in multiple languages:
-
-| Language            | Status                                                                                                                    |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| English             | [![English](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/en/common.json)                |
-| Chinese             | [![Chinese](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/zh/common.json)                |
-| Traditional Chinese | [![Traditional Chinese](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/zh-TW/common.json) |
-| French              | [![French](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/fr/common.json)                 |
-| German              | [![German](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/de/common.json)                 |
-| Indonesian          | [![Indonesian](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/id/common.json)             |
-| Italian             | [![Italian](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/it/common.json)                |
-| Portuguese          | [![Portuguese](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/pt/common.json)             |
-| Turkish             | [![Turkish](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/tr/common.json)                |
-| Vietnamese          | [![Vietnamese](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/vi/common.json)             |
-| Korean              | [![Korean](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/ko/common.json)                 |
-| Russian             | [![Russian](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/ru/common.json)                |
-| Persian (Farsi)     | [![Persian](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/fa/common.json)                |
-
-Want to help translate BentoPDF into your language? Check out our [Translation Guide](TRANSLATION.md)!
-
----
-
 ## 🚀 Getting Started
 
 You can run BentoPDF locally for development or personal use.

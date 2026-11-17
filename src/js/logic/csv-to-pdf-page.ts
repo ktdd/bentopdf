@@ -3,7 +3,7 @@ import { downloadFile, formatBytes } from '../utils/helpers.js';
 import { state } from '../state.js';
 import { createIcons, icons } from 'lucide';
 
-import { onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../utils/page-ready.js';
 
 onPageReady(() => {
   state.files = [];

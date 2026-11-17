@@ -12,7 +12,7 @@ import { DeletePagesState } from '@/types';
 import { loadPdfDocument } from '../utils/load-pdf-document.js';
 import '../utils/setup-pdf-worker.js';
 
-import { onPageReady } from '../i18n/i18n.js';
+import { onPageReady } from '../utils/page-ready.js';
 
 const deleteState: DeletePagesState = {
   file: null,
