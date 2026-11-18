@@ -25,15 +25,11 @@ describe('WasmProvider saved URLs', () => {
       pymupdf: 'https://cdn.jsdelivr.net/npm/@bentopdf/pymupdf-wasm@0.11.14/',
       ghostscript:
         'https://cdn.jsdelivr.net/npm/@bentopdf/gs-wasm@0.1.0/assets/',
-      cpdf: 'https://cdn.jsdelivr.net/npm/coherentpdf@2.5.4/dist/',
     });
 
     expect(provider.getUrl('pymupdf')).toBe(CURRENT_PYMUPDF);
     expect(provider.getUrl('ghostscript')).toBe(
       'https://cdn.jsdelivr.net/npm/@bentopdf/gs-wasm@0.1.1/assets/'
-    );
-    expect(provider.getUrl('cpdf')).toBe(
-      'https://cdn.jsdelivr.net/npm/coherentpdf@2.5.5/dist/'
     );
     expect(provider.isUserConfigured('pymupdf')).toBe(false);
     expect(storedConfig()).toEqual({});
@@ -42,14 +38,10 @@ describe('WasmProvider saved URLs', () => {
   it('replaces an unversioned CDN URL saved by older releases', async () => {
     const provider = await loadProvider({
       ghostscript: 'https://cdn.jsdelivr.net/npm/@bentopdf/gs-wasm/assets/',
-      cpdf: 'https://cdn.jsdelivr.net/npm/coherentpdf/dist/',
     });
 
     expect(provider.getUrl('ghostscript')).toBe(
       'https://cdn.jsdelivr.net/npm/@bentopdf/gs-wasm@0.1.1/assets/'
-    );
-    expect(provider.getUrl('cpdf')).toBe(
-      'https://cdn.jsdelivr.net/npm/coherentpdf@2.5.5/dist/'
     );
     expect(storedConfig()).toEqual({});
   });

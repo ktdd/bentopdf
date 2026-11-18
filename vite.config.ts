@@ -13,7 +13,7 @@ import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 function engineVersion(): string {
     try {
-        const dir = resolve(__dirname, "node_modules/bentopdf-pdfium");
+        const dir = resolve(import.meta.dirname, "node_modules/bentopdf-pdfium");
         const h = createHash("sha256");
         for (const f of ["editcore.js", "editcore.wasm"]) {
             h.update(fs.readFileSync(resolve(dir, f)));
@@ -25,7 +25,7 @@ function engineVersion(): string {
 }
 
 function loadPages(): Set<string> {
-    const pagesDir = resolve(__dirname, "src/pages");
+    const pagesDir = resolve(import.meta.dirname, "src/pages");
     const pages = new Set<string>();
 
     if (fs.existsSync(pagesDir)) {
@@ -83,14 +83,14 @@ function createPageMiddleware(isDev: boolean): Connect.NextHandleFunction {
         if (isDev && pathname.endsWith(".html") && !pathname.startsWith("/src/")) {
             const pageName = pathname.slice(1).replace(".html", "");
             if (PAGES.has(pageName)) {
-                const srcPath = resolve(__dirname, "src/pages", `${pageName}.html`);
+                const srcPath = resolve(import.meta.dirname, "src/pages", `${pageName}.html`);
                 if (fs.existsSync(srcPath)) {
                     req.url = `/src/pages/${pageName}.html` + (queryString ? `?${queryString}` : "");
                     return next();
                 }
             }
         }
-
+        /*
         if (pathname === "/blog" || pathname === "/blog/") {
             req.url = "/blog/index.html" + (queryString ? `?${queryString}` : "");
             return next();
@@ -101,6 +101,7 @@ function createPageMiddleware(isDev: boolean): Connect.NextHandleFunction {
             req.url = `/blog/${blogMatch[1]}.html` + (queryString ? `?${queryString}` : "");
             return next();
         }
+        */
 
         next();
     };
@@ -123,7 +124,6 @@ function buildCorsProxyAllowedHosts(): Set<string> {
         process.env.VITE_CORS_PROXY_URL,
         process.env.VITE_WASM_PYMUPDF_URL,
         process.env.VITE_WASM_GS_URL,
-        process.env.VITE_WASM_CPDF_URL,
     ];
     for (const raw of envHostSources) {
         if (!raw) continue;
@@ -246,8 +246,6 @@ function pageRouterPlugin(): Plugin {
         },
     };
 }
-
-
 
 function flattenPagesPlugin(): Plugin {
     return {
@@ -397,7 +395,7 @@ export default defineConfig(({ command }) => {
         plugins: [
             // basicSsl(),
             handlebars({
-                partialDirectory: resolve(__dirname, "src/partials"),
+                partialDirectory: resolve(import.meta.dirname, "src/partials"),
                 context: {
                     baseUrl: (process.env.BASE_URL || "/").replace(/\/?$/, "/"),
                     docsUrl,
@@ -435,19 +433,19 @@ export default defineConfig(({ command }) => {
         },
         resolve: {
             alias: {
-                "@/types": resolve(__dirname, "src/js/types/index.ts"),
-                "@": resolve(__dirname, "src"),
+                "@/types": resolve(import.meta.dirname, "src/js/types/index.ts"),
+                "@": resolve(import.meta.dirname, "src"),
                 stream: "stream-browserify",
                 zlib: "browserify-zlib",
             },
         },
         optimizeDeps: {
-            include: ["pdfkit", "blob-stream"],
-            exclude: ["coherentpdf", "wasm-vips", "bentopdf-pdfium", "hyper-compress-wasm"],
+            exclude: ["bentopdf-pdfium", "hyper-compress-wasm"],
         },
         server: {
             host: process.env.VITE_DEV_HOST || "localhost",
             proxy: {
+                "/api": "http://localhost:6999",
                 "/docs": {
                     target: "http://localhost:5174",
                     ws: true,
@@ -469,6 +467,7 @@ export default defineConfig(({ command }) => {
             },
         },
         preview: {
+            proxy: { "/api": "http://localhost:6999" },
             headers: {
                 "Cross-Origin-Opener-Policy": "same-origin",
                 "Cross-Origin-Embedder-Policy": "require-corp",
@@ -477,57 +476,31 @@ export default defineConfig(({ command }) => {
         build: {
             rollupOptions: {
                 input: {
-                    main:
-                        process.env.SIMPLE_MODE === "true"
-                            ? resolve(__dirname, "simple-index.html")
-                            : resolve(__dirname, "index.html"),
-                    about: resolve(__dirname, "about.html"),
-                    contact: resolve(__dirname, "contact.html"),
-                    faq: resolve(__dirname, "faq.html"),
-                    privacy: resolve(__dirname, "privacy.html"),
-                    terms: resolve(__dirname, "terms.html"),
-                    licensing: resolve(__dirname, "licensing.html"),
-                    kura: resolve(__dirname, "kura.html"),
-                    "hyper-compress": resolve(__dirname, "hyper-compress.html"),
-                    ...(showAds ? { advertise: resolve(__dirname, "advertise.html") } : {}),
-                    ...Object.fromEntries(
-                        fs
-                            .readdirSync(resolve(__dirname, "blog"))
-                            .filter((f) => f.endsWith(".html"))
-                            .map((f) => [`blog-${f.replace(".html", "")}`, resolve(__dirname, "blog", f)]),
-                    ),
-                    "404": resolve(__dirname, "404.html"),
-                    // Category Hub Pages
-                    "pdf-converter": resolve(__dirname, "pdf-converter.html"),
-                    "pdf-editor": resolve(__dirname, "pdf-editor.html"),
-                    "pdf-security": resolve(__dirname, "pdf-security.html"),
-                    "pdf-merge-split": resolve(__dirname, "pdf-merge-split.html"),
+                    main: resolve(import.meta.dirname, "simple-index.html"),
                     // Tool Pages
-                    "json-to-pdf": resolve(__dirname, "src/pages/json-to-pdf.html"),
-                    "repair-pdf": resolve(__dirname, "src/pages/repair-pdf.html"),
-                    "merge-pdf": resolve(__dirname, "src/pages/merge-pdf.html"),
-                    "split-pdf": resolve(__dirname, "src/pages/split-pdf.html"),
-                    "compress-pdf": resolve(__dirname, "src/pages/compress-pdf.html"),
-                    "edit-pdf-text": resolve(__dirname, "src/pages/edit-pdf-text.html"),
-                    "crop-pdf": resolve(__dirname, "src/pages/crop-pdf.html"),
-                    "extract-pages": resolve(__dirname, "src/pages/extract-pages.html"),
-                    "delete-pages": resolve(__dirname, "src/pages/delete-pages.html"),
-                    "page-numbers": resolve(__dirname, "src/pages/page-numbers.html"),
-                    "header-footer": resolve(__dirname, "src/pages/header-footer.html"),
-                    "image-to-pdf": resolve(__dirname, "src/pages/image-to-pdf.html"),
-                    "rotate-pdf": resolve(__dirname, "src/pages/rotate-pdf.html"),
-                    "n-up-pdf": resolve(__dirname, "src/pages/n-up-pdf.html"),
-                    "combine-single-page": resolve(__dirname, "src/pages/combine-single-page.html"),
-                    "edit-metadata": resolve(__dirname, "src/pages/edit-metadata.html"),
-                    "unlock-pdf": resolve(__dirname, "src/pages/unlock-pdf.html"),
-                    "flatten-pdf": resolve(__dirname, "src/pages/flatten-pdf.html"),
-                    "protect-pdf": resolve(__dirname, "src/pages/protect-pdf.html"),
-                    "sanitize-pdf": resolve(__dirname, "src/pages/sanitize-pdf.html"),
-                    "txt-to-pdf": resolve(__dirname, "src/pages/txt-to-pdf.html"),
-                    "markdown-to-pdf": resolve(__dirname, "src/pages/markdown-to-pdf.html"),
-                    "rasterize-pdf": resolve(__dirname, "src/pages/rasterize-pdf.html"),
-                    "csv-to-pdf": resolve(__dirname, "src/pages/csv-to-pdf.html"),
-                    "pdf-booklet": resolve(__dirname, "src/pages/pdf-booklet.html"),
+                    "repair-pdf": resolve(import.meta.dirname, "src/pages/repair-pdf.html"),
+                    "merge-pdf": resolve(import.meta.dirname, "src/pages/merge-pdf.html"),
+                    "split-pdf": resolve(import.meta.dirname, "src/pages/split-pdf.html"),
+                    "compress-pdf": resolve(import.meta.dirname, "src/pages/compress-pdf.html"),
+                    "edit-pdf-text": resolve(import.meta.dirname, "src/pages/edit-pdf-text.html"),
+                    "crop-pdf": resolve(import.meta.dirname, "src/pages/crop-pdf.html"),
+                    "extract-pages": resolve(import.meta.dirname, "src/pages/extract-pages.html"),
+                    "delete-pages": resolve(import.meta.dirname, "src/pages/delete-pages.html"),
+                    "page-numbers": resolve(import.meta.dirname, "src/pages/page-numbers.html"),
+                    "header-footer": resolve(import.meta.dirname, "src/pages/header-footer.html"),
+                    "image-to-pdf": resolve(import.meta.dirname, "src/pages/image-to-pdf.html"),
+                    "rotate-pdf": resolve(import.meta.dirname, "src/pages/rotate-pdf.html"),
+                    "n-up-pdf": resolve(import.meta.dirname, "src/pages/n-up-pdf.html"),
+                    "combine-single-page": resolve(import.meta.dirname, "src/pages/combine-single-page.html"),
+                    "edit-metadata": resolve(import.meta.dirname, "src/pages/edit-metadata.html"),
+                    "unlock-pdf": resolve(import.meta.dirname, "src/pages/unlock-pdf.html"),
+                    "flatten-pdf": resolve(import.meta.dirname, "src/pages/flatten-pdf.html"),
+                    "protect-pdf": resolve(import.meta.dirname, "src/pages/protect-pdf.html"),
+                    "sanitize-pdf": resolve(import.meta.dirname, "src/pages/sanitize-pdf.html"),
+                    "markdown-to-pdf": resolve(import.meta.dirname, "src/pages/markdown-to-pdf.html"),
+                    "rasterize-pdf": resolve(import.meta.dirname, "src/pages/rasterize-pdf.html"),
+                    "csv-to-pdf": resolve(import.meta.dirname, "src/pages/csv-to-pdf.html"),
+                    "pdf-booklet": resolve(import.meta.dirname, "src/pages/pdf-booklet.html"),
                 },
                 output: {
                     assetFileNames: (assetInfo) => {

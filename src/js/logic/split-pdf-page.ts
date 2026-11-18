@@ -15,8 +15,6 @@ import {
   cleanupLazyRendering,
 } from '../utils/render-utils.js';
 import { initPagePreview } from '../utils/page-preview.js';
-import { isCpdfAvailable } from '../utils/cpdf-helper.js';
-import { showWasmRequiredDialog } from '../utils/wasm-provider.js';
 import JSZip from 'jszip';
 import { loadPdfDocument } from '../utils/load-pdf-document.js';
 import type { QpdfInstanceExtended } from '@/types';
@@ -374,11 +372,6 @@ onPageReady(() => {
             outputGroups = [...new Set(indicesToExtract)].map((i) => [i]);
           break;
         case 'bookmarks': {
-          if (!isCpdfAvailable()) {
-            showWasmRequiredDialog('cpdf');
-            hideLoader();
-            return;
-          }
           const { getCpdf } = await import('../utils/cpdf-helper.js');
           const cpdf = await getCpdf();
           const pdf = cpdf.fromMemory(

@@ -40,7 +40,6 @@ function uniq(values) {
 const DEFAULT_WASM_URLS = {
     pymupdf: "https://cdn.jsdelivr.net/npm/@bentopdf/pymupdf-wasm@0.11.16/",
     gs: "https://cdn.jsdelivr.net/npm/@bentopdf/gs-wasm@0.1.1/assets/",
-    cpdf: "https://cdn.jsdelivr.net/npm/coherentpdf@2.5.5/dist/",
 };
 
 const DEFAULT_CORS_PROXY_ORIGIN = "https://bentopdf-cors-proxy.bentopdf.workers.dev";
@@ -64,7 +63,6 @@ export function buildSecurityHeaders(env = process.env) {
     const wasmUrls = [
         urlOrDefault(env.VITE_WASM_PYMUPDF_URL, DEFAULT_WASM_URLS.pymupdf),
         urlOrDefault(env.VITE_WASM_GS_URL, DEFAULT_WASM_URLS.gs),
-        urlOrDefault(env.VITE_WASM_CPDF_URL, DEFAULT_WASM_URLS.cpdf),
     ];
     const wasmOrigins = wasmUrls.map(originOf);
 
@@ -72,10 +70,6 @@ export function buildSecurityHeaders(env = process.env) {
 
     const scriptSources = uniq([...wasmUrls.map(toScriptSource)]);
     const connectOrigins = uniq([...wasmOrigins, corsProxyOrigin]);
-    const fontOrigins = uniq([ocrFontOrigin]);
-
-    const githubStarsDisabled = env.DISABLE_GITHUB_STARS === "true" || env.SIMPLE_MODE === "true";
-    const githubApiSource = githubStarsDisabled ? "" : " https://api.github.com";
 
     const directives = [
         `default-src 'self'`,
@@ -83,8 +77,8 @@ export function buildSecurityHeaders(env = process.env) {
         `worker-src 'self' blob:`,
         `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
         `img-src 'self' data: blob: https:`,
-        `font-src 'self' data: https://fonts.gstatic.com ${fontOrigins.join(" ")}`.trim(),
-        `connect-src 'self' blob:${githubApiSource} https://fonts.gstatic.com ${connectOrigins.join(" ")}`.trim(),
+        `font-src 'self' data: https://fonts.gstatic.com`,
+        `connect-src 'self' https://fonts.gstatic.com ${connectOrigins.join(" ")}`.trim(),
         `object-src 'none'`,
         `base-uri 'self'`,
         `frame-src 'self' blob:`,
@@ -97,8 +91,8 @@ export function buildSecurityHeaders(env = process.env) {
         `script-src 'self' ${DOCS_INLINE_SCRIPT_HASHES.map((hash) => `'${hash}'`).join(" ")}`,
         `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
         `img-src 'self' data: blob: https:`,
-        `font-src 'self' data: https://fonts.gstatic.com ${fontOrigins.join(" ")}`.trim(),
-        `connect-src 'self'${githubApiSource} https://fonts.gstatic.com ${connectOrigins.join(" ")}`.trim(),
+        `font-src 'self' data: https://fonts.gstatic.com`,
+        `connect-src 'self' https://fonts.gstatic.com ${connectOrigins.join(" ")}`.trim(),
         `object-src 'none'`,
         `base-uri 'self'`,
         `frame-ancestors 'self'`,

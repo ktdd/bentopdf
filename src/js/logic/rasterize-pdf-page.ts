@@ -8,11 +8,10 @@ import {
 } from '../utils/helpers.js';
 import { state } from '../state.js';
 import { createIcons, icons } from 'lucide';
-import { loadPyMuPDF, isPyMuPDFAvailable } from '../utils/pymupdf-loader.js';
-import type { PyMuPDFInstance } from '@/types';
+import { requestPdf } from '../utils/pymupdf-api.js';
 import { batchDecryptIfNeeded } from '../utils/password-prompt.js';
 import { deduplicateFileName } from '../utils/deduplicate-filename.js';
-import { showWasmRequiredDialog } from '../utils/wasm-provider.js';
+
 
 onPageReady(() => {
   const fileInput = document.getElementById('file-input') as HTMLInputElement;
@@ -104,14 +103,6 @@ onPageReady(() => {
         return;
       }
 
-      if (!isPyMuPDFAvailable()) {
-        showWasmRequiredDialog('pymupdf');
-        return;
-      }
-
-      showLoader('Loading engine...');
-      const pymupdf = await loadPyMuPDF();
-
       // Get options from UI
       const dpi =
         parseInt(
@@ -123,6 +114,15 @@ onPageReady(() => {
       const grayscale = (
         document.getElementById('rasterize-grayscale') as HTMLInputElement
       ).checked;
+
+      const rasterizeFile = (file: File) => {
+        const form = new FormData();
+        form.append('file', file);
+        form.append('dpi', String(dpi));
+        form.append('format', format);
+        form.append('grayscale', String(grayscale));
+        return requestPdf('/api/mupdf-rasterize-pdf', form);
+      };
 
       hideLoader();
       state.files = await batchDecryptIfNeeded(state.files);
@@ -136,15 +136,7 @@ onPageReady(() => {
         const file = state.files[0];
         showLoader(`Rasterizing ${file.name}...`);
 
-        const rasterizedBlob = await (pymupdf as PyMuPDFInstance).rasterizePdf(
-          file,
-          {
-            dpi,
-            format,
-            grayscale,
-            quality: 95,
-          }
-        );
+        const rasterizedBlob = await rasterizeFile(file);
 
         downloadFile(rasterizedBlob, file.name);
 
@@ -167,14 +159,7 @@ onPageReady(() => {
               `Rasterizing ${file.name} (${completed + 1}/${total})...`
             );
 
-            const rasterizedBlob = await (
-              pymupdf as PyMuPDFInstance
-            ).rasterizePdf(file, {
-              dpi,
-              format,
-              grayscale,
-              quality: 95,
-            });
+            const rasterizedBlob = await rasterizeFile(file);
 
             const zipEntryName = deduplicateFileName(file.name, usedNames);
             zip.file(zipEntryName, rasterizedBlob);

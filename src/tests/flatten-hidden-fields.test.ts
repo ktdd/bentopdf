@@ -16,22 +16,6 @@ vi.mock("../js/utils/helpers.js", async () => {
     return { initializeQpdf: async () => qpdf };
 });
 
-vi.mock("rete", () => ({
-    ClassicPreset: {
-        Input: class {},
-        Output: class {},
-    },
-}));
-
-vi.mock("@/js/workflow/sockets", () => ({ pdfSocket: {} }));
-
-vi.mock("@/js/workflow/nodes/base-node", () => ({
-    BaseWorkflowNode: class {
-        addInput() {}
-        addOutput() {}
-    },
-}));
-
 const { flattenAnnotations, flattenFormsInDoc } = await import("../js/utils/flatten-annotations.js");
 const { removeUnreferencedObjects } = await import("../js/utils/load-pdf-document.js");
 const { sanitizePdf } = await import("../js/utils/sanitize.js");

@@ -2,29 +2,11 @@
 @import '@fontsource/dm-sans/500.css';
 @import '@fontsource/dm-sans/600.css';
 @import '@fontsource/dm-sans/700.css';
-@import '@fontsource/dancing-script/400.css';
-@import '@fontsource/great-vibes/400.css';
-@import '@fontsource/kalam/300.css';
-@import '@fontsource/kalam/400.css';
-@import '@fontsource/kalam/700.css';
-@import '@fontsource/lato/400.css';
-@import '@fontsource/lato/700.css';
-@import '@fontsource/lato/400-italic.css';
-@import '@fontsource/merriweather/400.css';
-@import '@fontsource/merriweather/700.css';
-@import '@fontsource/merriweather/400-italic.css';
-@import '@fontsource/cedarville-cursive/400.css';
 @import 'cropperjs/dist/cropper.css';
 @import 'tailwindcss';
 
 @theme {
   --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
-  --font-dancing: 'Dancing Script', cursive;
-  --font-vibes: 'Great Vibes', cursive;
-  --font-kalam: 'Kalam', cursive;
-  --font-lato: 'Lato', sans-serif;
-  --font-merriweather: 'Merriweather', serif;
-  --font-cedarville: 'Cedarville Cursive', cursive;
   --color-gray-900: rgb(34, 34, 34);
   --color-gray-800: rgb(42, 42, 42);
   --color-gray-700: rgb(56, 56, 56);
@@ -41,16 +23,6 @@
     @apply antialiased;
     font-family: var(--font-sans);
   }
-}
-
-@theme {
-  --font-sans: 'DM Sans', ui-sans-serif, system-ui;
-  --font-dancing: 'Dancing Script', cursive;
-  --font-vibes: 'Great Vibes', cursive;
-  --font-kalam: 'Kalam', cursive;
-  --font-lato: 'Lato', sans-serif;
-  --font-merriweather: 'Merriweather', serif;
-  --font-cedarville: 'Cedarville Cursive', cursive;
 }
 
 html {

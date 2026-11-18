@@ -16,7 +16,7 @@ export interface MergeMessage {
   command: 'merge';
   files: MergeFile[];
   jobs: MergeJob[];
-  cpdfUrl?: string;
+  cpdfUrl: string;
   retainPageLabels?: boolean;
   removeDuplicateFonts?: boolean;
 }

@@ -40,22 +40,10 @@ const baseCategories = [
                     "Convert JPG, PNG, BMP, GIF, TIFF, PNM, PGM, PBM, PPM, PAM, JXR, JPX, JP2, PSD, SVG, HEIC, WebP to PDF.",
             },
             {
-                href: import.meta.env.BASE_URL + "txt-to-pdf.html",
-                name: "Text to PDF",
-                icon: "ph-text-t",
-                subtitle: "Convert a plain text file into a PDF.",
-            },
-            {
                 href: import.meta.env.BASE_URL + "markdown-to-pdf.html",
                 name: "Markdown to PDF",
                 icon: "ph-markdown-logo",
                 subtitle: "Convert Markdown to PDF with live preview and syntax highlighting.",
-            },
-            {
-                href: import.meta.env.BASE_URL + "json-to-pdf.html",
-                name: "JSON to PDF",
-                icon: "ph-file-code",
-                subtitle: "Convert JSON files to PDF format.",
             },
             {
                 href: import.meta.env.BASE_URL + "csv-to-pdf.html",

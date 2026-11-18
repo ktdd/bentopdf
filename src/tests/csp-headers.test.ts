@@ -47,13 +47,12 @@ describe("CSP script-src", () => {
     });
 
     it("covers every script the app loads from its default CDN URLs", () => {
-        const { pymupdf, ghostscript, cpdf } = WasmProvider.getAllProviders();
+        const { pymupdf, ghostscript } = WasmProvider.getAllProviders();
         const urls = [
             `${pymupdf}dist/index.js`,
             `${pymupdf}assets/pyodide.js`,
             `${pymupdf}assets/pyodide.asm.js`,
             `${ghostscript}gs.js`,
-            `${cpdf}coherentpdf.browser.min.js`,
         ];
         for (const url of urls) {
             expect(allowedBy(scriptSrc, url), url).toBe(true);

@@ -62,3 +62,5 @@ bentopdf-pymupdf-wasm/
 /docs/.vitepress/cache/
 
 REMOVED/
+server/gs/
+server/pymupdf/

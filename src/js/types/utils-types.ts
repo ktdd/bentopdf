@@ -112,14 +112,6 @@ export interface PyMuPDFPage {
   applyRedactions(): void;
 }
 
-export interface PyMuPDFTextToPdfOptions {
-  fontSize?: number;
-  pageSize?: string;
-  fontName?: string;
-  textColor?: string;
-  margins?: number;
-}
-
 export interface PyMuPDFDeskewOptions {
   threshold?: number;
   dpi?: number;
@@ -146,7 +138,6 @@ export interface PyMuPDFInstance {
     options: PyMuPDFRasterizeOptions
   ): Promise<Blob>;
   open(file: Blob | File, password?: string): Promise<PyMuPDFDocument>;
-  textToPdf(text: string, options?: PyMuPDFTextToPdfOptions): Promise<Blob>;
   pdfToDocx(file: Blob | File): Promise<Blob>;
   pdfToMarkdown(
     file: Blob | File,

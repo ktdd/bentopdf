@@ -1,7 +1,7 @@
 import { PACKAGE_VERSIONS } from '../const/cdn-version';
 import { WasmProvider } from '../utils/wasm-provider';
 
-export type WasmPackage = 'ghostscript' | 'pymupdf' | 'cpdf';
+export type WasmPackage = 'ghostscript' | 'pymupdf';
 
 export function getWasmBaseUrl(packageName: WasmPackage): string | undefined {
   const userUrl = WasmProvider.getUrl(packageName);

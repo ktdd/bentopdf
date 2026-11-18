@@ -33,8 +33,7 @@ self.onmessage = async function (e) {
   if (!cpdfUrl) {
     self.postMessage({
       status: 'error',
-      message:
-        'CoherentPDF URL not provided. Please configure it in WASM Settings.',
+      message: 'Local CoherentPDF URL not provided.',
     });
     return;
   }

@@ -59,7 +59,6 @@ export const multiFileTools = [
     "alternate-merge",
     "linearize",
     "reverse-pages",
-    "txt-to-pdf",
     "compress",
     "extract-attachments",
     "flatten",

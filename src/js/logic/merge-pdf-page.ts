@@ -7,11 +7,7 @@ import {
   cleanupLazyRendering,
 } from '../utils/render-utils.js';
 import { initPagePreview } from '../utils/page-preview.js';
-import { isCpdfAvailable } from '../utils/cpdf-helper.js';
-import {
-  showWasmRequiredDialog,
-  WasmProvider,
-} from '../utils/wasm-provider.js';
+import { getCpdfUrl } from '../utils/cpdf-helper.js';
 import { onPageReady } from '../utils/page-ready.js';
 
 import { createIcons, icons } from 'lucide';
@@ -277,12 +273,6 @@ const resetState = async () => {
 };
 
 export async function merge() {
-  // Check if CPDF is configured
-  if (!isCpdfAvailable()) {
-    showWasmRequiredDialog('cpdf');
-    return;
-  }
-
   showLoader("Merging PDFs...");
   try {
     const jobs: MergeJob[] = [];
@@ -394,7 +384,7 @@ export async function merge() {
       command: 'merge',
       files: filesToMerge,
       jobs: jobs,
-      cpdfUrl: WasmProvider.getUrl('cpdf')! + 'coherentpdf.browser.min.js',
+      cpdfUrl: getCpdfUrl(),
       retainPageLabels: retainCheckbox?.checked ?? false,
       removeDuplicateFonts: removeDuplicateFontsCheckbox?.checked ?? false,
     };

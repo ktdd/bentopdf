@@ -33,6 +33,7 @@
             "WebWorker"
         ],
         "types": [
+            "bun",
             "vite/client",
             "vitest/globals"
         ], // Added vitest/globals

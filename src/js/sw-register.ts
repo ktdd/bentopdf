@@ -15,7 +15,6 @@ function collectTrustedWasmHosts(): string[] {
     const candidates = [
         import.meta.env.VITE_WASM_PYMUPDF_URL,
         import.meta.env.VITE_WASM_GS_URL,
-        import.meta.env.VITE_WASM_CPDF_URL,
     ];
     for (const raw of candidates) {
         if (!raw) continue;

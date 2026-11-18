@@ -1,6 +1,4 @@
-import type { ExtractedSignature } from "@/types";
 import DOMPurify from "dompurify";
-import forge from "node-forge";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { escapeHtml, sanitizeEmailHtml } from "../js/utils/helpers";
 import { MarkdownEditor } from "../js/utils/markdown-editor";
@@ -148,7 +146,6 @@ describe("XSS replay — WASM provider localStorage poisoning", () => {
         const wasmPayload = {
             pymupdf: "https://attacker.test/wasm/pymupdf/",
             ghostscript: "https://attacker.test/wasm/gs/",
-            cpdf: "https://attacker.test/wasm/cpdf/",
         };
         localStorage.setItem("bentopdf:wasm-providers", JSON.stringify(wasmPayload));
 
@@ -162,7 +159,6 @@ describe("XSS replay — WASM provider localStorage poisoning", () => {
             JSON.stringify({
                 pymupdf: "https://attacker.test/wasm/pymupdf/",
                 ghostscript: "https://attacker.test/wasm/gs/",
-                cpdf: "https://attacker.test/wasm/cpdf/",
             }),
         );
 
@@ -176,7 +172,6 @@ describe("XSS replay — WASM provider localStorage poisoning", () => {
         const remaining = JSON.parse(localStorage.getItem("bentopdf:wasm-providers") || "{}");
         expect(remaining.pymupdf).toBeUndefined();
         expect(remaining.ghostscript).toBeUndefined();
-        expect(remaining.cpdf).toBeUndefined();
     });
 });
 
@@ -276,60 +271,4 @@ describe("XSS replay — sanitizeEmailHtml (DOMPurify-backed)", () => {
             }
         }
     });
-});
-
-describe("XSS replay — PDF signature cryptographic verification", () => {
-    function buildSignedPdf(digestAlgorithm: string = forge.pki.oids.sha256): {
-        pdfBytes: Uint8Array;
-        byteRange: number[];
-        p7Der: Uint8Array;
-    } {
-        const keys = forge.pki.rsa.generateKeyPair({ bits: 2048, e: 0x10001 });
-        const cert = forge.pki.createCertificate();
-        cert.publicKey = keys.publicKey;
-        cert.serialNumber = "01";
-        const attrs = [
-            { name: "commonName", value: "Test Signer" },
-            { name: "countryName", value: "US" },
-        ];
-        cert.setSubject(attrs);
-        cert.setIssuer(attrs);
-        cert.validity.notBefore = new Date(Date.now() - 86400000);
-        cert.validity.notAfter = new Date(Date.now() + 365 * 86400000);
-        cert.sign(keys.privateKey, forge.md.sha256.create());
-
-        const contentBefore = "%PDF-1.4\nsigned content A\n";
-        const contentAfter = "\nsigned content B\n%%EOF\n";
-        const placeholderLen = 0;
-
-        const signedContent = new TextEncoder().encode(contentBefore + contentAfter);
-
-        const p7 = forge.pkcs7.createSignedData();
-        p7.content = forge.util.createBuffer(String.fromCharCode(...signedContent));
-        p7.addCertificate(cert);
-        p7.addSigner({
-            key: keys.privateKey,
-            certificate: cert,
-            digestAlgorithm,
-            authenticatedAttributes: [
-                { type: forge.pki.oids.contentType, value: forge.pki.oids.data },
-                { type: forge.pki.oids.messageDigest },
-                // @ts-expect-error runtime accepts Date, type defs say string
-                { type: forge.pki.oids.signingTime, value: new Date() },
-            ],
-        });
-        p7.sign({ detached: true });
-        const p7Asn1 = p7.toAsn1();
-        const p7Der = forge.asn1.toDer(p7Asn1).getBytes();
-        const p7Bytes = new Uint8Array(p7Der.length);
-        for (let i = 0; i < p7Der.length; i++) p7Bytes[i] = p7Der.charCodeAt(i);
-
-        const beforeBytes = new TextEncoder().encode(contentBefore);
-        const afterBytes = new TextEncoder().encode(contentAfter);
-        const pdfBytes = new Uint8Array(beforeBytes.length + afterBytes.length + placeholderLen);
-        pdfBytes.set(beforeBytes, 0);
-        pdfBytes.set(afterBytes, beforeBytes.length);
-        const byteRange = [0, beforeBytes.length, beforeBytes.length + placeholderLen, afterBytes.length];
-        return { pdfBytes, byteRange, p7Der: p7Bytes };
-    }
 });
