@@ -9665,12 +9665,6 @@ function wireUI() {
   $('sysFonts').addEventListener('click', () => loadSystemFonts(false));
   if (!new URLSearchParams(location.search).get('noauto'))
     loadSystemFonts(true);
-  if ('serviceWorker' in navigator && location.protocol === 'https:') {
-    navigator.serviceWorker
-      .register('sw.js', { updateViaCache: 'none' })
-      .then((reg) => reg.update().catch(() => {}))
-      .catch(() => {});
-  }
   window.addEventListener(
     'pointerdown',
     () => {

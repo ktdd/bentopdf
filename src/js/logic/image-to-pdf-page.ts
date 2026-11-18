@@ -185,7 +185,7 @@ async function convertToPdf() {
         const form = new FormData();
         for (const file of processedFiles) form.append("images", file);
 
-        const pdfBlob = await requestPdf("/api/mupdf-images-to-pdf", form);
+        const pdfBlob = await requestPdf("/api/images-to-pdf", form);
 
         downloadFile(pdfBlob, "images_to_pdf.pdf");
 

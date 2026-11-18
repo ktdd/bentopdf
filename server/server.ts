@@ -1,26 +1,11 @@
-import { createImagesToPdfHandler } from "./src/images-to-pdf";
-import { imagesToPdfWithMuPDF } from "./src/mupdf-images-to-pdf";
-import { decryptWithMuPDF, rasterizeWithMuPDF } from "./src/mupdf-routes";
-import { loadImagePdfEngine } from "./src/pymupdf-engine";
-import { createPyMuPDFQueue } from "./src/pymupdf-queue";
-import { createPyMuPDFHandlers } from "./src/pymupdf-routes";
-
-console.log("Loading PyMuPDF...");
-await loadImagePdfEngine();
-const queue = createPyMuPDFQueue();
-const imagesToPdf = createImagesToPdfHandler(loadImagePdfEngine, queue);
-const mupdfImagesToPdf = createImagesToPdfHandler(async () => ({ imagesToPdf: imagesToPdfWithMuPDF }));
-const pymupdf = createPyMuPDFHandlers(loadImagePdfEngine, queue);
+import { decryptWithMuPDF, imagesToPdf, rasterizeWithMuPDF } from "./src/mupdf-routes";
 
 Bun.serve({
     port: 6999,
     routes: {
         "/api/images-to-pdf": { POST: imagesToPdf },
-        "/api/mupdf-images-to-pdf": { POST: mupdfImagesToPdf },
-        "/api/rasterize-pdf": { POST: pymupdf.rasterize },
-        "/api/decrypt-pdf": { POST: pymupdf.decrypt },
-        "/api/mupdf-rasterize-pdf": { POST: rasterizeWithMuPDF },
-        "/api/mupdf-decrypt-pdf": { POST: decryptWithMuPDF },
+        "/api/rasterize-pdf": { POST: rasterizeWithMuPDF },
+        "/api/decrypt-pdf": { POST: decryptWithMuPDF },
     },
     fetch(req) {
         if (req.method === "OPTIONS") {

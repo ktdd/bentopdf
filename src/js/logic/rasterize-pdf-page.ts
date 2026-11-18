@@ -121,7 +121,7 @@ onPageReady(() => {
         form.append('dpi', String(dpi));
         form.append('format', format);
         form.append('grayscale', String(grayscale));
-        return requestPdf('/api/mupdf-rasterize-pdf', form);
+        return requestPdf('/api/rasterize-pdf', form);
       };
 
       hideLoader();

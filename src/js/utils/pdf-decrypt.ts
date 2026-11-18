@@ -90,7 +90,7 @@ async function decryptWithMuPDF(inputBytes: Uint8Array, password: string): Promi
     const form = new FormData();
     form.append("file", new Blob([new Uint8Array(inputBytes)], { type: "application/pdf" }), "document.pdf");
     form.append("password", password);
-    const result = await requestPdf("/api/mupdf-decrypt-pdf", form);
+    const result = await requestPdf("/api/decrypt-pdf", form);
     const bytes = new Uint8Array(await result.arrayBuffer());
     if (!bytes.length) throw new Error("MuPDF produced an empty decrypted file.");
     return bytes;

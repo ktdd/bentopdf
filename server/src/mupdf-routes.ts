@@ -1,4 +1,5 @@
 import mupdf from "mupdf";
+import { imagesToPdfWithMuPDF } from "./mupdf-images-to-pdf";
 
 function pdfResponse(buffer: InstanceType<typeof mupdf.Buffer>): Response {
     try {
@@ -12,6 +13,31 @@ function pdfResponse(buffer: InstanceType<typeof mupdf.Buffer>): Response {
 function failure(error: unknown): Response {
     console.error("[MuPDF API] Processing failed:", error);
     return Response.json({ error: "PDF processing failed." }, { status: 500 });
+}
+
+export async function imagesToPdf(request: Request): Promise<Response> {
+    let form: FormData;
+    try {
+        form = await request.formData();
+    } catch {
+        return Response.json({ error: "Expected a multipart form upload." }, { status: 400 });
+    }
+    const images = form.getAll("images");
+    if (images.length === 0 || images.some((image) => !(image instanceof File) || image.size === 0)) {
+        return Response.json({ error: "Select at least one non-empty image." }, { status: 400 });
+    }
+    try {
+        const pdf = await imagesToPdfWithMuPDF(images as File[]);
+        return new Response(pdf, {
+            headers: {
+                "Content-Type": "application/pdf",
+                "Content-Disposition": 'attachment; filename="images_to_pdf.pdf"',
+                "Cache-Control": "no-store",
+            },
+        });
+    } catch (error) {
+        return failure(error);
+    }
 }
 
 export async function rasterizeWithMuPDF(request: Request): Promise<Response> {

@@ -1,59 +1,49 @@
 import { describe, expect, test } from "bun:test";
-import { createImagesToPdfHandler } from "../src/images-to-pdf";
+import mupdf from "mupdf";
+import { imagesToPdf } from "../src/mupdf-routes";
 
-function upload(...names: string[]): Request {
+function image(name: string, width: number, height: number): File {
+    const pixmap = new mupdf.Pixmap(mupdf.ColorSpace.DeviceRGB, [0, 0, width, height], false);
+    try {
+        pixmap.clear(255);
+        return new File([new Uint8Array(pixmap.asPNG())], name, { type: "image/png" });
+    } finally {
+        pixmap.destroy();
+    }
+}
+
+function upload(...images: File[]): Request {
     const form = new FormData();
-    for (const name of names) form.append("images", new File([name], name, { type: "image/png" }));
+    for (const file of images) form.append("images", file);
     return new Request("http://localhost/api/images-to-pdf", { method: "POST", body: form });
 }
 
 describe("images-to-pdf route", () => {
-    test("returns a PDF and preserves image order", async () => {
-        let names: string[] = [];
-        const handler = createImagesToPdfHandler(async () => ({
-            async imagesToPdf(images) {
-                names = images.map((image) => image.name);
-                return new Blob(["%PDF-test"], { type: "application/pdf" });
-            },
-        }));
-        const response = await handler(upload("first.png", "second.png"));
+    test("returns a PDF with pages in image order", async () => {
+        const response = await imagesToPdf(upload(image("wide.png", 40, 20), image("tall.png", 20, 40)));
         expect(response.status).toBe(200);
         expect(response.headers.get("content-type")).toBe("application/pdf");
-        expect(await response.text()).toBe("%PDF-test");
-        expect(names).toEqual(["first.png", "second.png"]);
-    });
-
-    test("rejects invalid or empty uploads without starting the engine", async () => {
-        let loaded = false;
-        const handler = createImagesToPdfHandler(async () => {
-            loaded = true;
-            throw new Error("must not load");
-        });
-        expect((await handler(upload())).status).toBe(400);
-        expect((await handler(new Request("http://localhost", { method: "POST", body: "invalid" }))).status).toBe(400);
-        expect(loaded).toBe(false);
-    });
-
-    test("serializes conversions and keeps working after a failure", async () => {
-        const events: string[] = [];
-        const handler = createImagesToPdfHandler(async () => ({
-            async imagesToPdf(images) {
-                const name = images[0].name;
-                events.push(`start:${name}`);
-                await Bun.sleep(10);
-                events.push(`end:${name}`);
-                if (name === "bad.png") throw new Error("test failure");
-                return new Blob(["%PDF-test"], { type: "application/pdf" });
-            },
-        }));
-        const originalError = console.error;
-        console.error = () => {};
+        const document = mupdf.Document.openDocument(new Uint8Array(await response.arrayBuffer()), "application/pdf");
         try {
-            const responses = await Promise.all([handler(upload("bad.png")), handler(upload("good.png"))]);
-            expect(responses.map((response) => response.status)).toEqual([500, 200]);
-            expect(events).toEqual(["start:bad.png", "end:bad.png", "start:good.png", "end:good.png"]);
+            expect(document.countPages()).toBe(2);
+            const first = document.loadPage(0);
+            const second = document.loadPage(1);
+            try {
+                const [x0, y0, x1, y1] = first.getBounds();
+                expect(x1 - x0).toBeGreaterThan(y1 - y0);
+                const [a0, b0, a1, b1] = second.getBounds();
+                expect(a1 - a0).toBeLessThan(b1 - b0);
+            } finally {
+                first.destroy();
+                second.destroy();
+            }
         } finally {
-            console.error = originalError;
+            document.destroy();
         }
+    });
+
+    test("rejects invalid or empty uploads", async () => {
+        expect((await imagesToPdf(upload())).status).toBe(400);
+        expect((await imagesToPdf(new Request("http://localhost", { method: "POST", body: "invalid" }))).status).toBe(400);
     });
 });
